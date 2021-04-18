@@ -1,4 +1,4 @@
-package sample;
+package egl;
 
 public class Controller {
 }
