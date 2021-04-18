@@ -3,6 +3,8 @@ module EGL {
     requires javafx.graphics;
     requires javafx.fxml;
     requires java.desktop;
-    exports egl;
-    opens egl;
+    requires spring.boot;
+    requires spring.boot.autoconfigure;
+    exports egl.client;
+    opens egl.client;
 }

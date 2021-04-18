@@ -1,4 +1,4 @@
-package egl;
+package egl.client;
 
 public class Controller {
 }

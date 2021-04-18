@@ -1,4 +1,4 @@
-package egl;
+package egl.client;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
