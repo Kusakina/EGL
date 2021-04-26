@@ -17,6 +17,9 @@ import lombok.EqualsAndHashCode;
 @Data
 public class TopicType extends DescribedData {
 
+    @ManyToOne
+    Task theoryTask;
+
     @ManyToMany
     List<Task> tasks;
 
