@@ -1,6 +1,6 @@
 package egl.client;
 
-import egl.client.controller.TopicsListController;
+import egl.client.controller.topic.LocalTopicsListController;
 //import egl.client.service.FxmlService;
 import egl.client.service.FxmlService;
 import javafx.application.Application;
@@ -25,7 +25,7 @@ public class JavaFxClientApplication extends Application {
     @Override
     public void start(Stage stage) {
         FxmlService fxmlService = applicationContext.getBean(FxmlService.class);
-        fxmlService.showStage(TopicsListController.class, "Темы для изучения", stage);
+        fxmlService.showStage(LocalTopicsListController.class, "Темы для изучения", stage);
     }
 
     @Override
