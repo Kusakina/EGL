@@ -3,6 +3,7 @@ package egl.client.service;
 import egl.client.controller.Controller;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxControllerAndView;
@@ -40,7 +41,8 @@ public class FxmlService {
     private <T extends Controller> FxControllerAndView<? extends T, Parent> showStage(
             String title, Stage stage,
             FxControllerAndView<? extends T, Parent> root) {
-        Scene scene = new Scene(root.getView().orElseThrow(), 800, 800);
+        var screenSize = Screen.getPrimary().getVisualBounds();
+        Scene scene = new Scene(root.getView().orElseThrow(), screenSize.getWidth() * 0.8, screenSize.getHeight() * 0.8);
 
         stage.setScene(scene);
         root.getController().setStage(stage);
