@@ -1,13 +1,16 @@
 package egl.client;
 
+import egl.client.controller.TopicsListWindow;
+//import egl.client.service.FxmlService;
+import egl.client.service.FxmlService;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import net.rgielen.fxweaver.core.FxWeaver;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
-import net.rgielen.fxweaver.core.FxWeaver;
 
 public class JavaFxClientApplication extends Application {
 
@@ -24,12 +27,8 @@ public class JavaFxClientApplication extends Application {
 
     @Override
     public void start(Stage stage) {
-        FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
-        Parent root = fxWeaver.loadView(Controller.class);
-        Scene scene = new Scene(root, 300, 275);
-        stage.setScene(scene);
-        stage.setTitle("Hello World");
-        stage.show();
+        FxmlService fxmlService = applicationContext.getBean(FxmlService.class);
+        fxmlService.showStage(TopicsListWindow.class, "Темы для изучения", stage);
     }
 
     @Override
