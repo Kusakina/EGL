@@ -1,8 +1,9 @@
-package egl.client.controller.task;
+package egl.client.controller.task.category;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import egl.client.controller.task.TheoryController;
 import egl.client.model.topic.category.Category;
 import egl.client.model.topic.category.Translation;
 import egl.client.model.topic.category.Word;
