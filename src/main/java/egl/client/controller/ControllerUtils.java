@@ -11,10 +11,17 @@ import javafx.util.Callback;
 
 public class ControllerUtils {
 
+    public static void initializePropertyColumn(
+            TableColumn<?, ?> column,
+            String propertyName
+    ) {
+        column.setCellValueFactory(new PropertyValueFactory<>(propertyName));
+    }
+
     public static <T> void initializeButtonColumn(
             TableColumn<T, Void> buttonColumn,
             String buttonText,
-            BiConsumer<ActionEvent, TableCell<T, Void>> buttonEventConsumer
+            BiConsumer<ActionEvent, T> buttonEventConsumer
     ) {
         buttonColumn.setCellValueFactory(new PropertyValueFactory<>("none"));
 
@@ -24,12 +31,15 @@ public class ControllerUtils {
                     final Button startButton = new Button(buttonText);
 
                     @Override
-                    public void updateItem(Void item, boolean empty) {
-                        super.updateItem(item, empty);
+                    public void updateItem(Void fieldValue, boolean empty) {
+                        super.updateItem(fieldValue, empty);
                         if (empty) {
                             setGraphic(null);
                         } else {
-                            startButton.setOnAction(event -> buttonEventConsumer.accept(event, this));
+                            startButton.setOnAction(event -> {
+                                T item = getTableView().getItems().get(getIndex());
+                                buttonEventConsumer.accept(event, item);
+                            });
                             setGraphic(startButton);
                         }
                         setText(null);

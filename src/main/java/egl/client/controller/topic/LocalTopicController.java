@@ -41,13 +41,12 @@ public class LocalTopicController extends Controller {
     }
 
     private void initializeColumns() {
-        taskNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        ControllerUtils.initializePropertyColumn(taskNameColumn, "name");
 
         ControllerUtils.initializeButtonColumn(
                 taskStartColumn,
                 "Запуск",
-                (event, cell) -> {
-                    Task task = cell.getTableView().getItems().get(cell.getIndex());
+                (event, task) -> {
                     var controllerAndView = fxmlService.showStage(task.getSceneName(), task.getName());
 
                     var taskController = (TaskController) controllerAndView.getController();
