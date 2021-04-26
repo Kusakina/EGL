@@ -53,7 +53,8 @@ public class FxmlService {
 
     public static Class<? extends Controller> controllerClassWith(String controllerClassName) {
         try {
-            return Class.forName(controllerClassName).asSubclass(Controller.class);
+            String fullControllerClassName = "egl.client.controller." + controllerClassName;
+            return Class.forName(fullControllerClassName).asSubclass(Controller.class);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
