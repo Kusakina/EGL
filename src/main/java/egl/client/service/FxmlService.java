@@ -15,6 +15,13 @@ public class FxmlService {
 
     private final FxWeaver fxWeaver;
 
+    public FxControllerAndView<? extends Controller, Parent> showStage(
+            String controllerClassName,
+            String title
+    ) {
+        return showStage(controllerClassWith(controllerClassName), title);
+    }
+
     public <T extends Controller> FxControllerAndView<? extends T, Parent> showStage(
             Class<? extends T> controllerClass,
             String title) {
@@ -27,6 +34,12 @@ public class FxmlService {
             Stage stage
     ) {
         FxControllerAndView<? extends T, Parent> root = load(controllerClass);
+        return showStage(title, stage, root);
+    }
+
+    private <T extends Controller> FxControllerAndView<? extends T, Parent> showStage(
+            String title, Stage stage,
+            FxControllerAndView<? extends T, Parent> root) {
         Scene scene = new Scene(root.getView().orElseThrow(), 800, 800);
 
         stage.setScene(scene);
@@ -38,13 +51,16 @@ public class FxmlService {
         return root;
     }
 
-    public FxControllerAndView<? extends Controller, Parent> load(String controllerClassName) {
+    public static Class<? extends Controller> controllerClassWith(String controllerClassName) {
         try {
-            Class<? extends Controller> controllerClass = Class.forName(controllerClassName).asSubclass(Controller.class);
-            return load(controllerClass);
+            return Class.forName(controllerClassName).asSubclass(Controller.class);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public FxControllerAndView<? extends Controller, Parent> load(String controllerClassName) {
+        return load(controllerClassWith(controllerClassName));
     }
 
     public <T extends Controller> FxControllerAndView<? extends T, Parent> load(Class<? extends T> controllerClass) {
