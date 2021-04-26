@@ -1,9 +1,9 @@
-package egl.client;
+package egl.client.controller;
 
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
 
 @Component
-@FxmlView("sample.fxml")
-public class Controller {
+@FxmlView
+public class TopicsListWindow implements Controller {
 }
