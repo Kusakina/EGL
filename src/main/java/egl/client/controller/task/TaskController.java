@@ -15,8 +15,8 @@ import javafx.scene.control.TextArea;
 
 public abstract class TaskController extends Controller {
 
-    @FXML public TextArea descriptionTextArea;
-    @FXML public Button finishButton;
+    @FXML protected TextArea descriptionTextArea;
+    @FXML protected Button finishButton;
 
     private Consumer<Result> resultConsumer;
 

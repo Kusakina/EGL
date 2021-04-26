@@ -24,10 +24,10 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class TestController extends TaskController {
 
-    @FXML public TabPane tabPane;
-    @FXML public Tab descriptionTab;
-
     private final FxmlService fxmlService;
+
+    @FXML private TabPane tabPane;
+    @FXML private Tab descriptionTab;
 
     private List<TaskController> taskControllers;
 
