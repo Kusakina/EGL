@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 
 @SpringBootApplication
 @EnableConfigurationProperties
-@EntityScan(basePackages = {"egl.model"})
+@EntityScan(basePackages = {"egl.core.model"})
 public class SpringClientApplication {
 
 	public static void main(String[] args) {

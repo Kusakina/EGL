@@ -1,8 +1,9 @@
-package egl.model;
+package egl.core.model.task;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
+import egl.core.model.DescribedData;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

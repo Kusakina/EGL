@@ -1,4 +1,4 @@
-package egl.model;
+package egl.core.model.task;
 
 import lombok.Data;
 
