@@ -1,7 +1,6 @@
 package egl.client;
 
 import egl.client.controller.topic.LocalTopicsListController;
-//import egl.client.service.FxmlService;
 import egl.client.service.FxmlService;
 import javafx.application.Application;
 import javafx.application.Platform;
