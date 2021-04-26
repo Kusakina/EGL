@@ -3,6 +3,7 @@ package egl.client.controller.task.category;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import egl.client.controller.ControllerUtils;
 import egl.client.controller.task.TheoryController;
 import egl.client.model.topic.category.Category;
 import egl.client.model.topic.category.Translation;
@@ -42,6 +43,8 @@ public class CategoryTheoryController extends TheoryController {
         if (categoryTranslations.isEmpty()) {
             translationsTableView.setVisible(false);
         } else {
+            ControllerUtils.rescaleTableView(stage, translationsTableView, 0.8, 0.6);
+
             translationsTableView.setVisible(true);
 
             var tableTranslations = translationsTableView.getItems();

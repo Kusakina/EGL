@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import egl.client.controller.Controller;
+import egl.client.controller.ControllerUtils;
 import egl.client.service.FxmlService;
 import egl.core.model.task.Task;
 import egl.core.model.task.Test;
@@ -36,23 +37,32 @@ public class TestController extends TaskController {
         super.initialize(url, resourceBundle);
 
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+
+        descriptionTab.setText("Информация");
+    }
+
+    private void rescaleViews() {
+        ControllerUtils.rescaleRegion(stage, tabPane, 0.8, 0.8);
     }
 
     @Override
     protected void prepareToStart(Task controllerTask, Topic controllerTopic) {
+        rescaleViews();
+
         Test test = (Test) controllerTask;
 
         List<Tab> tabs = tabPane.getTabs();
         tabs.clear();
 
-        String testDescription = String.format(
-                "Тест по теме %s\n\n%s",
-                controllerTopic.getName(),
-                test.getDescription()
-        );
-        descriptionTextArea.setText(testDescription);
+        prepareDescription(controllerTopic, test);
         tabs.add(descriptionTab);
 
+        prepareTasks(controllerTopic, test, tabs);
+
+        tabPane.getSelectionModel().selectFirst();
+    }
+
+    private void prepareTasks(Topic controllerTopic, Test test, List<Tab> tabs) {
         this.taskControllers = new ArrayList<>();
 
         for (Task task : test.getTasks()) {
@@ -70,8 +80,15 @@ public class TestController extends TaskController {
 
             taskController.start(task, controllerTopic, result::accumulate);
         }
+    }
 
-        tabPane.getSelectionModel().selectFirst();
+    private void prepareDescription(Topic controllerTopic, Test test) {
+        String testDescription = String.format(
+                "Тест по теме %s\n\n%s",
+                controllerTopic.getName(),
+                test.getDescription()
+        );
+        descriptionTextArea.setText(testDescription);
     }
 
     @Override

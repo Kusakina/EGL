@@ -29,6 +29,7 @@ public abstract class TaskController extends Controller {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.finishButton.setOnAction(this::processFinish);
+        this.finishButton.setText("Завершить");
     }
 
     protected abstract void prepareToStart(Task controllerTask, Topic controllerTopic);
