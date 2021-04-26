@@ -17,4 +17,9 @@ public class Result {
         ++totalAnswers;
         if (isCorrect) ++correctAnswers;
     }
+
+    public void accumulate(Result other) {
+        this.totalAnswers += other.totalAnswers;
+        this.correctAnswers += other.correctAnswers;
+    }
 }
