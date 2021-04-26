@@ -8,6 +8,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
@@ -25,8 +26,6 @@ public class ControllerUtils {
             String buttonText,
             BiConsumer<ActionEvent, T> buttonEventConsumer
     ) {
-        buttonColumn.setCellValueFactory(new PropertyValueFactory<>("none"));
-
         Callback<TableColumn<T, Void>, TableCell<T, Void>> cellFactory =
                 (TableColumn<T, Void> param) -> new TableCell<>() {
 
@@ -52,11 +51,15 @@ public class ControllerUtils {
     }
 
     public static void rescaleTableView(Stage stage, TableView<?> tableView, double widthCoeff, double heightCoeff) {
-        tableView.setPrefWidth(stage.getWidth() * widthCoeff);
-        tableView.setPrefHeight(stage.getHeight() * heightCoeff);
+        rescaleRegion(stage, tableView, widthCoeff, heightCoeff);
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         double columnWidth = tableView.getPrefWidth() / tableView.getColumns().size();
         tableView.getColumns().forEach(column -> column.setPrefWidth(columnWidth));
+    }
+
+    public static void rescaleRegion(Stage stage, Region node, double widthCoeff, double heightCoeff) {
+        node.setPrefWidth(stage.getWidth() * widthCoeff);
+        node.setPrefHeight(stage.getHeight() * heightCoeff);
     }
 }
