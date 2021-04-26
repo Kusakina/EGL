@@ -6,8 +6,8 @@ import java.util.ResourceBundle;
 import egl.client.controller.Controller;
 import egl.client.controller.ControllerUtils;
 import egl.client.model.topic.LocalTopic;
+import egl.client.service.CategoryService;
 import egl.client.service.FxmlService;
-import egl.client.repository.LocalTopicRepository;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 public class LocalTopicsListController extends Controller {
 
     private final FxmlService fxmlService;
-    private final LocalTopicRepository localTopicRepository;
+    private final CategoryService categoryService;
 
     @FXML private TableView<LocalTopic> topicsListTableView;
     @FXML private TableColumn<LocalTopic, String> topicNameColumn;
@@ -60,7 +60,7 @@ public class LocalTopicsListController extends Controller {
         var tableTopics = topicsListTableView.getItems();
         tableTopics.clear();
 
-        var databaseTopics = localTopicRepository.findAll();
-        databaseTopics.forEach(tableTopics::add);
+        var categories = categoryService.findAll();
+        tableTopics.addAll(categories);
     }
 }
