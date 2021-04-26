@@ -17,4 +17,9 @@ public class Word extends DatabaseData {
 
     @Column
     private Language language;
+
+    @Override
+    public String toString() {
+        return text;
+    }
 }
