@@ -1,4 +1,6 @@
 package egl.client.controller;
 
-public interface Controller {
+import javafx.fxml.Initializable;
+
+public interface Controller extends Initializable {
 }
