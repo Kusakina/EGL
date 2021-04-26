@@ -24,7 +24,8 @@ public class JavaFxClientApplication extends Application {
     @Override
     public void start(Stage stage) {
         FxmlService fxmlService = applicationContext.getBean(FxmlService.class);
-        fxmlService.showStage(LocalTopicsListController.class, "Темы для изучения", stage);
+        var controllerAndView = fxmlService.showStage(LocalTopicsListController.class, "Темы для изучения", stage);
+        controllerAndView.getController().show();
     }
 
     @Override

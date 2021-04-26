@@ -6,7 +6,9 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 
 public class ControllerUtils {
@@ -47,5 +49,14 @@ public class ControllerUtils {
                 };
 
         buttonColumn.setCellFactory(cellFactory);
+    }
+
+    public static void rescaleTableView(Stage stage, TableView<?> tableView, double widthCoeff, double heightCoeff) {
+        tableView.setPrefWidth(stage.getWidth() * widthCoeff);
+        tableView.setPrefHeight(stage.getHeight() * heightCoeff);
+        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        double columnWidth = tableView.getPrefWidth() / tableView.getColumns().size();
+        tableView.getColumns().forEach(column -> column.setPrefWidth(columnWidth));
     }
 }

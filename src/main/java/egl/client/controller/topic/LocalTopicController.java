@@ -54,8 +54,13 @@ public class LocalTopicController extends Controller {
         );
     }
 
+    private void rescaleViews() {
+        ControllerUtils.rescaleTableView(stage, tasksListTableView, 0.8, 0.6);
+    }
+
     public void show(LocalTopic topic) {
         this.controllerTopic = topic;
+        rescaleViews();
         showTasks();
     }
 
