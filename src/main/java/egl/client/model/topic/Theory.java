@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Theory extends DatabaseData {
 
-    @Column
+    @Column(columnDefinition = "LONGTEXT")
     private String text;
 
     public Theory(String text) {
