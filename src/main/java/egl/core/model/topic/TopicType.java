@@ -1,5 +1,6 @@
 package egl.core.model.topic;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -15,7 +16,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.springframework.transaction.annotation.Transactional;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -38,5 +38,9 @@ public class TopicType extends DescribedData {
         this.theoryTask = theoryTask;
         this.tasks = tasks;
         this.test = test;
+    }
+
+    public List<Task> getTasks() {
+        return new ArrayList<>(tasks);
     }
 }
