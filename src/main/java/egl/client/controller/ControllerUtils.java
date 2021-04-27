@@ -51,6 +51,9 @@ public class ControllerUtils {
     }
 
     public static void rescaleTableView(Stage stage, TableView<?> tableView, double widthCoeff, double heightCoeff) {
+        // TODO pass stage to children controllers
+        if (null == stage) return;
+
         rescaleRegion(stage, tableView, widthCoeff, heightCoeff);
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
@@ -59,6 +62,9 @@ public class ControllerUtils {
     }
 
     public static void rescaleRegion(Stage stage, Region node, double widthCoeff, double heightCoeff) {
+        // TODO pass stage to children controllers
+        if (null == stage) return;
+
         node.setPrefWidth(stage.getWidth() * widthCoeff);
         node.setPrefHeight(stage.getHeight() * heightCoeff);
     }
