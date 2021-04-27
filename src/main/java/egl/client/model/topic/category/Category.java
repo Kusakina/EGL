@@ -1,5 +1,6 @@
 package egl.client.model.topic.category;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -29,5 +30,9 @@ public class Category extends LocalTopic {
                     List<Translation> translations) {
         super(name, description, topicType, theory);
         this.translations = translations;
+    }
+
+    public List<Translation> getTranslations() {
+        return new ArrayList<>(translations);
     }
 }

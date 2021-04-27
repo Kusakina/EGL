@@ -1,5 +1,6 @@
 package egl.core.model.task;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -25,5 +26,9 @@ public class Test extends Task {
     public Test(String name, String description, String sceneName, List<Task> tasks) {
         super(name, description, sceneName);
         this.tasks = tasks;
+    }
+
+    public List<Task> getTasks() {
+        return new ArrayList<>(tasks);
     }
 }
