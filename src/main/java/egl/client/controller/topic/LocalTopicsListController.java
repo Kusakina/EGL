@@ -48,7 +48,7 @@ public class LocalTopicsListController extends Controller {
     }
 
     @Override
-    protected void rescaleViews(double parentWidth, double parentHeight) {
+    public void rescaleViews(double parentWidth, double parentHeight) {
         topicsListTableView.setPrefSize(parentWidth * 0.8, parentHeight * 0.8);
         ControllerUtils.rescaleTableView(topicsListTableView);
     }

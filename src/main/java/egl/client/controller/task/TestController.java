@@ -41,7 +41,7 @@ public class TestController extends TaskController {
     }
 
     @Override
-    protected void rescaleViews(double parentWidth, double parentHeight) {
+    public void rescaleViews(double parentWidth, double parentHeight) {
         tabPane.setPrefSize(parentWidth * 0.8, parentHeight * 0.8);
     }
 
@@ -76,7 +76,8 @@ public class TestController extends TaskController {
             TaskController taskController = (TaskController) controllerAndView.getController();
             taskControllers.add(taskController);
 
-            taskController.start(task, controllerTopic, result::accumulate, tabPane.getWidth(), tabPane.getHeight());
+            taskController.rescaleViews(tabPane.getWidth(), tabPane.getHeight());
+            taskController.start(task, controllerTopic, result::accumulate);
         }
     }
 

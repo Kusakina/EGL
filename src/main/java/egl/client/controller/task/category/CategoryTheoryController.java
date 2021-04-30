@@ -34,7 +34,7 @@ public class CategoryTheoryController extends TheoryController {
     }
 
     @Override
-    protected void rescaleViews(double parentWidth, double parentHeight) {
+    public void rescaleViews(double parentWidth, double parentHeight) {
         translationsTableView.setPrefSize(parentWidth * 0.8, parentHeight * 0.6);
         ControllerUtils.rescaleTableView(translationsTableView);
     }

@@ -23,5 +23,5 @@ public abstract class Controller implements Initializable {
         }
     }
 
-    protected abstract void rescaleViews(double parentWidth, double parentHeight);
+    public abstract void rescaleViews(double parentWidth, double parentHeight);
 }

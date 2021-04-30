@@ -46,6 +46,7 @@ public class FxmlService {
 
         stage.setScene(scene);
         root.getController().setStage(stage);
+        root.getController().rescaleViews(stage.getWidth(), stage.getHeight());
 
         stage.setTitle(title);
         stage.show();
