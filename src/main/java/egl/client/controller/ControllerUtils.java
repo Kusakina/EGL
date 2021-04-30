@@ -50,11 +50,7 @@ public class ControllerUtils {
         buttonColumn.setCellFactory(cellFactory);
     }
 
-    public static void rescaleTableView(Stage stage, TableView<?> tableView, double widthCoeff, double heightCoeff) {
-        // TODO pass stage to children controllers
-        if (null == stage) return;
-
-        rescaleRegion(stage, tableView, widthCoeff, heightCoeff);
+    public static void rescaleTableView(TableView<?> tableView) {
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         double columnWidth = tableView.getPrefWidth() / tableView.getColumns().size();

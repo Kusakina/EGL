@@ -43,7 +43,8 @@ public class CategoryTheoryController extends TheoryController {
         if (categoryTranslations.isEmpty()) {
             translationsTableView.setVisible(false);
         } else {
-            ControllerUtils.rescaleTableView(stage, translationsTableView, 0.8, 0.6);
+            ControllerUtils.rescaleRegion(stage, translationsTableView, 0.8, 0.6);
+            ControllerUtils.rescaleTableView(translationsTableView);
 
             translationsTableView.setVisible(true);
 
