@@ -39,7 +39,19 @@ public abstract class TaskController extends Controller {
             Topic topic,
             Consumer<Result> resultConsumer
     ) {
+        start(task, topic, resultConsumer, stage.getWidth(), stage.getHeight());
+    }
+
+    protected abstract void rescaleViews(double parentWidth, double parentHeight);
+
+    public void start(
+            Task task,
+            Topic topic,
+            Consumer<Result> resultConsumer,
+            double parentWidth, double parentHeight
+    ) {
         this.resultConsumer = resultConsumer;
+        rescaleViews(parentWidth, parentHeight);
         prepareToStart(task, topic);
     }
 

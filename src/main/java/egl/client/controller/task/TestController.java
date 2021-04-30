@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import egl.client.controller.Controller;
-import egl.client.controller.ControllerUtils;
 import egl.client.service.FxmlService;
 import egl.core.model.task.Task;
 import egl.core.model.task.Test;
@@ -41,14 +40,13 @@ public class TestController extends TaskController {
         descriptionTab.setText("Информация");
     }
 
-    private void rescaleViews() {
-        ControllerUtils.rescaleRegion(stage, tabPane, 0.8, 0.8);
+    @Override
+    protected void rescaleViews(double parentWidth, double parentHeight) {
+        tabPane.setPrefSize(parentWidth * 0.8, parentHeight * 0.8);
     }
 
     @Override
     protected void prepareToStart(Task controllerTask, Topic controllerTopic) {
-        rescaleViews();
-
         Test test = (Test) controllerTask;
 
         List<Tab> tabs = tabPane.getTabs();
@@ -78,7 +76,7 @@ public class TestController extends TaskController {
             TaskController taskController = (TaskController) controllerAndView.getController();
             taskControllers.add(taskController);
 
-            taskController.start(task, controllerTopic, result::accumulate);
+            taskController.start(task, controllerTopic, result::accumulate, tabPane.getWidth(), tabPane.getHeight());
         }
     }
 

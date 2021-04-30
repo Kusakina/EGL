@@ -34,23 +34,20 @@ public class CategoryTheoryController extends TheoryController {
     }
 
     @Override
+    protected void rescaleViews(double parentWidth, double parentHeight) {
+        translationsTableView.setPrefSize(parentWidth * 0.8, parentHeight * 0.6);
+        ControllerUtils.rescaleTableView(translationsTableView);
+    }
+
+    @Override
     protected void prepareToStart(Task controllerTask, Topic controllerTopic) {
         super.prepareToStart(controllerTask, controllerTopic);
 
         Category category = (Category) controllerTopic;
         var categoryTranslations = category.getTranslations();
 
-        if (categoryTranslations.isEmpty()) {
-            translationsTableView.setVisible(false);
-        } else {
-            ControllerUtils.rescaleRegion(stage, translationsTableView, 0.8, 0.6);
-            ControllerUtils.rescaleTableView(translationsTableView);
-
-            translationsTableView.setVisible(true);
-
-            var tableTranslations = translationsTableView.getItems();
-            tableTranslations.clear();
-            tableTranslations.addAll(categoryTranslations);
-        }
+        var tableTranslations = translationsTableView.getItems();
+        tableTranslations.clear();
+        tableTranslations.addAll(categoryTranslations);
     }
 }
