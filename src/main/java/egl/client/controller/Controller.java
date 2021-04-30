@@ -22,4 +22,6 @@ public abstract class Controller implements Initializable {
             stage.close();
         }
     }
+
+    protected abstract void rescaleViews(double parentWidth, double parentHeight);
 }
