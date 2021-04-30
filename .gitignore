@@ -2,4 +2,4 @@
 /target/
 /data/
 /.idea/
-EGL.iml
+*.iml
