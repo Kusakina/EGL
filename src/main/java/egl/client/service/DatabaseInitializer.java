@@ -40,7 +40,7 @@ public class DatabaseInitializer {
         Task categoryTheoryTask = new Task(
                 "Информация о категории",
                 "Здесь описаны все переводы в категории",
-                "task.category.CategoryTheoryController");
+                "task.category.CategoryTheoryTaskController");
         taskRepository.save(categoryTheoryTask);
 
         String testSceneName = "task.TestController";
