@@ -47,12 +47,18 @@ public class LocalTopicsListController extends Controller {
         );
     }
 
-    private void rescaleViews() {
-        ControllerUtils.rescaleTableView(stage, topicsListTableView, 0.8, 0.8);
+    @Override
+    public void rescaleViews(double parentWidth, double parentHeight) {
+        topicsListTableView.setPrefSize(parentWidth * 0.8, parentHeight * 0.8);
+        ControllerUtils.rescaleTableView(topicsListTableView);
     }
 
     public void show() {
-        rescaleViews();
+        show(stage.getWidth(), stage.getHeight());
+    }
+
+    public void show(double parentWidth, double parentHeight) {
+        rescaleViews(parentWidth, parentHeight);
         showTopics();
     }
 

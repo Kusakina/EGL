@@ -9,6 +9,12 @@ public abstract class Controller implements Initializable {
 
     protected Stage stage;
 
+    public void setStage(Stage stage) {
+        this.stage = stage;
+
+        rescaleViews(stage.getWidth(), stage.getHeight());
+    }
+
     protected Controller() {
         this.stage = null;
     }
@@ -22,4 +28,6 @@ public abstract class Controller implements Initializable {
             stage.close();
         }
     }
+
+    public abstract void rescaleViews(double parentWidth, double parentHeight);
 }

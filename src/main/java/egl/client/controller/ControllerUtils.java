@@ -8,8 +8,6 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.Region;
-import javafx.stage.Stage;
 import javafx.util.Callback;
 
 public class ControllerUtils {
@@ -50,22 +48,10 @@ public class ControllerUtils {
         buttonColumn.setCellFactory(cellFactory);
     }
 
-    public static void rescaleTableView(Stage stage, TableView<?> tableView, double widthCoeff, double heightCoeff) {
-        // TODO pass stage to children controllers
-        if (null == stage) return;
-
-        rescaleRegion(stage, tableView, widthCoeff, heightCoeff);
+    public static void rescaleTableView(TableView<?> tableView) {
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         double columnWidth = tableView.getPrefWidth() / tableView.getColumns().size();
         tableView.getColumns().forEach(column -> column.setPrefWidth(columnWidth));
-    }
-
-    public static void rescaleRegion(Stage stage, Region node, double widthCoeff, double heightCoeff) {
-        // TODO pass stage to children controllers
-        if (null == stage) return;
-
-        node.setPrefWidth(stage.getWidth() * widthCoeff);
-        node.setPrefHeight(stage.getHeight() * heightCoeff);
     }
 }
