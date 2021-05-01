@@ -76,7 +76,7 @@ public class TestController extends TaskController {
             TaskController taskController = (TaskController) controllerAndView.getController();
             taskControllers.add(taskController);
 
-            taskController.rescaleViews(tabPane.getWidth(), tabPane.getHeight());
+            taskController.rescaleViews(tabPane.getPrefWidth(), tabPane.getPrefHeight());
             taskController.start(task, controllerTopic, result::accumulate);
         }
     }
