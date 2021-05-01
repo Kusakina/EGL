@@ -45,11 +45,10 @@ public class FxmlService {
         Scene scene = new Scene(root.getView().orElseThrow(), screenSize.getWidth() * 0.8, screenSize.getHeight() * 0.8);
 
         stage.setScene(scene);
-        root.getController().setStage(stage);
-        root.getController().rescaleViews(stage.getWidth(), stage.getHeight());
-
         stage.setTitle(title);
         stage.show();
+
+        root.getController().setStage(stage);
 
         return root;
     }
