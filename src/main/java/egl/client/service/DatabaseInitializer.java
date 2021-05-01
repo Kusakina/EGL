@@ -46,12 +46,15 @@ public class DatabaseInitializer {
         String testSceneName = "task.TestController";
         String testDescription = "На каждой вкладке одно задание.\n" +
                 "Чтобы задание зачли - необходимо нажать кнопку \"Завершить\" внутри вкладки с заданием.\n";
-        Test categoryTest = new Test("Итоговый тест по категории", testDescription, testSceneName, new ArrayList<>());
+
+        List<Task> categoryTestTasks = Arrays.asList(categoryTheoryTask);
+        Test categoryTest = new Test("Итоговый тест по категории", testDescription, testSceneName, categoryTestTasks);
         testRepository.save(categoryTest);
 
+        List<Task> categoryTasks = Arrays.asList();
         TopicType categoryTopicType = new TopicType(
                 "Категория", "Набор переводов, объединенных общей темой",
-                categoryTheoryTask, new ArrayList<>(), categoryTest
+                categoryTheoryTask, categoryTasks, categoryTest
         );
         topicTypeRepository.save(categoryTopicType);
 
