@@ -36,13 +36,15 @@ public class TestController extends TaskController {
         super.initialize(url, resourceBundle);
 
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
-
-        descriptionTab.setText("Информация");
+        descriptionTab.setText("Информация о тесте");
     }
 
     @Override
     public void rescaleViews(double parentWidth, double parentHeight) {
-        tabPane.setPrefSize(parentWidth * 0.8, parentHeight * 0.8);
+        tabPane.setPrefSize(parentWidth, parentHeight);
+        for (TaskController taskController : taskControllers) {
+            taskController.rescaleViews(tabPane.getPrefWidth(), tabPane.getPrefHeight());
+        }
     }
 
     @Override
@@ -66,18 +68,15 @@ public class TestController extends TaskController {
         for (Task task : test.getTasks()) {
             FxControllerAndView<? extends Controller, Parent> controllerAndView = fxmlService.load(task.getSceneName());
 
-            Tab taskTab = new Tab(task.getName());
-
-            Parent taskParent = controllerAndView.getView().orElseThrow();
-            taskTab.contentProperty().setValue(taskParent);
-
-            tabs.add(taskTab);
-
             TaskController taskController = (TaskController) controllerAndView.getController();
+            taskController.setContext(task, controllerTopic, result::accumulate);
+            taskController.prepareToShow();
             taskControllers.add(taskController);
 
-            taskController.rescaleViews(tabPane.getPrefWidth(), tabPane.getPrefHeight());
-            taskController.start(task, controllerTopic, result::accumulate);
+            Tab taskTab = new Tab(task.getName());
+            Parent taskParent = controllerAndView.getView().orElseThrow();
+            taskTab.contentProperty().setValue(taskParent);
+            tabs.add(taskTab);
         }
     }
 
@@ -93,7 +92,7 @@ public class TestController extends TaskController {
     @Override
     protected void prepareToFinish() {
         for (TaskController taskController : taskControllers) {
-            taskController.finish();
+            taskController.prepareToFinish();
         }
     }
 }

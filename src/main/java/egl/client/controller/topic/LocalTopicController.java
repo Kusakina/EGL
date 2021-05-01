@@ -10,7 +10,6 @@ import egl.client.model.topic.LocalTopic;
 import egl.client.service.FxmlService;
 import egl.core.model.task.Task;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +19,7 @@ import org.springframework.stereotype.Component;
 @Component
 @FxmlView
 @RequiredArgsConstructor
-public class LocalTopicController extends Controller {
+public class LocalTopicController implements Controller {
 
     private final FxmlService fxmlService;
 
@@ -28,14 +27,14 @@ public class LocalTopicController extends Controller {
     @FXML private TableColumn<Task, String> taskNameColumn;
     @FXML private TableColumn<Task, Void> taskStartColumn;
 
-    @FXML private Button backButton;
-
     private LocalTopic controllerTopic;
+
+    public void setContext(LocalTopic topic) {
+        this.controllerTopic = topic;
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        backButton.setOnAction(event -> this.closeWindow());
-
         initializeColumns();
     }
 
@@ -46,26 +45,26 @@ public class LocalTopicController extends Controller {
                 taskStartColumn,
                 "Запуск",
                 (event, task) -> {
-                    var controllerAndView = fxmlService.showStage(task.getSceneName(), task.getName());
+                    var taskRoot = fxmlService.load(task.getSceneName());
 
-                    var taskController = (TaskController) controllerAndView.getController();
-                    taskController.start(task, controllerTopic, (result) -> {}); // FIXME would sent data
+                    var taskController = (TaskController) taskRoot.getController();
+                    taskController.setContext(task, controllerTopic, (result) -> {}); // FIXME would sent data
+
+                    fxmlService.showStage(
+                            taskRoot, task.getName(), TaskController.FINISH_BUTTON_TEXT
+                    );
                 }
         );
     }
 
     @Override
     public void rescaleViews(double parentWidth, double parentHeight) {
-        tasksListTableView.setPrefSize(parentWidth * 0.8, parentHeight * 0.8);
+        tasksListTableView.setPrefSize(parentWidth, parentHeight);
         ControllerUtils.rescaleTableView(tasksListTableView);
     }
 
-    public void show(LocalTopic topic) {
-        this.controllerTopic = topic;
-        showTasks();
-    }
-
-    private void showTasks() {
+    @Override
+    public void prepareToShow() {
         var topicType = controllerTopic.getTopicType();
         var tableTasks = tasksListTableView.getItems();
 
@@ -73,5 +72,10 @@ public class LocalTopicController extends Controller {
         tableTasks.add(topicType.getTheoryTask());
         tableTasks.addAll(topicType.getTasks());
         tableTasks.add(topicType.getTest());
+    }
+
+    @Override
+    public void prepareToClose() {
+
     }
 }

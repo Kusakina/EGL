@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 
 import egl.client.controller.Controller;
 import egl.client.controller.ControllerUtils;
+import egl.client.controller.WindowController;
 import egl.client.model.topic.LocalTopic;
 import egl.client.service.CategoryService;
 import egl.client.service.FxmlService;
@@ -18,7 +19,7 @@ import org.springframework.stereotype.Component;
 @Component
 @FxmlView
 @RequiredArgsConstructor
-public class LocalTopicsListController extends Controller {
+public class LocalTopicsListController implements Controller {
 
     private final FxmlService fxmlService;
     private final CategoryService categoryService;
@@ -39,34 +40,35 @@ public class LocalTopicsListController extends Controller {
                 topicLearnColumn,
                 "Изучить",
                 (event, topic) -> {
-                    var controllerAndView = fxmlService.showStage(LocalTopicController.class, topic.getName());
+                    var localTopicRoot = fxmlService.load(LocalTopicController.class);
 
-                    var topicController = (LocalTopicController) controllerAndView.getController();
-                    topicController.show(topic);
+                    var topicController = (LocalTopicController) localTopicRoot.getController();
+                    topicController.setContext(topic);
+
+                    fxmlService.showStage(
+                            localTopicRoot, topic.getName(), WindowController.CLOSE
+                    );
                 }
         );
     }
 
     @Override
     public void rescaleViews(double parentWidth, double parentHeight) {
-        topicsListTableView.setPrefSize(parentWidth * 0.8, parentHeight * 0.8);
+        topicsListTableView.setPrefSize(parentWidth, parentHeight);
         ControllerUtils.rescaleTableView(topicsListTableView);
     }
 
-    public void show() {
-        show(stage.getWidth(), stage.getHeight());
-    }
-
-    public void show(double parentWidth, double parentHeight) {
-        rescaleViews(parentWidth, parentHeight);
-        showTopics();
-    }
-
-    private void showTopics() {
+    @Override
+    public void prepareToShow() {
         var tableTopics = topicsListTableView.getItems();
         tableTopics.clear();
 
         var categories = categoryService.findAll();
         tableTopics.addAll(categories);
+    }
+
+    @Override
+    public void prepareToClose() {
+
     }
 }

@@ -4,7 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import egl.client.controller.ControllerUtils;
-import egl.client.controller.task.TheoryController;
+import egl.client.controller.task.TheoryTaskController;
 import egl.client.model.topic.category.Category;
 import egl.client.model.topic.category.Translation;
 import egl.client.model.topic.category.Word;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @FxmlView
-public class CategoryTheoryController extends TheoryController {
+public class CategoryTheoryTaskController extends TheoryTaskController {
 
     @FXML private TableView<Translation> translationsTableView;
     @FXML private TableColumn<Translation, Word> sourceTableColumn;
@@ -35,7 +35,8 @@ public class CategoryTheoryController extends TheoryController {
 
     @Override
     public void rescaleViews(double parentWidth, double parentHeight) {
-        translationsTableView.setPrefSize(parentWidth * 0.8, parentHeight * 0.6);
+        descriptionTextArea.setPrefSize(parentWidth, parentHeight * 0.3);
+        translationsTableView.setPrefSize(parentWidth, parentHeight * 0.6);
         ControllerUtils.rescaleTableView(translationsTableView);
     }
 
