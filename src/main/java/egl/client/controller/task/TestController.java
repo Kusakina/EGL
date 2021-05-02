@@ -92,7 +92,7 @@ public class TestController extends TaskController {
     @Override
     protected void prepareToFinish() {
         for (TaskController taskController : taskControllers) {
-            taskController.prepareToFinish();
+            taskController.prepareToClose();
         }
     }
 }
