@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
 @Component
 @FxmlView
 @RequiredArgsConstructor
-public class TestController extends TaskController {
+public class TestController extends AbstractTaskController {
 
     private final FxmlService fxmlService;
 
