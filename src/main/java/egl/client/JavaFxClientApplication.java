@@ -1,5 +1,6 @@
 package egl.client;
 
+import egl.client.controller.WindowController;
 import egl.client.controller.topic.LocalTopicsListController;
 import egl.client.service.DatabaseInitializer;
 import egl.client.service.FxmlService;
@@ -27,8 +28,11 @@ public class JavaFxClientApplication extends Application {
         applicationContext.getBean(DatabaseInitializer.class).run();
 
         var fxmlService = applicationContext.getBean(FxmlService.class);
-        var controllerAndView = fxmlService.showStage(LocalTopicsListController.class, "Темы для изучения", stage);
-        controllerAndView.getController().show();
+
+        var localTopicsListRoot = fxmlService.load(LocalTopicsListController.class);
+        fxmlService.showStage(
+                localTopicsListRoot, "Темы для изучения", WindowController.CLOSE, stage
+        );
     }
 
     @Override

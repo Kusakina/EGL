@@ -1,6 +1,10 @@
 package egl.client.service;
 
+import java.io.IOException;
+
 import egl.client.controller.Controller;
+import egl.client.controller.WindowController;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
@@ -15,43 +19,6 @@ import org.springframework.stereotype.Service;
 public class FxmlService {
 
     private final FxWeaver fxWeaver;
-
-    public FxControllerAndView<? extends Controller, Parent> showStage(
-            String controllerClassName,
-            String title
-    ) {
-        return showStage(controllerClassWith(controllerClassName), title);
-    }
-
-    public <T extends Controller> FxControllerAndView<? extends T, Parent> showStage(
-            Class<? extends T> controllerClass,
-            String title) {
-        return showStage(controllerClass, title, new Stage());
-    }
-
-    public <T extends Controller> FxControllerAndView<? extends T, Parent> showStage(
-            Class<? extends T> controllerClass,
-            String title,
-            Stage stage
-    ) {
-        FxControllerAndView<? extends T, Parent> root = load(controllerClass);
-        return showStage(title, stage, root);
-    }
-
-    private <T extends Controller> FxControllerAndView<? extends T, Parent> showStage(
-            String title, Stage stage,
-            FxControllerAndView<? extends T, Parent> root) {
-        var screenSize = Screen.getPrimary().getVisualBounds();
-        Scene scene = new Scene(root.getView().orElseThrow(), screenSize.getWidth() * 0.8, screenSize.getHeight() * 0.8);
-
-        stage.setScene(scene);
-        stage.setTitle(title);
-        stage.show();
-
-        root.getController().setStage(stage);
-
-        return root;
-    }
 
     public static Class<? extends Controller> controllerClassWith(String controllerClassName) {
         try {
@@ -68,5 +35,34 @@ public class FxmlService {
 
     public <T extends Controller> FxControllerAndView<? extends T, Parent> load(Class<? extends T> controllerClass) {
         return fxWeaver.load(controllerClass);
+    }
+
+    public <T extends Controller> void showStage(
+            FxControllerAndView<? extends T, Parent> innerRoot,
+            String title, String closeButtonText) {
+        showStage(innerRoot, title, closeButtonText, new Stage());
+    }
+
+    public <T extends Controller> void showStage(
+            FxControllerAndView<? extends T, Parent> innerRoot,
+            String title, String closeButtonText,
+            Stage stage) {
+        try {
+            var fxmlLoader = new FXMLLoader(getClass().getResource("/egl/client/controller/WindowController.fxml"));
+
+            Parent windowRoot = fxmlLoader.load();
+
+            var screenSize = Screen.getPrimary().getVisualBounds();
+            Scene scene = new Scene(windowRoot, screenSize.getWidth() * 0.8, screenSize.getHeight() * 0.8);
+
+            stage.setScene(scene);
+            stage.setTitle(title);
+
+            var windowController = fxmlLoader.<WindowController>getController();
+            windowController.setContext(stage, innerRoot, closeButtonText);
+            windowController.show();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

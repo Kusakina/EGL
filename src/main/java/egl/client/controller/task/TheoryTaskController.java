@@ -4,7 +4,7 @@ import egl.client.model.topic.LocalTopic;
 import egl.core.model.task.Task;
 import egl.core.model.topic.Topic;
 
-public abstract class TheoryController extends TaskController {
+public abstract class TheoryTaskController extends TaskController {
 
     @Override
     protected void prepareToStart(Task controllerTask, Topic controllerTopic) {
