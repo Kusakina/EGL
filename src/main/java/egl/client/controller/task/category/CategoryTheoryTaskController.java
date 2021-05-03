@@ -8,8 +8,6 @@ import egl.client.controller.task.TheoryTaskController;
 import egl.client.model.topic.category.Category;
 import egl.client.model.topic.category.Translation;
 import egl.client.model.topic.category.Word;
-import egl.core.model.task.Task;
-import egl.core.model.topic.Topic;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -41,9 +39,7 @@ public class CategoryTheoryTaskController extends TheoryTaskController {
     }
 
     @Override
-    protected void prepareToStart(Task controllerTask, Topic controllerTopic) {
-        super.prepareToStart(controllerTask, controllerTopic);
-
+    protected void prepareSpecificTheory() {
         Category category = (Category) controllerTopic;
         var categoryTranslations = category.getTranslations();
 
