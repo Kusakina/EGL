@@ -1,11 +1,15 @@
 package egl.client.controller.task.category;
 
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+import java.util.ResourceBundle;
+
 import egl.client.controller.task.AbstractTaskController;
-import egl.client.controller.task.TaskController;
-import egl.core.model.task.Task;
-import egl.core.model.topic.Topic;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -14,9 +18,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
-
-import java.net.URL;
-import java.util.*;
 
 @Component
 @FxmlView
