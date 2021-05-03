@@ -1,5 +1,6 @@
 package egl.client.controller.task.category;
 
+import egl.client.controller.task.AbstractTaskController;
 import egl.client.controller.task.TaskController;
 import egl.core.model.task.Task;
 import egl.core.model.topic.Topic;
@@ -19,7 +20,7 @@ import java.util.*;
 
 @Component
 @FxmlView
-public class MissingLettersTaskController extends TaskController {
+public class MissingLettersTaskController extends AbstractTaskController {
 
     @FXML
     private ResourceBundle resources;
@@ -225,7 +226,12 @@ public class MissingLettersTaskController extends TaskController {
     }
 
     @Override
-    protected void prepareToStart(Task controllerTask, Topic controllerTopic) {
+    public void rescaleViews(double parentWidth, double parentHeight) {
+
+    }
+
+    @Override
+    protected void prepareToStart() {
 
     }
 
