@@ -1,16 +1,21 @@
 package egl.client.controller.task;
 
 import egl.client.model.topic.LocalTopic;
-import egl.core.model.task.Task;
-import egl.core.model.topic.Topic;
 
-public abstract class TheoryTaskController extends TaskController {
+public abstract class TheoryTaskController extends AbstractTaskController {
 
     @Override
-    protected void prepareToStart(Task controllerTask, Topic controllerTopic) {
+    protected void prepareToStart() {
+        prepareTheory();
+        prepareSpecificTheory();
+    }
+
+    private void prepareTheory() {
         LocalTopic localTopic = (LocalTopic) controllerTopic;
         descriptionTextArea.setText(localTopic.getTheory().getText());
     }
+
+    protected abstract void prepareSpecificTheory();
 
     @Override
     protected void prepareToFinish() {
