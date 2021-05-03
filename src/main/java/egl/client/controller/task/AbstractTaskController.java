@@ -4,19 +4,18 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
-import egl.client.controller.Controller;
 import egl.core.model.task.Result;
 import egl.core.model.task.Task;
 import egl.core.model.topic.Topic;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 
-public abstract class AbstractTaskController implements Controller {
+public abstract class AbstractTaskController implements TaskController {
 
     @FXML protected TextArea descriptionTextArea;
 
-    private Task controllerTask;
-    private Topic controllerTopic;
+    protected Task controllerTask;
+    protected Topic controllerTopic;
     private Consumer<Result> resultConsumer;
 
     protected Result result;
@@ -30,17 +29,18 @@ public abstract class AbstractTaskController implements Controller {
 
     }
 
+    @Override
     public void setContext(Task controllerTask, Topic controllerTopic, Consumer<Result> resultConsumer) {
         this.controllerTask = controllerTask;
         this.controllerTopic = controllerTopic;
         this.resultConsumer = resultConsumer;
     }
 
-    protected abstract void prepareToStart(Task controllerTask, Topic controllerTopic);
+    protected abstract void prepareToStart();
 
     @Override
     public void prepareToShow() {
-        prepareToStart(controllerTask, controllerTopic);
+        prepareToStart();
     }
 
     protected abstract void prepareToFinish();

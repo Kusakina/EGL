@@ -9,7 +9,6 @@ import egl.client.controller.Controller;
 import egl.client.service.FxmlService;
 import egl.core.model.task.Task;
 import egl.core.model.task.Test;
-import egl.core.model.topic.Topic;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Tab;
@@ -48,23 +47,24 @@ public class TestController extends AbstractTaskController {
     }
 
     @Override
-    protected void prepareToStart(Task controllerTask, Topic controllerTopic) {
-        Test test = (Test) controllerTask;
-
+    protected void prepareToStart() {
         List<Tab> tabs = tabPane.getTabs();
         tabs.clear();
 
-        prepareDescription(controllerTopic, test);
+        prepareDescription();
         tabs.add(descriptionTab);
 
-        prepareTasks(controllerTopic, test, tabs);
+        List<Tab> taskTabs = prepareTasks();
+        tabs.addAll(taskTabs);
 
         tabPane.getSelectionModel().selectFirst();
     }
 
-    private void prepareTasks(Topic controllerTopic, Test test, List<Tab> tabs) {
+    private List<Tab> prepareTasks() {
         this.taskControllers = new ArrayList<>();
+        List<Tab> taskTabs = new ArrayList<>();
 
+        Test test = (Test) controllerTask;
         for (Task task : test.getTasks()) {
             FxControllerAndView<? extends Controller, Parent> controllerAndView = fxmlService.load(task.getSceneName());
 
@@ -76,15 +76,17 @@ public class TestController extends AbstractTaskController {
             Tab taskTab = new Tab(task.getName());
             Parent taskParent = controllerAndView.getView().orElseThrow();
             taskTab.contentProperty().setValue(taskParent);
-            tabs.add(taskTab);
+            taskTabs.add(taskTab);
         }
+
+        return taskTabs;
     }
 
-    private void prepareDescription(Topic controllerTopic, Test test) {
+    private void prepareDescription() {
         String testDescription = String.format(
                 "Тест по теме %s\n\n%s",
                 controllerTopic.getName(),
-                test.getDescription()
+                controllerTask.getDescription()
         );
         descriptionTextArea.setText(testDescription);
     }
