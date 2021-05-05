@@ -14,6 +14,7 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import net.rgielen.fxweaver.core.FxmlView;
@@ -189,6 +190,9 @@ public class TestControllerTask1 extends AbstractTaskController {
     }
 
     private void prepareTasks() {
+
+        addTestQuestion();
+
         ProgressLable.setVisible(false);
         Progress.setVisible(false);
         ProgressCircle.setVisible(false);
@@ -263,6 +267,32 @@ public class TestControllerTask1 extends AbstractTaskController {
         {
             setGroup(toggleGroups[i], firstTask[i]);
         }
+    }
+
+    private void addTestQuestion() {
+//        tasksVBox.setPrefSize(500, 500);
+        var vBoxChildren = tasksVBox.getChildren();
+
+        GridPane questionPane = new GridPane();
+//        questionPane.setPrefSize(200, 200);
+
+        Text questionText = new Text("Тестовый вопрос");
+        questionPane.add(questionText, 0, 0, 4, 1);
+
+        int answersCount = 4;
+        RadioButton[] ansRadioButtons = new RadioButton[answersCount];
+
+        for (int i = 0; i < answersCount; ++i) {
+            var ansRadioButton = ansRadioButtons[i] = new RadioButton("" + i);
+            questionPane.add(ansRadioButton, i, 1, 1, 1);
+        }
+
+        ToggleGroup ansToogleGroup = new ToggleGroup();
+        for (RadioButton ansRadioButton : ansRadioButtons) {
+            ansRadioButton.setToggleGroup(ansToogleGroup);
+        }
+
+        vBoxChildren.add(questionPane);
     }
 
 
