@@ -9,13 +9,12 @@ import egl.client.controller.task.AbstractTaskController;
 import egl.client.model.topic.category.Category;
 import egl.client.model.topic.category.Translation;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
@@ -145,111 +144,6 @@ public class TestControllerTask1 extends AbstractTaskController {
     private RadioButton RadioButton84;
 
     @FXML
-    private TextField TextField21;
-
-    @FXML
-    private Text textWindow2_11;
-
-    @FXML
-    private TextField TextField22;
-
-    @FXML
-    private Text textWindow2_12;
-
-    @FXML
-    private TextField TextField23;
-
-    @FXML
-    private Text textWindow2_13;
-
-    @FXML
-    private TextField TextField24;
-
-    @FXML
-    private Text textWindow2_14;
-
-    @FXML
-    private TextField TextField25;
-
-    @FXML
-    private Text textWindow2_15;
-
-    @FXML
-    private TextField TextField26;
-
-    @FXML
-    private Text textWindow2_16;
-
-    @FXML
-    private TextField TextField27;
-
-    @FXML
-    private Text textWindow2_17;
-
-    @FXML
-    private TextField TextField28;
-
-    @FXML
-    private Text textWindow2_18;
-
-    @FXML
-    private Text textWindow2_21;
-
-    @FXML
-    private Text textWindow2_22;
-
-    @FXML
-    private Text textWindow2_23;
-
-    @FXML
-    private Text textWindow2_24;
-
-    @FXML
-    private Text textWindow2_25;
-
-    @FXML
-    private Text textWindow2_26;
-
-    @FXML
-    private Text textWindow2_27;
-
-    @FXML
-    private Text textWindow2_28;
-
-    @FXML
-    private Button CheckButton;
-
-    @FXML
-    private Label TextCorrect1;
-
-    @FXML
-    private Label TextCorrect2;
-
-    @FXML
-    private Text Correct1;
-
-    @FXML
-    private Text Correct2;
-
-    @FXML
-    private Text Correct3;
-
-    @FXML
-    private Text Correct4;
-
-    @FXML
-    private Text Correct5;
-
-    @FXML
-    private Text Correct6;
-
-    @FXML
-    private Text Correct7;
-
-    @FXML
-    private Text Correct8;
-
-    @FXML
     private ProgressBar Progress;
 
     @FXML
@@ -257,6 +151,9 @@ public class TestControllerTask1 extends AbstractTaskController {
 
     @FXML
     private ProgressIndicator ProgressCircle;
+
+    @FXML
+    private VBox tasksVBox;
 /*
     void rand(ReadWord exercise, int[] index, ReadWord a, int p)
     {
@@ -366,127 +263,6 @@ public class TestControllerTask1 extends AbstractTaskController {
         {
             setGroup(toggleGroups[i], firstTask[i]);
         }
-
-//        ReadWord exercise2 = new ReadWord(8);
-//        int[] index2 = new int[8];
-//        rand(exercise2, index2, a, -1);
-//
-//        textWindow2_21.setText(exercise2.getWords()[0].getOriginal());
-//        textWindow2_22.setText(exercise2.getWords()[1].getOriginal());
-//        textWindow2_23.setText(exercise2.getWords()[2].getOriginal());
-//        textWindow2_24.setText(exercise2.getWords()[3].getOriginal());
-//        textWindow2_25.setText(exercise2.getWords()[4].getOriginal());
-//        textWindow2_26.setText(exercise2.getWords()[5].getOriginal());
-//        textWindow2_27.setText(exercise2.getWords()[6].getOriginal());
-//        textWindow2_28.setText(exercise2.getWords()[7].getOriginal());
-//
-//        int[] positions = new int[8];
-//        for (int i = 0; i<8; ++i)
-//        {
-//            int n = (int) (Math.random() * 8);
-//            int j = i;
-//            while (j>0)
-//            {
-//                --j;
-//                if (n == positions[j]) {
-//                    n = (int) (Math.random() * 8);
-//                    j = i;
-//                }
-//            }
-//            positions[i] = n;
-//        }
-//
-//        textWindow2_11.setText(exercise2.getWords()[positions[0]].getTranslation());
-//        textWindow2_12.setText(exercise2.getWords()[positions[1]].getTranslation());
-//        textWindow2_13.setText(exercise2.getWords()[positions[2]].getTranslation());
-//        textWindow2_14.setText(exercise2.getWords()[positions[3]].getTranslation());
-//        textWindow2_15.setText(exercise2.getWords()[positions[4]].getTranslation());
-//        textWindow2_16.setText(exercise2.getWords()[positions[5]].getTranslation());
-//        textWindow2_17.setText(exercise2.getWords()[positions[6]].getTranslation());
-//        textWindow2_18.setText(exercise2.getWords()[positions[7]].getTranslation());
-//
-//        UnaryOperator<TextFormatter.Change> integerFilter = change -> {
-//            String input = change.getText();
-//            if (input.matches("[1-8]*") && change.getControlNewText().length()<2) {
-//                return change;
-//            }
-//            return null;
-//        };
-//        TextField21.setTextFormatter(new TextFormatter<String>(integerFilter));
-//        TextField22.setTextFormatter(new TextFormatter<String>(integerFilter));
-//        TextField23.setTextFormatter(new TextFormatter<String>(integerFilter));
-//        TextField24.setTextFormatter(new TextFormatter<String>(integerFilter));
-//        TextField25.setTextFormatter(new TextFormatter<String>(integerFilter));
-//        TextField26.setTextFormatter(new TextFormatter<String>(integerFilter));
-//        TextField27.setTextFormatter(new TextFormatter<String>(integerFilter));
-//        TextField28.setTextFormatter(new TextFormatter<String>(integerFilter));
-//
-//        CheckButton.setOnAction(actionEvent -> {
-//
-//            CheckButton.setVisible(false);
-//
-//            TextField21.setEditable(false);
-//            TextField22.setEditable(false);
-//            TextField23.setEditable(false);
-//            TextField24.setEditable(false);
-//            TextField25.setEditable(false);
-//            TextField26.setEditable(false);
-//            TextField27.setEditable(false);
-//            TextField28.setEditable(false);
-//
-//            int correct = 0;
-//            for (int i=0; i<8; ++i)
-//            {
-//                firstTask[i][trueAnswers1[i]].setStyle("-fx-background-color: lime");
-//            }
-//            for (int i=0; i<8; ++i)
-//            {
-//                RadioButton selectedRadioButton = (RadioButton) toggleGroups[i].getSelectedToggle();
-//                if (selectedRadioButton != null && selectedRadioButton.getText().equals(answers[i].getWords()
-//                [trueAnswers1[i]].getOriginal()))
-//                    ++correct;
-//            }
-//            TextCorrect1.setText("Correct answers: " + correct + "/8");
-//
-//
-//            TextField[] fields = new TextField[]{TextField21, TextField22, TextField23, TextField24,
-//                    TextField25, TextField26, TextField27, TextField28};
-//            int[] personAnswers2 = new int[8];
-//            int correct2 = 0;
-//            for (int i=0; i<8; ++i)
-//            {
-//                try {
-//                    personAnswers2[i] = Integer.parseInt(fields[i].getText());
-//                }
-//                catch(NumberFormatException e)
-//                {
-//                    personAnswers2[i] = 0;
-//                }
-//                if (personAnswers2[i] == positions[i]+1) {
-//                    ++correct2;
-//                    fields[i].setStyle("-fx-background-color: lime");
-//                }
-//                else
-//                    fields[i].setStyle("-fx-background-color: red");
-//            }
-//            TextCorrect2.setText("Correct answers: " + correct2 + "/8");
-//            Correct1.setText("A. " + ++positions[0]);
-//            Correct2.setText("B. " + ++positions[1]);
-//            Correct3.setText("C. " + ++positions[2]);
-//            Correct4.setText("D. " + ++positions[3]);
-//            Correct5.setText("E. " + ++positions[4]);
-//            Correct6.setText("F. " + ++positions[5]);
-//            Correct7.setText("G. " + ++positions[6]);
-//            Correct8.setText("H. " + ++positions[7]);
-//
-//            Progress.setVisible(true);
-//            ProgressLable.setVisible(true);
-//            ProgressCircle.setVisible(true);
-//            Progress.setProgress((double)(correct+correct2)/16);
-//            ProgressCircle.setProgress((double)(correct+correct2)/16);
-//
-//
-//        });
     }
 
 
