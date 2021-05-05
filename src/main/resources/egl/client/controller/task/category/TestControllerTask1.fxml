@@ -1,0 +1,535 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="egl.client.controller.task.category.TestControllerTask1">
+    <content>
+        <AnchorPane prefHeight="2674.0" prefWidth="902.0">
+            <children>
+                <Text fx:id="textWindow1" layoutX="50.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="" wrappingWidth="605.515625">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Text>
+                <RadioButton fx:id="RadioButton11" layoutX="56.0" layoutY="95.0" mnemonicParsing="false">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </RadioButton>
+                <RadioButton fx:id="RadioButton12" layoutX="260.0" layoutY="95.0" mnemonicParsing="false">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </RadioButton>
+                <RadioButton fx:id="RadioButton13" layoutX="470.0" layoutY="95.0" mnemonicParsing="false">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </RadioButton>
+                <RadioButton fx:id="RadioButton14" layoutX="688.0" layoutY="95.0" mnemonicParsing="false">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </RadioButton>
+                <Label contentDisplay="CENTER" layoutX="30.0" prefHeight="32.0" prefWidth="706.0" text="Задание 1. Выберите правильный вариант ответа">
+                    <font>
+                        <Font size="26.0" />
+                    </font>
+                </Label>
+                <Label layoutX="30.0" layoutY="45.0" text="1.">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+                <Label layoutX="30.0" layoutY="144.0" text="2.">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+                <Text fx:id="textWindow2" layoutX="50.0" layoutY="163.0" strokeType="OUTSIDE" strokeWidth="0.0" text="" wrappingWidth="605.515625">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Text>
+                <RadioButton fx:id="RadioButton21" layoutX="56.0" layoutY="195.0" mnemonicParsing="false" text="">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </RadioButton>
+                <RadioButton fx:id="RadioButton22" layoutX="260.0" layoutY="195.0" mnemonicParsing="false" text="">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </RadioButton>
+                <RadioButton fx:id="RadioButton23" layoutX="470.0" layoutY="195.0" mnemonicParsing="false" text="">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </RadioButton>
+                <RadioButton fx:id="RadioButton24" layoutX="688.0" layoutY="195.0" mnemonicParsing="false" text="">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </RadioButton>
+                <Label layoutX="30.0" layoutY="238.0" text="3.">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+                <Text fx:id="textWindow3" layoutX="50.0" layoutY="258.0" strokeType="OUTSIDE" strokeWidth="0.0" text="" wrappingWidth="605.515625">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Text>
+                <RadioButton fx:id="RadioButton31" layoutX="56.0" layoutY="293.0" mnemonicParsing="false" text="">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </RadioButton>
+                <RadioButton fx:id="RadioButton32" layoutX="260.0" layoutY="293.0" mnemonicParsing="false" text="">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </RadioButton>
+                <RadioButton fx:id="RadioButton33" layoutX="470.0" layoutY="293.0" mnemonicParsing="false" text="">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </RadioButton>
+                <RadioButton fx:id="RadioButton34" layoutX="688.0" layoutY="293.0" mnemonicParsing="false" text="">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </RadioButton>
+                <Label layoutX="30.0" layoutY="335.0" text="4.">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+                <Text fx:id="textWindow4" layoutX="50.0" layoutY="354.0" strokeType="OUTSIDE" strokeWidth="0.0" text="" wrappingWidth="605.515625">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Text>
+                <RadioButton fx:id="RadioButton41" layoutX="56.0" layoutY="390.0" mnemonicParsing="false" text="">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </RadioButton>
+                <RadioButton fx:id="RadioButton42" layoutX="260.0" layoutY="390.0" mnemonicParsing="false" text="">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </RadioButton>
+                <RadioButton fx:id="RadioButton43" layoutX="470.0" layoutY="390.0" mnemonicParsing="false" text="">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </RadioButton>
+                <RadioButton fx:id="RadioButton44" layoutX="688.0" layoutY="390.0" mnemonicParsing="false" text="">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </RadioButton>
+                <Label layoutX="30.0" layoutY="433.0" text="5.">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+                <Text fx:id="textWindow5" layoutX="50.0" layoutY="453.0" strokeType="OUTSIDE" strokeWidth="0.0" text="" wrappingWidth="605.515625">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Text>
+                <RadioButton fx:id="RadioButton51" layoutX="56.0" layoutY="490.0" mnemonicParsing="false" text="">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </RadioButton>
+                <RadioButton fx:id="RadioButton52" layoutX="260.0" layoutY="490.0" mnemonicParsing="false" text="">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </RadioButton>
+                <RadioButton fx:id="RadioButton53" layoutX="470.0" layoutY="490.0" mnemonicParsing="false" text="">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </RadioButton>
+                <RadioButton fx:id="RadioButton54" layoutX="688.0" layoutY="490.0" mnemonicParsing="false" text="">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </RadioButton>
+                <Label layoutX="30.0" layoutY="532.0" text="6.">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+                <Text fx:id="textWindow6" layoutX="50.0" layoutY="552.0" strokeType="OUTSIDE" strokeWidth="0.0" text="" wrappingWidth="605.515625">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Text>
+                <RadioButton fx:id="RadioButton61" layoutX="56.0" layoutY="589.0" mnemonicParsing="false" text="">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </RadioButton>
+                <RadioButton fx:id="RadioButton62" layoutX="260.0" layoutY="589.0" mnemonicParsing="false" text="">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </RadioButton>
+                <RadioButton fx:id="RadioButton63" layoutX="470.0" layoutY="589.0" mnemonicParsing="false" text="">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </RadioButton>
+                <RadioButton fx:id="RadioButton64" layoutX="688.0" layoutY="589.0" mnemonicParsing="false" text="">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </RadioButton>
+                <Label layoutX="30.0" layoutY="637.0" text="7.">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+                <Text fx:id="textWindow7" layoutX="50.0" layoutY="657.0" strokeType="OUTSIDE" strokeWidth="0.0" text="" wrappingWidth="605.515625">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Text>
+                <RadioButton fx:id="RadioButton71" layoutX="56.0" layoutY="692.0" mnemonicParsing="false" text="">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </RadioButton>
+                <RadioButton fx:id="RadioButton72" layoutX="260.0" layoutY="692.0" mnemonicParsing="false" text="">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </RadioButton>
+                <RadioButton fx:id="RadioButton73" layoutX="470.0" layoutY="692.0" mnemonicParsing="false" text="">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </RadioButton>
+                <RadioButton fx:id="RadioButton74" layoutX="688.0" layoutY="692.0" mnemonicParsing="false" text="">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </RadioButton>
+                <Label layoutX="30.0" layoutY="737.0" text="8.">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+                <Text fx:id="textWindow8" layoutX="50.0" layoutY="757.0" strokeType="OUTSIDE" strokeWidth="0.0" text="" wrappingWidth="605.515625">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Text>
+                <RadioButton fx:id="RadioButton81" layoutX="56.0" layoutY="794.0" mnemonicParsing="false" text="">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </RadioButton>
+                <RadioButton fx:id="RadioButton82" layoutX="260.0" layoutY="794.0" mnemonicParsing="false" text="">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </RadioButton>
+                <RadioButton fx:id="RadioButton83" layoutX="470.0" layoutY="794.0" mnemonicParsing="false" text="">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </RadioButton>
+                <RadioButton fx:id="RadioButton84" layoutX="688.0" layoutY="794.0" mnemonicParsing="false" text="">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </RadioButton>
+                <Label contentDisplay="CENTER" layoutX="30.0" layoutY="861.0" prefHeight="32.0" prefWidth="706.0" text="Задание 2.  Соотнесите слово (1-8) с его переводом (A-H)">
+                    <font>
+                        <Font size="26.0" />
+                    </font>
+                </Label>
+                <Label layoutX="30.0" layoutY="918.0" text="A.">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+                <Label layoutX="30.0" layoutY="978.0" text="B.">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+                <Label layoutX="30.0" layoutY="1038.0" text="C.">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+                <Label layoutX="30.0" layoutY="1098.0" text="D.">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+                <Label layoutX="30.0" layoutY="1158.0" text="E.">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+                <Label layoutX="30.0" layoutY="1218.0" text="F.">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+                <Label layoutX="30.0" layoutY="1278.0" text="G.">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+                <Label layoutX="30.0" layoutY="1338.0" text="H.">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="TextField21" layoutX="47.0" layoutY="912.0" prefHeight="39.0" prefWidth="35.0">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </TextField>
+                <Text fx:id="textWindow2_11" layoutX="94.0" layoutY="938.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="250.0">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Text>
+                <TextField fx:id="TextField22" layoutX="47.0" layoutY="972.0" prefHeight="39.0" prefWidth="35.0">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </TextField>
+                <Text fx:id="textWindow2_12" layoutX="94.0" layoutY="998.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="250.0">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Text>
+                <TextField fx:id="TextField23" layoutX="47.0" layoutY="1032.0" prefHeight="39.0" prefWidth="35.0">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </TextField>
+                <Text fx:id="textWindow2_13" layoutX="94.0" layoutY="1058.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="250.0">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Text>
+                <TextField fx:id="TextField24" layoutX="47.0" layoutY="1092.0" prefHeight="39.0" prefWidth="35.0">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </TextField>
+                <Text fx:id="textWindow2_14" layoutX="94.0" layoutY="1118.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="250.0">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Text>
+                <TextField fx:id="TextField25" layoutX="47.0" layoutY="1152.0" prefHeight="39.0" prefWidth="35.0">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </TextField>
+                <Text fx:id="textWindow2_15" layoutX="94.0" layoutY="1178.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="250.0">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Text>
+                <TextField fx:id="TextField26" layoutX="47.0" layoutY="1212.0" prefHeight="39.0" prefWidth="35.0">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </TextField>
+                <Text fx:id="textWindow2_16" layoutX="94.0" layoutY="1238.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="250.0">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Text>
+                <TextField fx:id="TextField27" layoutX="47.0" layoutY="1272.0" prefHeight="39.0" prefWidth="35.0">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </TextField>
+                <Text fx:id="textWindow2_17" layoutX="94.0" layoutY="1298.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="250.0">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Text>
+                <TextField fx:id="TextField28" layoutX="47.0" layoutY="1332.0" prefHeight="39.0" prefWidth="35.0">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </TextField>
+                <Text fx:id="textWindow2_18" layoutX="94.0" layoutY="1358.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="250.0">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Text>
+                <Label layoutX="418.0" layoutY="918.0" text="1.">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+                <Text fx:id="textWindow2_21" layoutX="444.0" layoutY="938.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="170.515625">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Text>
+                <Label layoutX="418.0" layoutY="978.0" text="2.">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+                <Text fx:id="textWindow2_22" layoutX="444.0" layoutY="998.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="170.515625">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Text>
+                <Label layoutX="418.0" layoutY="1038.0" text="3.">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+                <Text fx:id="textWindow2_23" layoutX="444.0" layoutY="1058.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="170.515625">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Text>
+                <Label layoutX="418.0" layoutY="1098.0" text="4.">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+                <Text fx:id="textWindow2_24" layoutX="444.0" layoutY="1118.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="170.515625">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Text>
+                <Label layoutX="418.0" layoutY="1158.0" text="5.">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+                <Text fx:id="textWindow2_25" layoutX="444.0" layoutY="1178.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="170.515625">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Text>
+                <Label layoutX="418.0" layoutY="1218.0" text="6.">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+                <Text fx:id="textWindow2_26" layoutX="444.0" layoutY="1238.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="170.515625">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Text>
+                <Label layoutX="418.0" layoutY="1278.0" text="7.">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+                <Text fx:id="textWindow2_27" layoutX="444.0" layoutY="1298.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="170.515625">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Text>
+                <Label layoutX="418.0" layoutY="1338.0" text="8.">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+                <Text fx:id="textWindow2_28" layoutX="444.0" layoutY="1358.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="170.515625">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Text>
+                <Button fx:id="CheckButton" layoutX="760.0" layoutY="2600.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="117.0" text="CHECK">
+                    <font>
+                        <Font size="20.0" />
+                    </font>
+                </Button>
+                <Label fx:id="TextCorrect1" contentDisplay="CENTER" layoutX="478.0" layoutY="41.0" prefHeight="38.0" prefWidth="393.0">
+                    <font>
+                        <Font size="26.0" />
+                    </font>
+                </Label>
+                <Label fx:id="TextCorrect2" contentDisplay="CENTER" layoutX="478.0" layoutY="1399.0" prefHeight="38.0" prefWidth="393.0">
+                    <font>
+                        <Font size="26.0" />
+                    </font>
+                </Label>
+                <Text fx:id="Correct1" layoutX="664.0" layoutY="938.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="170.515625">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Text>
+                <Text fx:id="Correct2" layoutX="664.0" layoutY="998.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="170.515625">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Text>
+                <Text fx:id="Correct3" layoutX="664.0" layoutY="1058.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="170.515625">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Text>
+                <Text fx:id="Correct4" layoutX="664.0" layoutY="1118.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="170.515625">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Text>
+                <Text fx:id="Correct5" layoutX="664.0" layoutY="1178.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="170.515625">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Text>
+                <Text fx:id="Correct6" layoutX="664.0" layoutY="1238.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="170.515625">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Text>
+                <Text fx:id="Correct7" layoutX="664.0" layoutY="1298.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="170.515625">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Text>
+                <Text fx:id="Correct8" layoutX="664.0" layoutY="1358.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="170.515625">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Text>
+                <ProgressBar fx:id="Progress" layoutX="119.0" layoutY="2624.0" prefWidth="200.0" progress="0.0" />
+                <Label fx:id="ProgressLable" layoutX="23.0" layoutY="2618.0" prefHeight="21.0" prefWidth="86.0" text="Прогресс:">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+                <ProgressIndicator fx:id="ProgressCircle" layoutX="331.0" layoutY="2622.0" progress="0.0" />
+            </children>
+        </AnchorPane>
+    </content>
+</ScrollPane>
+
