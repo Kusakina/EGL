@@ -9,6 +9,8 @@ import java.util.Random;
 import java.util.ResourceBundle;
 
 import egl.client.controller.task.AbstractTaskController;
+import egl.client.model.topic.category.Category;
+import egl.client.model.topic.category.Translation;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -80,11 +82,11 @@ public class MissingLettersTaskController extends AbstractTaskController {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
-        initalizeWords();
-        initalizeRandomWord();
+        //initalizeWords();
+        //initalizeRandomWord();
     }
 
-    void initalizeRandomWord(){
+    void initalizeRandomWord(List<Translation> translations, int curIndex){
         //создание 2 списков англ + перевод имеют один индекс
 
         /*Enword.add("YELLOW");
@@ -97,14 +99,21 @@ public class MissingLettersTaskController extends AbstractTaskController {
         Ruword.add("ЗЕЛЕНЫЙ");
         Enword.add("PINK");
         Ruword.add("РОЗОВЫЙ");*/
+        word.getChildren().clear();
+        Letters.getChildren().clear();
+        if (translations.size()==curIndex){
 
-        if (Enword.isEmpty()){
-            initalizeWords();
+            return;
+            //должно быть закрытие
+            //initalizeWords();
         }
-        int random_number = random.nextInt(Enword.size());
+        //int random_number = random.nextInt(Enword.size());
         //получение слова с рандомным номером
-        String randEnWord = Enword.remove(random_number);
-        String randRuWord = Ruword.remove(random_number);
+        //String randEnWord = Enword.remove(random_number);
+
+        //String randRuWord = Ruword.remove(random_number);
+        String randEnWord = translations.get(curIndex).getTarget().toString();
+        String randRuWord = translations.get(curIndex).getSource().toString();
         transword.setText(randRuWord);
 
         //запись слова по буквам в список
@@ -139,7 +148,7 @@ public class MissingLettersTaskController extends AbstractTaskController {
             // дополнительная настройка филда с пропуском, если нужно
         }
         //настройки HBox
-        word.getChildren().clear();
+
         word.getChildren().addAll(letterFields);
         word.setSpacing(15);
         word.setAlignment(Pos.TOP_CENTER);
@@ -149,28 +158,28 @@ public class MissingLettersTaskController extends AbstractTaskController {
         for (int index : removedPositions) buttonLetters.add(randEnWord.charAt(index));
 
         int needRandom = 3;
-        for (int i = 0; i < needRandom; ++i) {
+        for (int j = 0; j < needRandom; ++j) {
             int letterIndex = random.nextInt(26);
             char letter = (char)('A' + letterIndex);
             if (!buttonLetters.contains(letter)) {
                 buttonLetters.add(letter);
             } else {
-                --i;
+                --j;
             }
         }
         Collections.shuffle(buttonLetters, random);
 
         //генерация кнопок с буквами
         Button[] letterButtons = new Button[buttonLetters.size()];
-        for(int i = 0; i<buttonLetters.size(); ++i){
-            Button let = new Button(""+buttonLetters.get(i));
+        for(int j = 0; j<buttonLetters.size(); ++j){
+            Button let = new Button(""+buttonLetters.get(j));
             let.setFont(Font.font(24));
             let.setPrefSize(60, 50);
-            letterButtons[i] = let;
+            letterButtons[j] = let;
         }
 
         //настройки HBox
-        Letters.getChildren().clear();
+
         Letters.getChildren().addAll(letterButtons);
         Letters.setSpacing(20);
         Letters.setAlignment(Pos.BOTTOM_CENTER);
@@ -209,7 +218,7 @@ public class MissingLettersTaskController extends AbstractTaskController {
                 ans.append(letter.getText());
             }
             if (randEnWord.equals(ans.toString())) {
-                initalizeRandomWord();
+                initalizeRandomWord(translations, curIndex+1);
             } else {
                 cur = 0;
                 for (int index : finalRemovedPositions) {
@@ -228,17 +237,20 @@ public class MissingLettersTaskController extends AbstractTaskController {
 
     @Override
     public void rescaleViews(double parentWidth, double parentHeight) {
-
+       // gameAnchorPane.setPrefSize(parentWidth, parentHeight);
     }
 
     @Override
     protected void prepareToStart() {
-
+        Category category = (Category) controllerTopic;
+        var translations = category.getTranslations();
+        Collections.shuffle(translations);
+        initalizeRandomWord(translations, 0);
     }
 
     @Override
     protected void prepareToFinish() {
-
+        result.registerAnswer(true);
     }
 }
 
