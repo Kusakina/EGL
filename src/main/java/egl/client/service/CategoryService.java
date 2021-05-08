@@ -3,7 +3,7 @@ package egl.client.service;
 import java.util.List;
 
 import egl.client.model.topic.category.Category;
-import egl.client.repository.CategoryRepository;
+import egl.client.repository.topic.category.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
