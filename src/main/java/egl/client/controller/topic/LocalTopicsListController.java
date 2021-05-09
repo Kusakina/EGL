@@ -7,7 +7,7 @@ import egl.client.controller.Controller;
 import egl.client.controller.ControllerUtils;
 import egl.client.controller.WindowController;
 import egl.client.model.topic.LocalTopic;
-import egl.client.service.CategoryService;
+import egl.client.service.model.CategoryService;
 import egl.client.service.FxmlService;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
