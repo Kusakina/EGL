@@ -48,6 +48,7 @@ public class ProfileTopicsController implements Controller {
 
     public void onCategoryRemove(Category category) {
         categoryService.remove(category);
+        showCategories();
     }
 
     @Override
@@ -57,6 +58,10 @@ public class ProfileTopicsController implements Controller {
 
     @Override
     public void prepareToShow() {
+        showCategories();
+    }
+
+    private void showCategories() {
         var categories = categoryService.findAll();
         categoriesListView.showItems(categories);
     }
