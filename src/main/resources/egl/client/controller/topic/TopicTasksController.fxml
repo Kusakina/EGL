@@ -1,13 +1,7 @@
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
+<?import egl.client.view.table.DescribedEntitiesListView?>
 <?import javafx.scene.layout.GridPane?>
 <GridPane fx:controller="egl.client.controller.topic.TopicTasksController"
           xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
 
-    <TableView fx:id="tasksListTableView" GridPane.columnIndex="0" GridPane.rowIndex="0">
-        <columns>
-            <TableColumn text="Название" fx:id="taskNameColumn"/>
-            <TableColumn text="Запустить" fx:id="taskStartColumn"/>
-        </columns>
-    </TableView>
+    <DescribedEntitiesListView fx:id="tasksListView" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
 </GridPane>

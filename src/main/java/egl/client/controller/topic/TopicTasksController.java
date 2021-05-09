@@ -4,14 +4,12 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import egl.client.controller.Controller;
-import egl.client.controller.ControllerUtils;
 import egl.client.controller.task.TaskController;
 import egl.client.model.topic.LocalTopic;
 import egl.client.service.FxmlService;
+import egl.client.view.table.DescribedEntitiesListView;
 import egl.core.model.task.Task;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
@@ -23,9 +21,7 @@ public class TopicTasksController implements Controller {
 
     private final FxmlService fxmlService;
 
-    @FXML private TableView<Task> tasksListTableView;
-    @FXML private TableColumn<Task, String> taskNameColumn;
-    @FXML private TableColumn<Task, Void> taskStartColumn;
+    @FXML private DescribedEntitiesListView<Task> tasksListView;
 
     private LocalTopic controllerTopic;
 
@@ -35,40 +31,35 @@ public class TopicTasksController implements Controller {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        initializeColumns();
+        initializeTasks();
     }
 
-    private void initializeColumns() {
-        ControllerUtils.initializePropertyColumn(taskNameColumn, "name");
+    public void initializeTasks() {
+        tasksListView.setOnSelect(this::onSelect);
+    }
 
-        ControllerUtils.initializeButtonColumn(
-                taskStartColumn,
-                "Запуск",
-                (event, task) -> {
-                    var taskRoot = fxmlService.load(task.getSceneName());
+    public void onSelect(Task task) {
+        var taskRoot = fxmlService.load(task.getSceneName());
 
-                    var taskController = (TaskController) taskRoot.getController();
-                    taskController.setContext(task, controllerTopic, (result) -> {}); // FIXME would sent data
+        var taskController = (TaskController) taskRoot.getController();
+        taskController.setContext(task, controllerTopic, (result) -> {}); // FIXME would sent data
 
-                    fxmlService.showStage(
-                            taskRoot, task.getName(), TaskController.FINISH_BUTTON_TEXT
-                    );
-                }
+        fxmlService.showStage(
+                taskRoot, task.getName(), TaskController.FINISH_BUTTON_TEXT
         );
     }
 
     @Override
     public void rescaleViews(double parentWidth, double parentHeight) {
-        tasksListTableView.setPrefSize(parentWidth, parentHeight);
-        ControllerUtils.rescaleTableView(tasksListTableView);
+        tasksListView.setPrefSize(parentWidth, parentHeight);
     }
 
     @Override
     public void prepareToShow() {
-        var topicType = controllerTopic.getTopicType();
-        var tableTasks = tasksListTableView.getItems();
-
+        var tableTasks = tasksListView.getItems();
         tableTasks.clear();
+
+        var topicType = controllerTopic.getTopicType();
         tableTasks.add(topicType.getTheoryTask());
         tableTasks.addAll(topicType.getTasks());
         tableTasks.add(topicType.getTest());
