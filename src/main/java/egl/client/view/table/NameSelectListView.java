@@ -5,13 +5,13 @@ import javafx.fxml.FXML;
 
 import java.util.function.Consumer;
 
-public class DescribedEntitiesListView<T extends DescribedEntity> extends CustomTableView<T> {
+public class NameSelectListView<T extends DescribedEntity> extends CustomTableView<T> {
 
     @FXML private PropertyColumn<T, String> nameColumn;
     @FXML private ButtonColumn<T> selectColumn;
 
-    public DescribedEntitiesListView() {
-        loadView(DescribedEntitiesListView.class);
+    public NameSelectListView() {
+        loadView(NameSelectListView.class);
     }
 
     public void setNameTitle(String nameTitle) {

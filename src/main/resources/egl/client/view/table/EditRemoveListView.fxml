@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import egl.client.view.table.ButtonColumn?>
-<fx:root type="egl.client.view.table.DescribedEntitiesListView" xmlns="http://javafx.com/javafx"
+<fx:root type="egl.client.view.table.NameSelectListView" xmlns="http://javafx.com/javafx"
          xmlns:fx="http://javafx.com/fxml">
     <columns>
         <ButtonColumn fx:id="editColumn" text="Изменить"/>

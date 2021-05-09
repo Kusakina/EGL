@@ -1,9 +1,9 @@
-<?import egl.client.view.table.topic.LocalTopicsListView?>
 <?import javafx.scene.layout.GridPane?>
+<?import egl.client.view.table.EditRemoveListView?>
 <GridPane fx:controller="egl.client.controller.topic.ProfileTopicsController"
           xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
 
-    <LocalTopicsListView fx:id="categoriesListView"
+    <EditRemoveListView fx:id="categoriesListView"
                          GridPane.columnIndex="0" GridPane.rowIndex="0"
                          nameTitle="Название"/>
 </GridPane>
