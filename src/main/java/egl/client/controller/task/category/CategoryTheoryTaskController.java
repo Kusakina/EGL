@@ -3,7 +3,7 @@ package egl.client.controller.task.category;
 import egl.client.controller.task.TheoryTaskController;
 import egl.client.model.topic.category.Category;
 import egl.client.model.topic.category.Translation;
-import egl.client.view.table.CustomColumnTableView;
+import egl.client.view.table.CustomTableView;
 import javafx.fxml.FXML;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
 @FxmlView
 public class CategoryTheoryTaskController extends TheoryTaskController {
 
-    @FXML private CustomColumnTableView<Translation> translationsTableView;
+    @FXML private CustomTableView<Translation> translationsTableView;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

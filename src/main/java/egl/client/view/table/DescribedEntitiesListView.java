@@ -5,7 +5,7 @@ import javafx.fxml.FXML;
 
 import java.util.function.Consumer;
 
-public class DescribedEntitiesListView<T extends DescribedEntity> extends CustomColumnTableView<T> {
+public class DescribedEntitiesListView<T extends DescribedEntity> extends CustomTableView<T> {
 
     @FXML private PropertyColumn<T, String> nameColumn;
     @FXML private ButtonColumn<T> selectColumn;

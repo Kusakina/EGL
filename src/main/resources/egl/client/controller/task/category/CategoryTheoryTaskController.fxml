@@ -1,4 +1,4 @@
-<?import egl.client.view.table.CustomColumnTableView?>
+<?import egl.client.view.table.CustomTableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.*?>
 <?import egl.client.view.table.PropertyColumn?>
@@ -7,10 +7,10 @@
 
     <TextArea fx:id="descriptionTextArea" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
 
-    <CustomColumnTableView fx:id="translationsTableView" GridPane.columnIndex="0" GridPane.rowIndex="1">
+    <CustomTableView fx:id="translationsTableView" GridPane.columnIndex="0" GridPane.rowIndex="1">
         <columns>
             <PropertyColumn text="Оригинал" property="source"/>
             <PropertyColumn text="Перевод" property="target"/>
         </columns>
-    </CustomColumnTableView>
+    </CustomTableView>
 </GridPane>

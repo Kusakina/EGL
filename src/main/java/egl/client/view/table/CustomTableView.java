@@ -6,7 +6,7 @@ import javafx.scene.control.TableView;
 import java.io.IOException;
 import java.util.List;
 
-public class CustomColumnTableView<T> extends TableView<T> {
+public class CustomTableView<T> extends TableView<T> {
 
     protected void loadView(Class<?> controllerClass) {
         var loader = FxmlService.createFxmlLoader(controllerClass);
@@ -23,8 +23,8 @@ public class CustomColumnTableView<T> extends TableView<T> {
         }
     }
 
-    public CustomColumnTableView() {
-        loadView(CustomColumnTableView.class);
+    public CustomTableView() {
+        loadView(CustomTableView.class);
     }
 
     public void showItems(List<T> items) {
