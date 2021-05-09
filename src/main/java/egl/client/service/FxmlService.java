@@ -48,7 +48,7 @@ public class FxmlService {
             String title, String closeButtonText,
             Stage stage) {
         try {
-            var fxmlLoader = new FXMLLoader(getClass().getResource("/egl/client/controller/WindowController.fxml"));
+            var fxmlLoader = createFxmlLoader(WindowController.class);
 
             Parent windowRoot = fxmlLoader.load();
 
@@ -64,5 +64,14 @@ public class FxmlService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static FXMLLoader createFxmlLoader(Class<?> controllerClass) {
+        String fxmlFilePath = controllerClass.getName().replace(".", "/");
+        return new FXMLLoader(
+                controllerClass.getResource(
+                        String.format("/%s.fxml", fxmlFilePath)
+                )
+        );
     }
 }
