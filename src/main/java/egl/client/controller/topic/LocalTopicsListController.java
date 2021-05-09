@@ -1,74 +1,29 @@
 package egl.client.controller.topic;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
-import egl.client.controller.Controller;
-import egl.client.controller.ControllerUtils;
+import egl.client.controller.EntitiesListController;
 import egl.client.controller.WindowController;
 import egl.client.model.topic.LocalTopic;
-import egl.client.service.model.CategoryService;
 import egl.client.service.FxmlService;
-import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import lombok.RequiredArgsConstructor;
-import net.rgielen.fxweaver.core.FxmlView;
-import org.springframework.stereotype.Component;
+import egl.client.service.model.EntityService;
+import javafx.event.ActionEvent;
 
-@Component
-@FxmlView
-@RequiredArgsConstructor
-public class LocalTopicsListController implements Controller {
+abstract class LocalTopicsListController<
+        T extends LocalTopic,
+        ServiceType extends EntityService<T>
+        > extends EntitiesListController<T, ServiceType> {
 
-    private final FxmlService fxmlService;
-    private final CategoryService categoryService;
-
-    @FXML private TableView<LocalTopic> topicsListTableView;
-    @FXML private TableColumn<LocalTopic, String> topicNameColumn;
-    @FXML private TableColumn<LocalTopic, Void> topicLearnColumn;
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        initializeColumns();
+    protected LocalTopicsListController(FxmlService fxmlService, ServiceType service) {
+        super(fxmlService, service);
     }
 
-    private void initializeColumns() {
-        ControllerUtils.initializePropertyColumn(topicNameColumn, "name");
+    protected void onSelect(ActionEvent event, T topic) {
+        var localTopicRoot = fxmlService.load(TopicTasksController.class);
 
-        ControllerUtils.initializeButtonColumn(
-                topicLearnColumn,
-                "Изучить",
-                (event, topic) -> {
-                    var localTopicRoot = fxmlService.load(LocalTopicController.class);
+        var topicController = (TopicTasksController) localTopicRoot.getController();
+        topicController.setContext(topic);
 
-                    var topicController = (LocalTopicController) localTopicRoot.getController();
-                    topicController.setContext(topic);
-
-                    fxmlService.showStage(
-                            localTopicRoot, topic.getName(), WindowController.CLOSE
-                    );
-                }
+        fxmlService.showStage(
+                localTopicRoot, topic.getName(), WindowController.CLOSE
         );
-    }
-
-    @Override
-    public void rescaleViews(double parentWidth, double parentHeight) {
-        topicsListTableView.setPrefSize(parentWidth, parentHeight);
-        ControllerUtils.rescaleTableView(topicsListTableView);
-    }
-
-    @Override
-    public void prepareToShow() {
-        var tableTopics = topicsListTableView.getItems();
-        tableTopics.clear();
-
-        var categories = categoryService.findAll();
-        tableTopics.addAll(categories);
-    }
-
-    @Override
-    public void prepareToClose() {
-
     }
 }

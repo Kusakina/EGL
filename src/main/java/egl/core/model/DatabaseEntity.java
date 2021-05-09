@@ -11,7 +11,7 @@ import lombok.Data;
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Data
-public class DatabaseData {
+public class DatabaseEntity {
 
     @Id
     @GeneratedValue

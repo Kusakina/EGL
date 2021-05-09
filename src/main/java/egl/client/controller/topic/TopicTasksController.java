@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 @Component
 @FxmlView
 @RequiredArgsConstructor
-public class LocalTopicController implements Controller {
+public class TopicTasksController implements Controller {
 
     private final FxmlService fxmlService;
 
