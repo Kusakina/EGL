@@ -1,10 +1,10 @@
 package egl.client.service.model;
 
-import egl.core.model.DescribedEntity;
+import egl.core.model.DatabaseEntity;
 
 import java.util.List;
 
-public interface EntityService<T extends DescribedEntity> {
+public interface EntityService<T extends DatabaseEntity> {
 
     List<T> findAll();
 
