@@ -88,7 +88,7 @@ public class FxmlService {
             var controller = loader.<ControllerType>getController();
             controller.setContext(entity, isCreated);
 
-            var dialog = new EntityInfoDialog<T>(controller);
+            var dialog = new EntityInfoDialog<>(controller);
             dialog.getDialogPane().setContent(root);
             dialog.setTitle(title);
 
@@ -96,7 +96,7 @@ public class FxmlService {
             dialog.setWidth(windowSize.getWidth());
             dialog.setHeight(windowSize.getHeight());
 
-            return dialog.showAndWait();
+            return dialog.showInfo();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

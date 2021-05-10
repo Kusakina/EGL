@@ -8,6 +8,7 @@ import javafx.scene.control.Dialog;
 import lombok.RequiredArgsConstructor;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 @RequiredArgsConstructor
@@ -17,15 +18,17 @@ public class EntityInfoDialog<T extends DatabaseEntity> extends Dialog<T> implem
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        var dialogPane = getDialogPane();
+        initializeButtons();
+        initializeController();
+    }
 
-        controller.setPrefSize(dialogPane.getWidth(), dialogPane.getHeight());
-
-        dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+    private void initializeButtons() {
+        getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
         setOnCloseRequest(dialogEvent -> {
             try {
                 controller.validateData();
+                controller.prepareToClose();
             } catch (IllegalArgumentException e) {
                 dialogEvent.consume();
                 new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK).show();
@@ -34,10 +37,21 @@ public class EntityInfoDialog<T extends DatabaseEntity> extends Dialog<T> implem
 
         setResultConverter(buttonType -> {
             if (ButtonType.OK.equals(buttonType)) {
-                return controller.fillData();
+                controller.fillData();
+                return controller.getEntity();
             } else {
                 return null;
             }
         });
+    }
+
+    private void initializeController() {
+        var dialogPane = getDialogPane();
+        controller.setPrefSize(dialogPane.getWidth(), dialogPane.getHeight());
+    }
+
+    public Optional<T> showInfo() {
+        controller.prepareToShow();
+        return showAndWait();
     }
 }
