@@ -3,7 +3,7 @@ package egl.client.model.topic.category;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
-import egl.core.model.DatabaseData;
+import egl.core.model.DatabaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
-public class Translation extends DatabaseData {
+public class Translation extends DatabaseEntity {
 
     @ManyToOne
     private Word source;
