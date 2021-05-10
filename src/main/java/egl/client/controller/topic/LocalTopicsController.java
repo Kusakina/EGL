@@ -47,7 +47,7 @@ public class LocalTopicsController implements Controller {
     }
 
     @Override
-    public void rescaleViews(double parentWidth, double parentHeight) {
+    public void setPrefSize(double parentWidth, double parentHeight) {
         categoriesListView.setPrefSize(parentWidth, parentHeight);
     }
 

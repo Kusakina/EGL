@@ -44,7 +44,7 @@ public class WindowController implements Controller {
     public void show() {
         prepareToShow();
         stage.show();
-        rescaleViews(stage.getWidth(), stage.getHeight());
+        setPrefSize(stage.getWidth(), stage.getHeight());
     }
 
     @Override
@@ -53,8 +53,8 @@ public class WindowController implements Controller {
     }
 
     @Override
-    public void rescaleViews(double parentWidth, double parentHeight) {
-        innerController.rescaleViews(
+    public void setPrefSize(double parentWidth, double parentHeight) {
+        innerController.setPrefSize(
                 windowBorderPane.getWidth() * 0.95,
                 windowBorderPane.getHeight() * 0.9
         );

@@ -39,10 +39,10 @@ public class TestController extends AbstractTaskController {
     }
 
     @Override
-    public void rescaleViews(double parentWidth, double parentHeight) {
+    public void setPrefSize(double parentWidth, double parentHeight) {
         tabPane.setPrefSize(parentWidth, parentHeight);
         for (TaskController taskController : taskControllers) {
-            taskController.rescaleViews(tabPane.getPrefWidth(), tabPane.getPrefHeight());
+            taskController.setPrefSize(tabPane.getPrefWidth(), tabPane.getPrefHeight());
         }
     }
 

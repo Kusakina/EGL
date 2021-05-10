@@ -23,7 +23,7 @@ public class CategoryTheoryTaskController extends TheoryTaskController {
     }
 
     @Override
-    public void rescaleViews(double parentWidth, double parentHeight) {
+    public void setPrefSize(double parentWidth, double parentHeight) {
         descriptionTextArea.setPrefSize(parentWidth, parentHeight * 0.3);
         translationsTableView.setPrefSize(parentWidth, parentHeight * 0.6);
     }
