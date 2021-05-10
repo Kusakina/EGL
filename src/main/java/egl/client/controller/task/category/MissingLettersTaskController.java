@@ -15,6 +15,8 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -24,7 +26,8 @@ import org.springframework.stereotype.Component;
 @Component
 @FxmlView
 public class MissingLettersTaskController extends AbstractTaskController {
-
+    @FXML
+    public BorderPane gameLettersEaterBorderPane;
     @FXML
     private ResourceBundle resources;
 
@@ -151,6 +154,7 @@ public class MissingLettersTaskController extends AbstractTaskController {
 
         word.getChildren().addAll(letterFields);
         word.setSpacing(15);
+        //15
         word.setAlignment(Pos.TOP_CENTER);
 
         //генерация букв для кнопок
@@ -160,7 +164,7 @@ public class MissingLettersTaskController extends AbstractTaskController {
         int needRandom = 3;
         for (int j = 0; j < needRandom; ++j) {
             int letterIndex = random.nextInt(26);
-            char letter = (char)('A' + letterIndex);
+            char letter = (char)('a' + letterIndex);
             if (!buttonLetters.contains(letter)) {
                 buttonLetters.add(letter);
             } else {
@@ -217,7 +221,9 @@ public class MissingLettersTaskController extends AbstractTaskController {
             for (TextField letter : letterFields) {
                 ans.append(letter.getText());
             }
-            if (randEnWord.equals(ans.toString())) {
+            boolean isCorrect = randEnWord.equals(ans.toString());
+            result.registerAnswer(isCorrect);
+            if (isCorrect) {
                 initalizeRandomWord(translations, curIndex+1);
             } else {
                 cur = 0;
@@ -237,7 +243,9 @@ public class MissingLettersTaskController extends AbstractTaskController {
 
     @Override
     public void rescaleViews(double parentWidth, double parentHeight) {
-       // gameAnchorPane.setPrefSize(parentWidth, parentHeight);
+        //gameLettersEaterAnchorPane.setMaxWidth(parentWidth);
+        //gameLettersEaterAnchorPane.setMaxHeight(parentHeight);
+       gameLettersEaterBorderPane.setPrefSize(parentWidth, parentHeight);
     }
 
     @Override
@@ -250,7 +258,7 @@ public class MissingLettersTaskController extends AbstractTaskController {
 
     @Override
     protected void prepareToFinish() {
-        result.registerAnswer(true);
+
     }
 }
 

@@ -5,7 +5,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #3FC0C0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="egl.client.controller.task.category.MissingLettersTaskController">
+<?import javafx.scene.layout.BorderPane?>
+<BorderPane fx:id="gameLettersEaterBorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #3FC0C0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="egl.client.controller.task.category.MissingLettersTaskController">
    <Text fx:id="taskEn" layoutX="116.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Fill the gaps with the correct letter" wrappingWidth="368.0702209472656">
       <font>
          <Font size="24.0" />
@@ -27,4 +28,4 @@
    </Text>
    <HBox fx:id="Letters" layoutX="34.0" layoutY="253.0" prefHeight="100.0" prefWidth="531.0" />
    <HBox fx:id="CheckHbox" layoutX="455.0" layoutY="332.0" prefHeight="68.0" prefWidth="145.0" />
-</AnchorPane>
+</BorderPane>
