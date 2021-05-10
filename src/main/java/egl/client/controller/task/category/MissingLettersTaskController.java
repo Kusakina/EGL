@@ -242,9 +242,7 @@ public class MissingLettersTaskController extends AbstractTaskController {
     }
 
     @Override
-    public void rescaleViews(double parentWidth, double parentHeight) {
-        //gameLettersEaterAnchorPane.setMaxWidth(parentWidth);
-        //gameLettersEaterAnchorPane.setMaxHeight(parentHeight);
+    public void setPrefSize(double parentWidth, double parentHeight) {
        gameLettersEaterBorderPane.setPrefSize(parentWidth, parentHeight);
     }
 
