@@ -6,7 +6,7 @@ import egl.client.model.topic.LocalTopic;
 import egl.client.model.topic.category.Category;
 import egl.client.service.FxmlService;
 import egl.client.service.model.topic.CategoryService;
-import egl.client.view.table.EditRemoveListView;
+import egl.client.view.table.EntityServiceListView;
 import javafx.fxml.FXML;
 import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxmlView;
@@ -23,7 +23,7 @@ public class ProfileTopicsController implements Controller {
     private final FxmlService fxmlService;
     private final CategoryService categoryService;
 
-    @FXML private EditRemoveListView<Category> categoriesListView;
+    @FXML private EntityServiceListView<Category> categoriesListView;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -57,8 +57,7 @@ public class ProfileTopicsController implements Controller {
     }
 
     private void showCategories() {
-        var categories = categoryService.findAll();
-        categoriesListView.showItems(categories);
+        categoriesListView.showItems();
     }
 
     @Override
