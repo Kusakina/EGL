@@ -42,12 +42,21 @@ public class DatabaseInitializer {
                 "Здесь описаны все переводы в категории",
                 "task.category.CategoryTheoryTaskController");
         taskRepository.save(categoryTheoryTask);
-
+        Task TestTrueFalse = new Task(
+                "Задание 3",
+                "Необходимо указать соответствует ли слово своему переводу",
+                "task.TestControllerTask3");
+        taskRepository.save(TestTrueFalse);
+        Task TestTable = new Task(
+                "Задание 4",
+                "Необходимо заполнить таблицу",
+                "task.TestControllerTask4");
+        taskRepository.save(TestTable);
         String testSceneName = "task.TestController";
         String testDescription = "На каждой вкладке одно задание.\n" +
                 "Чтобы задание зачли - необходимо нажать кнопку \"Завершить\" внутри вкладки с заданием.\n";
 
-        List<Task> categoryTestTasks = Arrays.asList(categoryTheoryTask);
+        List<Task> categoryTestTasks = Arrays.asList(categoryTheoryTask, TestTrueFalse, TestTable);
         Test categoryTest = new Test("Итоговый тест по категории", testDescription, testSceneName, categoryTestTasks);
         testRepository.save(categoryTest);
 
