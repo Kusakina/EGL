@@ -5,7 +5,6 @@ import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
@@ -29,7 +28,6 @@ public class WindowController implements Controller {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.closeButton.setOnAction(this::processClose);
-        this.windowBorderPane.setPadding(new Insets(20));
     }
 
     public void setContext(Stage stage,

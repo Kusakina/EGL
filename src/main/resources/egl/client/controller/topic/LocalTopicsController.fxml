@@ -1,9 +1,9 @@
 <?import egl.client.view.table.EntityServiceListView?>
-<?import javafx.scene.layout.GridPane?>
-<GridPane fx:controller="egl.client.controller.topic.LocalTopicsController"
-          xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
+<?import egl.client.view.pane.CustomBorderPane?>
+<CustomBorderPane fx:controller="egl.client.controller.topic.LocalTopicsController"
+                  xmlns:fx="http://javafx.com/fxml">
 
-    <EntityServiceListView fx:id="categoriesListView"
-                         GridPane.columnIndex="0" GridPane.rowIndex="0"
-                         nameTitle="Название"/>
-</GridPane>
+    <center>
+        <EntityServiceListView fx:id="categoriesListView" nameTitle="Название"/>
+    </center>
+</CustomBorderPane>
