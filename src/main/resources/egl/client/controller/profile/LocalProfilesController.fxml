@@ -1,20 +1,23 @@
 <?import egl.client.view.table.EntityServiceListView?>
 <?import egl.client.view.pane.CustomBorderPane?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.HBox?>
 <CustomBorderPane fx:controller="egl.client.controller.profile.LocalProfilesController"
                   xmlns:fx="http://javafx.com/fxml" margin="5">
 
+    <top>
+        <CustomBorderPane>
+            <right>
+                <Button fx:id="exitProfileButton" text="Выйти из профиля"/>
+            </right>
+        </CustomBorderPane>
+    </top>
     <center>
         <EntityServiceListView fx:id="localProfilesListView" nameTitle="Профиль"/>
     </center>
     <bottom>
         <CustomBorderPane>
             <right>
-                <HBox spacing="10">
-                    <Button fx:id="exitProfileButton" text="Выйти из профиля"/>
-                    <Button fx:id="createProfileButton" text="Создать профиль"/>
-                </HBox>
+                <Button fx:id="createProfileButton" text="Создать профиль"/>
             </right>
         </CustomBorderPane>
     </bottom>
