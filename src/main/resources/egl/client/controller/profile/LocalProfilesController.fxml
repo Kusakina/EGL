@@ -4,17 +4,16 @@
 <?import javafx.scene.layout.HBox?>
 <CustomBorderPane fx:controller="egl.client.controller.profile.LocalProfilesController"
                   xmlns:fx="http://javafx.com/fxml" margin="5">
-                  xmlns:fx="http://javafx.com/fxml" margin="5">
 
     <center>
-        <EntityServiceListView fx:id="localProfilesListView" nameTitle="Пользователь"/>
+        <EntityServiceListView fx:id="localProfilesListView" nameTitle="Профиль"/>
     </center>
     <bottom>
         <CustomBorderPane>
             <right>
-                <HBox>
-                    <Button fx:id="unselectProfileButton" text="Выйти из профиля"/>
-                    <Button fx:id="createProfileButton" text="Создать пользователя"/>
+                <HBox spacing="10">
+                    <Button fx:id="exitProfileButton" text="Выйти из профиля"/>
+                    <Button fx:id="createProfileButton" text="Создать профиль"/>
                 </HBox>
             </right>
         </CustomBorderPane>

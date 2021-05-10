@@ -24,4 +24,8 @@ public class LocalProfileService extends AbstractEntityService<LocalProfile, Loc
     public Property<LocalProfile> selectedProfileProperty() {
         return selectedProfileProperty;
     }
+
+    public LocalProfile getSelectedProfile() {
+        return selectedProfileProperty.getValue();
+    }
 }
