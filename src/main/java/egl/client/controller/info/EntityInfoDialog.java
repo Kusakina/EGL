@@ -1,29 +1,26 @@
 package egl.client.controller.info;
 
 import egl.core.model.DatabaseEntity;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
-import lombok.RequiredArgsConstructor;
 
-import java.net.URL;
-import java.util.Optional;
-import java.util.ResourceBundle;
-
-@RequiredArgsConstructor
-public class EntityInfoDialog<T extends DatabaseEntity> extends Dialog<T> implements Initializable {
+public class EntityInfoDialog<T extends DatabaseEntity> extends Dialog<T> {
 
     private final EntityInfoController<T> controller;
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public EntityInfoDialog(EntityInfoController<T> controller) {
+        this.controller = controller;
+        initialize();
+    }
+
+    public void initialize() {
         initializeButtons();
         initializeController();
     }
 
     private void initializeButtons() {
-        getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+        getDialogPane().getButtonTypes().addAll(ButtonType.CANCEL, ButtonType.OK);
 
         setOnCloseRequest(dialogEvent -> {
             try {
