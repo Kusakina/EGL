@@ -77,7 +77,8 @@ public class FxmlService {
     }
 
     public <T extends DatabaseEntity,
-            ControllerType extends EntityInfoController<T>> Optional<T> showInfoDialog(
+            ControllerType extends EntityInfoController<T>
+            > boolean showInfoDialog(
             Class<ControllerType> controllerClass, T entity,
             String title, boolean isCreated) {
         try {

@@ -50,8 +50,8 @@ public class EntityInfoDialog<T extends DatabaseEntity> extends Dialog<T> implem
         controller.setPrefSize(dialogPane.getWidth(), dialogPane.getHeight());
     }
 
-    public Optional<T> showInfo() {
+    public boolean showInfo() {
         controller.prepareToShow();
-        return showAndWait();
+        return showAndWait().isPresent();
     }
 }
