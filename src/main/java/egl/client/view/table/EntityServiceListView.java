@@ -1,5 +1,6 @@
 package egl.client.view.table;
 
+import egl.client.service.FxmlService;
 import egl.client.service.model.EntityService;
 import egl.core.model.DescribedEntity;
 import lombok.Setter;
@@ -9,7 +10,7 @@ public class EntityServiceListView<T extends DescribedEntity> extends EditRemove
     @Setter private EntityService<T> service;
 
     public EntityServiceListView() {
-        loadView(EntityServiceListView.class);
+        FxmlService.loadView(this, EntityServiceListView.class);
     }
 
     public void showItems() {
