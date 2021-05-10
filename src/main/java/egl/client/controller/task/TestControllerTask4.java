@@ -7,6 +7,7 @@ import egl.core.model.task.Result;
 import egl.core.model.task.Task;
 import egl.core.model.topic.Topic;
 import javafx.application.Platform;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -17,6 +18,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.util.Callback;
+import javafx.util.StringConverter;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
 
@@ -46,6 +49,9 @@ public class TestControllerTask4 extends AbstractTaskController {
 
     @Override
     protected void prepareToStart() {
+        table.setEditable(true);
+        WordCol.setEditable(true);
+        TranslationCol.setEditable(true);
         Category category = (Category) controllerTopic;
         List<Translation> tasks = category.getTranslations();
         Collections.shuffle(tasks);
@@ -60,17 +66,17 @@ public class TestControllerTask4 extends AbstractTaskController {
         TranslationCol.setPrefWidth(300);
         table.setMinHeight(500);
         table.setFixedCellSize(60.5);
-        table.setEditable(true);
+
         table.setStyle(
                 "-fx-font-weight:bold;" +
                         " -fx-text-background-color: blue;" +
                         "-fx-font-size:17px;"
         );
-        WordCol.setCellValueFactory(new PropertyValueFactory<>("source"));
-        TranslationCol.setCellValueFactory(new PropertyValueFactory<>("target"));
+        //WordCol.setCellFactory(TextFieldTableCell.forTableColumn());
+        //TranslationCol.setCellFactory(TextFieldTableCell.forTableColumn());
+
         table.getSelectionModel().selectedItemProperty().addListener( //чтобы редактировались только избранные ячейки
                 (observable, oldValue, newValue) -> checkEditable(table.getSelectionModel().getSelectedCells().get(0).getRow()));
-        table.getItems().clear();
         for (int i = 0; i < numTasks; i++) {
             int bool = (int) (Math.random() * 1.7);
             editable[i] = bool;
@@ -99,4 +105,10 @@ public class TestControllerTask4 extends AbstractTaskController {
         if (editable[i] == 1) { TranslationCol.setEditable(true); }
     }
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        WordCol.setOnEditCommit(event -> {
+
+        });
+    }
 }
