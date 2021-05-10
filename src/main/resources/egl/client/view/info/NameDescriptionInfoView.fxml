@@ -9,7 +9,7 @@
          xmlns:fx="http://javafx.com/fxml" margin="5">
 
     <top>
-        <HBox>
+        <HBox spacing="10">
             <Label fx:id="nameLabel"/>
             <TextField fx:id="nameTextField"/>
         </HBox>

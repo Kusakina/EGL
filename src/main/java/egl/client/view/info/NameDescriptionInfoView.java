@@ -3,7 +3,6 @@ package egl.client.view.info;
 import egl.client.service.FxmlService;
 import egl.client.view.pane.CustomBorderPane;
 import egl.core.model.DescribedEntity;
-import javafx.beans.NamedArg;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -29,8 +28,8 @@ public class NameDescriptionInfoView<T extends DescribedEntity> extends CustomBo
 
     @Override
     public void initData(T entity, boolean isCreated) {
-        nameTextField.setText(entity.getName());
-        descriptionTextArea.setText(entity.getDescription());
+        nameTextField.setText(isCreated ? "" : entity.getName());
+        descriptionTextArea.setText(isCreated ? "" : entity.getDescription());
     }
 
     @Override
