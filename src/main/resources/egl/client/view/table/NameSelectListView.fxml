@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import egl.client.view.table.PropertyColumn?>
+<?import egl.client.view.table.ButtonColumn?>
+<fx:root type="egl.client.view.table.CustomTableView" xmlns="http://javafx.com/javafx"
+         xmlns:fx="http://javafx.com/fxml">
+    <columns>
+        <PropertyColumn fx:id="nameColumn" property="name"/>
+        <PropertyColumn text="Описание" property="description"/>
+        <ButtonColumn fx:id="selectColumn" text="Выбрать"/>
+    </columns>
+</fx:root>

@@ -3,7 +3,7 @@ package egl.core.model.task;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
-import egl.core.model.DescribedData;
+import egl.core.model.DescribedEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
-public class Task extends DescribedData {
+public class Task extends DescribedEntity {
 
     @Column
     private String sceneName;
