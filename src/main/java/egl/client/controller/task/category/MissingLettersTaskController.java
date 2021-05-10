@@ -2,7 +2,6 @@ package egl.client.controller.task.category;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -11,13 +10,13 @@ import java.util.ResourceBundle;
 import egl.client.controller.task.AbstractTaskController;
 import egl.client.model.topic.category.Category;
 import egl.client.model.topic.category.Translation;
+import egl.client.view.pane.CustomBorderPane;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import net.rgielen.fxweaver.core.FxmlView;
@@ -26,145 +25,123 @@ import org.springframework.stereotype.Component;
 @Component
 @FxmlView
 public class MissingLettersTaskController extends AbstractTaskController {
-    @FXML
-    public BorderPane gameLettersEaterBorderPane;
-    @FXML
-    private ResourceBundle resources;
+
+    private static final int DEFAULT_ADDITIONAL_LETTERS_COUNT = 3;
 
     @FXML
-    private URL location;
+    public CustomBorderPane gameBorderPane;
 
     @FXML
-    private Text taskEn;
+    private Text taskText;
 
     @FXML
-    private Text taskRu;
+    private Text sourceWordText;
 
     @FXML
-    private Text transword;
+    private HBox selectedLettersHBox;
 
     @FXML
-    private HBox word;
+    private HBox candidateLettersHBox;
 
     @FXML
-    private HBox Letters;
+    private CustomBorderPane textsBorderPane;
 
     @FXML
-    private HBox CheckHbox;
-    @FXML
-   /* void initialize() {
-        letter1.setOnAction(event ->{
-          System.out.println("Жопа");
-        } );
-    }*/
-    private void initializeButtons() {
-        //пусть всегда будет букв = кол-во пропуск+2
+    private VBox lettersVBox;
 
-    }
+    private final Random random;
 
-
-
-    private void updateWord() {
-
-
-    }
-    Random random = new Random();
-    int cur;
-    ArrayList<String> Enword;
-    ArrayList<String> Ruword;
-    void initalizeWords() {
-        Enword = new ArrayList<>(
-                Arrays.asList("RED", "YELLOW", "BLUE", "GREEN", "PINK", "WHITE", "BLACK")
-        );
-
-        Ruword = new ArrayList<>(
-                Arrays.asList("КРАСНЫЙ", "ЖЕЛТЫЙ", "СИНИЙ","ЗЕЛЕНЫЙ","РОЗОВЫЙ","БЕЛЫЙ","ЧЕРНЫЙ")
-        );
+    public MissingLettersTaskController() {
+        this.random = new Random();
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
-        //initalizeWords();
-        //initalizeRandomWord();
     }
 
-    void initalizeRandomWord(List<Translation> translations, int curIndex){
-        //создание 2 списков англ + перевод имеют один индекс
+    private double fontSize;
 
-        /*Enword.add("YELLOW");
-        Ruword.add("ЖЕЛТЫЙ");
-        Enword.add("RED");
-        Ruword.add("КРАСНЫЙ");
-        Enword.add("BLUE");
-        Ruword.add("СИНИЙ");
-        Enword.add("GREEN");
-        Ruword.add("ЗЕЛЕНЫЙ");
-        Enword.add("PINK");
-        Ruword.add("РОЗОВЫЙ");*/
-        word.getChildren().clear();
-        Letters.getChildren().clear();
-        if (translations.size()==curIndex){
+    private void setRegionPrefSize(Region region) {
+        region.setPrefSize(fontSize * 2, fontSize * 2);
+    }
 
+    private TextField createLetterTextField(String letter) {
+        TextField letterField = new TextField(letter);
+        letterField.setEditable(false);
+        // настройку шрифта и других штук логичнее всего делать тут, если она нужна
+        setPrefSize(letterField);
+        return letterField;
+    }
+
+    private void setPrefSize(TextField letterField) {
+        letterField.setFont(Font.font(fontSize));
+        setRegionPrefSize(letterField);
+    }
+
+    private Button createLetterButton(String letter) {
+        Button letterButton = new Button(letter);
+        setPrefSize(letterButton);
+        return letterButton;
+    }
+
+    private void setPrefSize(Button letterButton) {
+        letterButton.setFont(Font.font(fontSize));
+        setRegionPrefSize(letterButton);
+    }
+
+    private List<Translation> translations;
+    private int curMissingLetterIndex;
+
+    void initializeCurrentWord(int curIndex) {
+        if (translations.size() == curIndex) {
+            taskText.setText("Все слова закончились. Можете завершать игру");
+            sourceWordText.setVisible(false);
+            lettersVBox.setVisible(false);
             return;
-            //должно быть закрытие
-            //initalizeWords();
         }
-        //int random_number = random.nextInt(Enword.size());
-        //получение слова с рандомным номером
-        //String randEnWord = Enword.remove(random_number);
 
-        //String randRuWord = Ruword.remove(random_number);
-        String randEnWord = translations.get(curIndex).getTarget().toString();
-        String randRuWord = translations.get(curIndex).getSource().toString();
-        transword.setText(randRuWord);
+        //получение текущего слова
+        String curSource = translations.get(curIndex).getSource().toString();
+        String curTarget = translations.get(curIndex).getTarget().toString();
+        sourceWordText.setText(curSource);
 
-        //запись слова по буквам в список
+        // запись слова по буквам в список
         List<Integer> removedPositions = new ArrayList<>();
-        for (int index = 0; index < randEnWord.length(); ++index)
+        for (int index = 0; index < curTarget.length(); ++index) {
             removedPositions.add(index);
+        }
         Collections.shuffle(removedPositions, random);
 
         //выбор букв для исключения
-        int needRemove = randEnWord.length() / 2;
+        int needRemove = curTarget.length() / 2;
         removedPositions = removedPositions.subList(0, needRemove);
         Collections.sort(removedPositions);
 
         //добавление текстфилдов
-        TextField[] letterFields = new TextField[randEnWord.length()];
+        TextField[] letterFields = new TextField[curTarget.length()];
 
-        for (int index = 0; index < randEnWord.length(); ++index) {
-            TextField letterField = new TextField("" + randEnWord.charAt(index));
-            // настройку шрифта и других штук логичнее всего делать тут, если она нужна
-            letterFields[index] = letterField;
-            letterFields[index].setFont(Font.font(24));
-            letterFields[index].setEditable(false);
-            letterFields[index].setPrefSize(50, 50);
-            //letterFields[index].setStyle("-fx-background-color: #8FC0C0;");
+        for (int index = 0; index < curTarget.length(); ++index) {
+            letterFields[index] = createLetterTextField("" + curTarget.charAt(index));
         }
 
         //исключение выбранных букв
         for (int index : removedPositions) {
             letterFields[index].setText("");
-            //letterFields[index].setStyle("-fx-background-color: #3FC0C0;");
-
-            // дополнительная настройка филда с пропуском, если нужно
         }
-        //настройки HBox
 
-        word.getChildren().addAll(letterFields);
-        word.setSpacing(15);
-        //15
-        word.setAlignment(Pos.TOP_CENTER);
+        //настройки HBox
+        selectedLettersHBox.getChildren().setAll(letterFields);
 
         //генерация букв для кнопок
         List<Character> buttonLetters = new ArrayList<>();
-        for (int index : removedPositions) buttonLetters.add(randEnWord.charAt(index));
+        for (int index : removedPositions) {
+            buttonLetters.add(curTarget.charAt(index));
+        }
 
-        int needRandom = 3;
-        for (int j = 0; j < needRandom; ++j) {
+        for (int j = 0; j < DEFAULT_ADDITIONAL_LETTERS_COUNT; ++j) {
             int letterIndex = random.nextInt(26);
-            char letter = (char)('a' + letterIndex);
+            char letter = (char) ('a' + letterIndex);
             if (!buttonLetters.contains(letter)) {
                 buttonLetters.add(letter);
             } else {
@@ -175,83 +152,93 @@ public class MissingLettersTaskController extends AbstractTaskController {
 
         //генерация кнопок с буквами
         Button[] letterButtons = new Button[buttonLetters.size()];
-        for(int j = 0; j<buttonLetters.size(); ++j){
-            Button let = new Button(""+buttonLetters.get(j));
-            let.setFont(Font.font(24));
-            let.setPrefSize(60, 50);
-            letterButtons[j] = let;
+        for (int j = 0; j < buttonLetters.size(); ++j) {
+            letterButtons[j] = createLetterButton("" + buttonLetters.get(j));
         }
 
         //настройки HBox
-
-        Letters.getChildren().addAll(letterButtons);
-        Letters.setSpacing(20);
-        Letters.setAlignment(Pos.BOTTOM_CENTER);
-
+        candidateLettersHBox.getChildren().setAll(letterButtons);
 
         List<Integer> finalRemovedPositions = removedPositions;
 
-        cur=0;
-        for (Button button:letterButtons) {
+        this.curMissingLetterIndex = 0;
+        for (Button button : letterButtons) {
             button.setOnAction(event -> {
-                //если кур = сайз ретерн
-                if (cur == finalRemovedPositions.size()){
+                if (curMissingLetterIndex == finalRemovedPositions.size()) {
                     return;
                 }
-                int curRemoved = finalRemovedPositions.get(cur);
+
+                int curRemoved = finalRemovedPositions.get(curMissingLetterIndex);
                 letterFields[curRemoved].setText("" + button.getText());
-                cur++;
+                curMissingLetterIndex++;
 
                 // в кнопку
-
-
-
             });
         }
-        Button check = new Button(":)");
-        check.setFont(Font.font(20));
-        check.setPrefSize(60, 40);
 
-        Letters.getChildren().add(check);
-        check.setOnAction(event2 -> {
-            if (cur != finalRemovedPositions.size()) {
+        Button check = createLetterButton(":)");
+
+        candidateLettersHBox.getChildren().add(check);
+        check.setOnAction(event -> {
+            if (curMissingLetterIndex != finalRemovedPositions.size()) {
                 return;
             }
+
             StringBuilder ans = new StringBuilder();
             for (TextField letter : letterFields) {
                 ans.append(letter.getText());
             }
-            boolean isCorrect = randEnWord.equals(ans.toString());
+
+            boolean isCorrect = curTarget.equals(ans.toString());
             result.registerAnswer(isCorrect);
+
             if (isCorrect) {
-                initalizeRandomWord(translations, curIndex+1);
+                initializeCurrentWord(curIndex + 1);
             } else {
-                cur = 0;
+                curMissingLetterIndex = 0;
                 for (int index : finalRemovedPositions) {
                     letterFields[index].setText("");
-
                 }
-
             }
         });
-
-
-
-
-
     }
 
     @Override
     public void setPrefSize(double parentWidth, double parentHeight) {
-       gameLettersEaterBorderPane.setPrefSize(parentWidth, parentHeight);
+        gameBorderPane.setPrefSize(parentWidth, parentHeight);
+
+        double spacing = parentHeight / 10;
+        double margin = parentHeight / 20;
+
+        gameBorderPane.setSpacing(spacing);
+        gameBorderPane.setMargin(margin);
+
+        textsBorderPane.setMargin(margin / 2);
+        lettersVBox.setSpacing(spacing);
+
+        this.fontSize = parentHeight / 20;
+
+        taskText.setFont(Font.font(fontSize));
+        sourceWordText.setFont(Font.font(fontSize * 1.2));
+
+        initializeCurrentWord(0);
     }
 
     @Override
     protected void prepareToStart() {
+        initializeTask();
+        initializeTranslations();
+    }
+
+    private void initializeTranslations() {
         Category category = (Category) controllerTopic;
-        var translations = category.getTranslations();
+
+        this.translations = category.getTranslations();
         Collections.shuffle(translations);
-        initalizeRandomWord(translations, 0);
+    }
+
+    private void initializeTask() {
+        taskText.setText("Заполните пропуски подходящими буквами");
     }
 
     @Override

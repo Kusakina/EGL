@@ -1,31 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import egl.client.view.pane.CustomBorderPane?>
 <?import javafx.scene.effect.DropShadow?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-<?import javafx.scene.layout.BorderPane?>
-<BorderPane fx:id="gameLettersEaterBorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #3FC0C0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="egl.client.controller.task.category.MissingLettersTaskController">
-   <Text fx:id="taskEn" layoutX="116.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Fill the gaps with the correct letter" wrappingWidth="368.0702209472656">
-      <font>
-         <Font size="24.0" />
-      </font>
-   </Text>
-   <Text fx:id="taskRu" layoutX="111.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Заполните пропуски подходящими буквами" wrappingWidth="377.40362548828125">
-      <font>
-         <Font size="18.0" />
-      </font>
-   </Text>
-   <HBox fx:id="word" layoutX="85.0" layoutY="192.0" prefHeight="78.0" prefWidth="414.0" />
-   <Text fx:id="transword" cache="true" fill="#262625" layoutX="249.0" layoutY="150.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Желтый">
-      <font>
-         <Font size="24.0" />
-      </font>
-      <effect>
-         <DropShadow height="38.79" radius="14.942499999999999" width="22.98" />
-      </effect>
-   </Text>
-   <HBox fx:id="Letters" layoutX="34.0" layoutY="253.0" prefHeight="100.0" prefWidth="531.0" />
-   <HBox fx:id="CheckHbox" layoutX="455.0" layoutY="332.0" prefHeight="68.0" prefWidth="145.0" />
-</BorderPane>
+<?import javafx.scene.layout.VBox?>
+<CustomBorderPane fx:id="gameBorderPane"
+                  style="-fx-background-color: #3FC0C0;"
+                  xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
+                  fx:controller="egl.client.controller.task.category.MissingLettersTaskController" margin="5">
+
+   <top>
+      <CustomBorderPane fx:id="textsBorderPane">
+         <top>
+            <Text fx:id="taskText" strokeType="OUTSIDE" strokeWidth="0.0"
+                  textAlignment="CENTER"
+                  BorderPane.alignment="TOP_CENTER"/>
+         </top>
+         <bottom>
+            <Text fx:id="sourceWordText" cache="true" fill="#262625"
+                  strokeType="OUTSIDE" strokeWidth="0.0"
+                  textAlignment="CENTER"
+                  BorderPane.alignment="BOTTOM_CENTER">
+               <effect>
+                  <DropShadow height="39" radius="15" width="23" />
+               </effect>
+            </Text>
+         </bottom>
+      </CustomBorderPane>
+   </top>
+
+   <center>
+      <VBox fx:id="lettersVBox">
+         <HBox fx:id="selectedLettersHBox" spacing="15" alignment="CENTER"/>
+         <HBox fx:id="candidateLettersHBox" spacing="20" alignment="CENTER"/>
+      </VBox>
+   </center>
+</CustomBorderPane>
