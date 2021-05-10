@@ -18,7 +18,7 @@ import java.util.ResourceBundle;
 @Component
 @FxmlView
 @RequiredArgsConstructor
-public class ProfileTopicsController implements Controller {
+public class LocalTopicsController implements Controller {
 
     private final FxmlService fxmlService;
     private final CategoryService categoryService;
