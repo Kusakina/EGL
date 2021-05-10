@@ -1,0 +1,9 @@
+<?import egl.client.view.table.EntityServiceListView?>
+<?import egl.client.view.pane.CustomBorderPane?>
+<CustomBorderPane fx:controller="egl.client.controller.profile.LocalProfilesController"
+                  xmlns:fx="http://javafx.com/fxml">
+
+    <center>
+        <EntityServiceListView fx:id="localProfilesListView" nameTitle="Пользователь"/>
+    </center>
+</CustomBorderPane>
