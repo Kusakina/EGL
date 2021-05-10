@@ -5,6 +5,7 @@ import egl.client.model.profile.LocalProfile;
 import egl.client.service.model.profile.LocalProfileService;
 import egl.client.view.table.EntityServiceListView;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,7 @@ public class LocalProfilesController implements Controller {
     private final LocalProfileService localProfileService;
 
     @FXML private EntityServiceListView<LocalProfile> localProfilesListView;
+    @FXML private Button createProfileButton;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
