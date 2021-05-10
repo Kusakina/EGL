@@ -35,7 +35,7 @@ public class LocalTopicsController implements Controller {
         categoriesListView.setOnSelect(this::onSelect);
     }
 
-    public void onSelect(LocalTopic topic) {
+    private void onSelect(LocalTopic topic) {
         var localTopicRoot = fxmlService.load(TopicTasksController.class);
 
         var topicController = (TopicTasksController) localTopicRoot.getController();

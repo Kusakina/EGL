@@ -22,6 +22,11 @@ public class LocalProfilesController implements Controller {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         localProfilesListView.setService(localProfileService);
+        localProfilesListView.setOnSelect(this::onSelect);
+    }
+
+    private void onSelect(LocalProfile localProfile) {
+        localProfileService.select(localProfile);
     }
 
     @Override
