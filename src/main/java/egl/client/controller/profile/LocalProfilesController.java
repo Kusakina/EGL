@@ -19,6 +19,7 @@ public class LocalProfilesController implements Controller {
 
     private final FxmlService fxmlService;
     private final LocalProfileService localProfileService;
+    private final Button exitProfileButton;
 
     @FXML private EntityServiceListView<LocalProfile> localProfilesListView;
     @FXML private Button createProfileButton;
@@ -30,6 +31,7 @@ public class LocalProfilesController implements Controller {
         localProfilesListView.setOnEdit(this::onEdit);
 
         createProfileButton.setOnAction(event -> onCreate());
+        exitProfileButton.setOnAction(event -> localProfileService.select(null));
     }
 
     private void onSelect(LocalProfile localProfile) {
