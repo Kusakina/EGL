@@ -6,7 +6,8 @@ import egl.core.model.DatabaseEntity;
 public interface EntityInfoController<T extends DatabaseEntity> extends Controller {
 
     void setContext(T entity, boolean isCreated);
+    T getEntity();
 
     void validateData();
-    T fillData();
+    void fillData();
 }
