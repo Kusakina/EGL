@@ -8,7 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
-import egl.core.model.DescribedData;
+import egl.core.model.DescribedEntity;
 import egl.core.model.task.Task;
 import egl.core.model.task.Test;
 import lombok.Data;
@@ -21,7 +21,7 @@ import org.hibernate.annotations.FetchMode;
 @Entity
 @Data
 @NoArgsConstructor
-public class TopicType extends DescribedData {
+public class TopicType extends DescribedEntity {
 
     @ManyToOne
     Task theoryTask;

@@ -1,0 +1,7 @@
+<?import egl.client.view.table.NameSelectListView?>
+<?import javafx.scene.layout.GridPane?>
+<GridPane fx:controller="egl.client.controller.topic.TopicTasksController"
+          xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
+
+    <NameSelectListView fx:id="tasksListView" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+</GridPane>

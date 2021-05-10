@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
-public abstract class DescribedData extends DatabaseData {
+public abstract class DescribedEntity extends DatabaseEntity {
 
     @Column
     private String name;
@@ -19,7 +19,7 @@ public abstract class DescribedData extends DatabaseData {
     @Column
     private String description;
 
-    protected DescribedData(String name, String description) {
+    protected DescribedEntity(String name, String description) {
         this.name = name;
         this.description = description;
     }

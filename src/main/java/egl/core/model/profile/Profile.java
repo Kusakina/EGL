@@ -1,6 +1,6 @@
 package egl.core.model.profile;
 
-import egl.core.model.DescribedData;
+import egl.core.model.DescribedEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -11,5 +11,5 @@ import javax.persistence.Entity;
 @Entity
 @Data
 @NoArgsConstructor
-public abstract class Profile extends DescribedData {
+public abstract class Profile extends DescribedEntity {
 }

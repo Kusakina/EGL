@@ -1,17 +1,16 @@
-<?import javafx.scene.control.Button?>
+<?import egl.client.view.table.CustomTableView?>
 <?import javafx.scene.control.TextArea?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.layout.*?>
+<?import egl.client.view.table.PropertyColumn?>
 <GridPane fx:controller="egl.client.controller.task.category.CategoryTheoryTaskController"
           xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
 
     <TextArea fx:id="descriptionTextArea" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
 
-    <TableView fx:id="translationsTableView" GridPane.columnIndex="0" GridPane.rowIndex="1">
+    <CustomTableView fx:id="translationsTableView" GridPane.columnIndex="0" GridPane.rowIndex="1">
         <columns>
-            <TableColumn fx:id="sourceTableColumn" text="Оригинал"/>
-            <TableColumn fx:id="targetTableColumn" text="Перевод"/>
+            <PropertyColumn text="Оригинал" property="source"/>
+            <PropertyColumn text="Перевод" property="target"/>
         </columns>
-    </TableView>
+    </CustomTableView>
 </GridPane>

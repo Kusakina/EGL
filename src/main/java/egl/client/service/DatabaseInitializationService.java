@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class DatabaseInitializer {
+public class DatabaseInitializationService {
 
     private final TaskRepository taskRepository;
     private final TestRepository testRepository;
