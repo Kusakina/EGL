@@ -74,4 +74,23 @@ public class FxmlService {
                 )
         );
     }
+
+    public static <T> void loadView(T view, Class<? super T> controllerClass) {
+        loadView(view, controllerClass, false);
+    }
+
+    public static <T> void loadView(T view, Class<? super T> controllerClass, boolean debug) {
+        var loader = FxmlService.createFxmlLoader(controllerClass);
+
+        loader.setRoot(view);
+        loader.setController(view);
+
+        try {
+            loader.load();
+        } catch (IOException e) {
+            if (debug || !(e.getCause() instanceof NullPointerException)) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

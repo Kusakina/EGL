@@ -1,5 +1,6 @@
 package egl.client.view.table;
 
+import egl.client.service.FxmlService;
 import egl.core.model.DescribedEntity;
 import javafx.fxml.FXML;
 
@@ -11,7 +12,7 @@ public class NameSelectListView<T extends DescribedEntity> extends CustomTableVi
     @FXML private ButtonColumn<T> selectColumn;
 
     public NameSelectListView() {
-        loadView(NameSelectListView.class);
+        FxmlService.loadView(this, NameSelectListView.class);
     }
 
     public void setNameTitle(String nameTitle) {

@@ -1,5 +1,6 @@
 package egl.client.view.table;
 
+import egl.client.service.FxmlService;
 import egl.core.model.DescribedEntity;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -14,7 +15,7 @@ public class EditRemoveListView<T extends DescribedEntity> extends NameSelectLis
     @FXML private ButtonColumn<T> removeColumn;
 
     public EditRemoveListView() {
-        loadView(EditRemoveListView.class);
+        FxmlService.loadView(this, EditRemoveListView.class);
     }
 
     public void setOnEdit(Consumer<T> onEdit) {

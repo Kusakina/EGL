@@ -38,7 +38,7 @@ public class TopicTasksController implements Controller {
         tasksListView.setOnSelect(this::onSelect);
     }
 
-    public void onSelect(Task task) {
+    private void onSelect(Task task) {
         var taskRoot = fxmlService.load(task.getSceneName());
 
         var taskController = (TaskController) taskRoot.getController();
@@ -50,7 +50,7 @@ public class TopicTasksController implements Controller {
     }
 
     @Override
-    public void rescaleViews(double parentWidth, double parentHeight) {
+    public void setPrefSize(double parentWidth, double parentHeight) {
         tasksListView.setPrefSize(parentWidth, parentHeight);
     }
 

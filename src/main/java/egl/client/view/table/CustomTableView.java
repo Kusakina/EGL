@@ -3,28 +3,12 @@ package egl.client.view.table;
 import egl.client.service.FxmlService;
 import javafx.scene.control.TableView;
 
-import java.io.IOException;
 import java.util.List;
 
 public class CustomTableView<T> extends TableView<T> {
 
-    protected void loadView(Class<?> controllerClass) {
-        var loader = FxmlService.createFxmlLoader(controllerClass);
-
-        loader.setRoot(this);
-        loader.setController(this);
-
-        try {
-            loader.load();
-        } catch (IOException e) {
-            if (!(e.getCause() instanceof NullPointerException)) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     public CustomTableView() {
-        loadView(CustomTableView.class);
+        FxmlService.loadView(this, CustomTableView.class);
     }
 
     public void showItems(List<T> items) {
