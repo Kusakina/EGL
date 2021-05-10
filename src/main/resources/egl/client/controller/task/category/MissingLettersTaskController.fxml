@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import egl.client.view.pane.CustomBorderPane?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<CustomBorderPane fx:id="gameBorderPane"
+                  style="-fx-background-color: #3FC0C0;"
+                  xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
+                  fx:controller="egl.client.controller.task.category.MissingLettersTaskController" margin="5">
+
+   <top>
+      <CustomBorderPane fx:id="textsBorderPane">
+         <top>
+            <Text fx:id="taskText" strokeType="OUTSIDE" strokeWidth="0.0"
+                  textAlignment="CENTER"
+                  BorderPane.alignment="TOP_CENTER"/>
+         </top>
+         <bottom>
+            <Text fx:id="sourceWordText" cache="true" fill="#262625"
+                  strokeType="OUTSIDE" strokeWidth="0.0"
+                  textAlignment="CENTER"
+                  BorderPane.alignment="BOTTOM_CENTER">
+               <effect>
+                  <DropShadow height="39" radius="15" width="23" />
+               </effect>
+            </Text>
+         </bottom>
+      </CustomBorderPane>
+   </top>
+
+   <center>
+      <VBox fx:id="lettersVBox">
+         <HBox fx:id="selectedLettersHBox" spacing="15" alignment="CENTER"/>
+         <HBox fx:id="candidateLettersHBox" spacing="20" alignment="CENTER"/>
+      </VBox>
+   </center>
+</CustomBorderPane>

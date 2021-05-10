@@ -42,6 +42,11 @@ public class DatabaseInitializationService {
                 "Здесь описаны все переводы в категории",
                 "task.category.CategoryTheoryTaskController");
         taskRepository.save(categoryTheoryTask);
+        Task missingLettersTask = new Task(
+                "Буквоед",
+                "Вставьте правильные буквы на места пропусков так, чтобы полученное слово соответсвовало переводу",
+                "task.category.MissingLettersTaskController");
+        taskRepository.save(missingLettersTask);
 
         String testSceneName = "task.TestController";
         String testDescription = "На каждой вкладке одно задание.\n" +
@@ -51,7 +56,7 @@ public class DatabaseInitializationService {
         Test categoryTest = new Test("Итоговый тест по категории", testDescription, testSceneName, categoryTestTasks);
         testRepository.save(categoryTest);
 
-        List<Task> categoryTasks = Arrays.asList();
+        List<Task> categoryTasks = Arrays.asList(missingLettersTask);
         TopicType categoryTopicType = new TopicType(
                 "Категория", "Набор переводов, объединенных общей темой",
                 categoryTheoryTask, categoryTasks, categoryTest
