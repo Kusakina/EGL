@@ -2,12 +2,17 @@
 <?import egl.client.view.pane.CustomBorderPane?>
 <?import javafx.scene.control.Button?>
 <CustomBorderPane fx:controller="egl.client.controller.profile.LocalProfilesController"
-                  xmlns:fx="http://javafx.com/fxml">
+                  xmlns:fx="http://javafx.com/fxml" margin="5">
+                  xmlns:fx="http://javafx.com/fxml" margin="5">
 
     <center>
         <EntityServiceListView fx:id="localProfilesListView" nameTitle="Пользователь"/>
     </center>
     <bottom>
-        <Button fx:id="createProfileButton" text="Создать пользователя"/>
+        <CustomBorderPane>
+            <right>
+                <Button fx:id="createProfileButton" text="Создать пользователя"/>
+            </right>
+        </CustomBorderPane>
     </bottom>
 </CustomBorderPane>

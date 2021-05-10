@@ -54,6 +54,7 @@ public class LocalProfilesController implements Controller {
 
         if (changed) {
             localProfileService.save(localProfile);
+            localProfilesListView.showItems();
         }
     }
 
