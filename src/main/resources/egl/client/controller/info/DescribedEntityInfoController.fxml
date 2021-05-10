@@ -1,0 +1,24 @@
+<?import egl.client.view.pane.CustomBorderPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<CustomBorderPane fx:controller="egl.client.controller.info.DescribedEntityInfoController"
+                  xmlns:fx="http://javafx.com/fxml" margin="5">
+
+    <top>
+        <HBox>
+            <Label fx:id="nameLabel"/>
+            <TextField fx:id="nameTextField"/>
+        </HBox>
+    </top>
+
+    <bottom>
+        <VBox>
+            <Label text="Описание"/>
+            <TextArea fx:id="descriptionTextArea"/>
+        </VBox>
+    </bottom>
+
+</CustomBorderPane>
