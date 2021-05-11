@@ -23,7 +23,7 @@ import java.util.function.UnaryOperator;
 
 @Component
 @FxmlView
-public class TestControllerTask2 extends AbstractTaskController {
+public class MatchIndexTaskController extends AbstractTaskController {
 
     @FXML
     private VBox tasksVBoxes;
