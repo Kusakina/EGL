@@ -48,11 +48,23 @@ public class DatabaseInitializationService {
                 "task.category.MissingLettersTaskController");
         taskRepository.save(missingLettersTask);
 
+        Task testTask1 = new Task(
+                "1 верный ответ из 4",
+                "Выберите из 4 вариантов ответов верный",
+                "task.category.OneOfFourTaskController");
+        taskRepository.save(testTask1);
+
+        Task testTask2 = new Task(
+                "Сопоставь переводы",
+                "Соедините слова из левой и правой колонок",
+                "task.category.MatchIndexTaskController");
+        taskRepository.save(testTask2);
+
         String testSceneName = "task.TestController";
         String testDescription = "На каждой вкладке одно задание.\n" +
                 "Чтобы задание зачли - необходимо нажать кнопку \"Завершить\" внутри вкладки с заданием.\n";
 
-        List<Task> categoryTestTasks = Arrays.asList(categoryTheoryTask);
+        List<Task> categoryTestTasks = Arrays.asList(testTask1, testTask2);
         Test categoryTest = new Test("Итоговый тест по категории", testDescription, testSceneName, categoryTestTasks);
         testRepository.save(categoryTest);
 
