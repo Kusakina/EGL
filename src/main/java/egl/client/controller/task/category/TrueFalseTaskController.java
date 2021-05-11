@@ -1,14 +1,16 @@
-package egl.client.controller.task;
+package egl.client.controller.task.category;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import egl.client.controller.task.AbstractTaskController;
 import egl.client.model.topic.category.Category;
 import egl.client.model.topic.category.Translation;
-import egl.core.model.task.Result;
-import egl.core.model.task.Task;
-import egl.core.model.topic.Topic;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.ComboBox;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
@@ -17,29 +19,29 @@ import javafx.scene.text.Text;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.function.Consumer;
 @Component
 @FxmlView
-public class TestControllerTask3 extends AbstractTaskController {
+public class TrueFalseTaskController extends AbstractTaskController {
+
+    private static final int MAX_QUESTIONS_COUNT = 8;
+
     @FXML
     private VBox tasksVBox;
 
     @Override
-    public void rescaleViews(double parentWidth, double parentHeight) {
+    public void setPrefSize(double parentWidth, double parentHeight) {
 
     }
 
     @Override
     protected void prepareToStart() {
-        int numTasks = 7;
-        String[] ansTrue = new String[numTasks];
         Category category = (Category) controllerTopic;
         List<Translation> tasks = category.getTranslations();
+
+        int numTasks = Math.min(MAX_QUESTIONS_COUNT, tasks.size());
+
+        String[] ansTrue = new String[numTasks];
+
         Collections.shuffle(tasks);
         tasks.subList(0, numTasks - 1);
         List<Translation> translations = new ArrayList<>(tasks);

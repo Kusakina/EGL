@@ -11,14 +11,13 @@ import egl.client.model.topic.category.Language;
 import egl.client.model.topic.category.Translation;
 import egl.client.model.topic.category.Word;
 import egl.client.repository.profile.LocalProfileRepository;
-import egl.client.repository.topic.category.CategoryRepository;
 import egl.client.repository.task.TaskRepository;
 import egl.client.repository.task.TestRepository;
 import egl.client.repository.topic.TheoryRepository;
 import egl.client.repository.topic.TopicTypeRepository;
+import egl.client.repository.topic.category.CategoryRepository;
 import egl.client.repository.topic.category.TranslationRepository;
 import egl.client.repository.topic.category.WordRepository;
-import egl.client.service.model.profile.LocalProfileService;
 import egl.core.model.task.Task;
 import egl.core.model.task.Test;
 import egl.core.model.topic.TopicType;
@@ -52,23 +51,23 @@ public class DatabaseInitializationService {
                 "task.category.MissingLettersTaskController");
         taskRepository.save(missingLettersTask);
 
-        Task testTask1 = new Task(
+        Task oneOfFourTask = new Task(
                 "1 верный ответ из 4",
                 "Выберите из 4 вариантов ответов верный",
                 "task.category.OneOfFourTaskController");
-        taskRepository.save(testTask1);
+        taskRepository.save(oneOfFourTask);
 
-        Task testTask2 = new Task(
+        Task matchIndexTask = new Task(
                 "Сопоставь переводы",
                 "Соедините слова из левой и правой колонок",
                 "task.category.MatchIndexTaskController");
-        taskRepository.save(testTask2);
+        taskRepository.save(matchIndexTask);
 
-        Task TestTrueFalse = new Task(
-                "Задание 3",
-                "Необходимо указать соответствует ли слово своему переводу",
-                "task.TestControllerTask3");
-        taskRepository.save(TestTrueFalse);
+        Task trueFalseTask = new Task(
+                "Верно / неверно",
+                "Необходимо указать, соответствует ли слово своему переводу",
+                "task.category.TrueFalseTaskController");
+        taskRepository.save(trueFalseTask);
         /*Task TestTable = new Task(
                 "Задание 4",
                 "Необходимо заполнить таблицу",
@@ -78,8 +77,7 @@ public class DatabaseInitializationService {
         String testDescription = "На каждой вкладке одно задание.\n" +
                 "Чтобы задание зачли - необходимо нажать кнопку \"Завершить\" внутри вкладки с заданием.\n";
 
-        List<Task> categoryTestTasks = Arrays.asList(testTask1, testTask2);
-        List<Task> categoryTestTasks = Arrays.asList(categoryTheoryTask, TestTrueFalse);
+        List<Task> categoryTestTasks = Arrays.asList(oneOfFourTask, matchIndexTask, trueFalseTask);
         Test categoryTest = new Test("Итоговый тест по категории", testDescription, testSceneName, categoryTestTasks);
         testRepository.save(categoryTest);
 
