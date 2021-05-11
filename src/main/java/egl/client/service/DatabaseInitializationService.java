@@ -49,9 +49,9 @@ public class DatabaseInitializationService {
         taskRepository.save(missingLettersTask);
 
         Task testTask1 = new Task(
-                "Задание 1",
+                "1 верный ответ из 4",
                 "Выберите из 4 вариантов ответов верный",
-                "task.category.TestControllerTask1");
+                "task.category.OneOfFourTaskController");
         taskRepository.save(testTask1);
 
         Task testTask2 = new Task(

@@ -88,7 +88,7 @@ public class TestControllerTask2 extends AbstractTaskController {
     }
 
     @Override
-    public void rescaleViews(double parentWidth, double parentHeight) {
+    public void setPrefSize(double parentWidth, double parentHeight) {
 
     }
 }
