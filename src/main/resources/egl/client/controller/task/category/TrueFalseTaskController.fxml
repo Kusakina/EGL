@@ -1,0 +1,9 @@
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.VBox?>
+<ScrollPane fx:controller="egl.client.controller.task.category.TrueFalseTaskController"
+            xmlns:fx="http://javafx.com/fxml">
+   <VBox>
+           <VBox fx:id = "tasksVBox">
+           </VBox>
+   </VBox>
+</ScrollPane>
