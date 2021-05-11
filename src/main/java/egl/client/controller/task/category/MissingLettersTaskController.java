@@ -63,7 +63,7 @@ public class MissingLettersTaskController extends AbstractTaskController {
     private double fontSize;
 
     private void setRegionPrefSize(Region region) {
-        region.setPrefSize(fontSize * 2, fontSize * 2);
+        region.setPrefSize(fontSize * 2.5, fontSize * 2);
     }
 
     private TextField createLetterTextField(String letter) {
