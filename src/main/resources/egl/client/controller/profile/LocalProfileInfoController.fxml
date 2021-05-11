@@ -1,0 +1,9 @@
+<?import egl.client.view.pane.CustomBorderPane?>
+<?import egl.client.view.info.NameDescriptionInfoView?>
+<CustomBorderPane fx:controller="egl.client.controller.profile.LocalProfileInfoController"
+                  xmlns:fx="http://javafx.com/fxml">
+
+    <center>
+        <NameDescriptionInfoView fx:id="nameDescriptionInfoView" nameTitle="Имя"/>
+    </center>
+</CustomBorderPane>

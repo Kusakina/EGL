@@ -4,7 +4,7 @@ import javafx.fxml.Initializable;
 
 public interface Controller extends Initializable {
 
-    void rescaleViews(double parentWidth, double parentHeight);
+    void setPrefSize(double parentWidth, double parentHeight);
     void prepareToShow();
     void prepareToClose();
 }

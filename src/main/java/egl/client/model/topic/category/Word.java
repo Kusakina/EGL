@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
-import egl.core.model.DatabaseData;
+import egl.core.model.DatabaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
-public class Word extends DatabaseData {
+public class Word extends DatabaseEntity {
 
     @Column
     private String text;

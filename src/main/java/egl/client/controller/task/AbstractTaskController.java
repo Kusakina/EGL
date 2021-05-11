@@ -20,10 +20,6 @@ public abstract class AbstractTaskController implements TaskController {
 
     protected Result result;
 
-    protected AbstractTaskController() {
-        this.result = new Result();
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -40,6 +36,7 @@ public abstract class AbstractTaskController implements TaskController {
 
     @Override
     public void prepareToShow() {
+        this.result = new Result();
         prepareToStart();
     }
 
