@@ -12,4 +12,8 @@ import javax.persistence.Entity;
 @Data
 @NoArgsConstructor
 public abstract class Profile extends DescribedEntity {
+
+    protected Profile(String name, String description) {
+        super(name, description);
+    }
 }

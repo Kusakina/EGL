@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import egl.client.model.profile.LocalProfile;
 import egl.client.model.topic.Theory;
 import egl.client.model.topic.category.Category;
 import egl.client.model.topic.category.Language;
 import egl.client.model.topic.category.Translation;
 import egl.client.model.topic.category.Word;
+import egl.client.repository.profile.LocalProfileRepository;
 import egl.client.repository.topic.category.CategoryRepository;
 import egl.client.repository.task.TaskRepository;
 import egl.client.repository.task.TestRepository;
@@ -16,6 +18,7 @@ import egl.client.repository.topic.TheoryRepository;
 import egl.client.repository.topic.TopicTypeRepository;
 import egl.client.repository.topic.category.TranslationRepository;
 import egl.client.repository.topic.category.WordRepository;
+import egl.client.service.model.profile.LocalProfileService;
 import egl.core.model.task.Task;
 import egl.core.model.task.Test;
 import egl.core.model.topic.TopicType;
@@ -35,6 +38,7 @@ public class DatabaseInitializationService {
     private final WordRepository wordRepository;
     private final TranslationRepository translationRepository;
     private final CategoryRepository categoryRepository;
+    private final LocalProfileRepository localProfileRepository;
 
     public void run() {
         Task categoryTheoryTask = new Task(
@@ -113,5 +117,8 @@ public class DatabaseInitializationService {
         );
 
         categoryRepository.save(rainbowColorsTopic);
+
+        LocalProfile vasyaPupkinLocalProfile = new LocalProfile("Вася Пупкин", "Едет в Магадан");
+        localProfileRepository.save(vasyaPupkinLocalProfile);
     }
 }

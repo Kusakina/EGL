@@ -12,4 +12,8 @@ import javax.persistence.Entity;
 @Data
 @NoArgsConstructor
 public class LocalProfile extends Profile {
+
+    public LocalProfile(String name, String description) {
+        super(name, description);
+    }
 }
