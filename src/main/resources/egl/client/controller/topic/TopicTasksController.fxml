@@ -1,9 +1,9 @@
-<?import egl.client.view.table.NameSelectListView?>
+<?import egl.client.view.table.list.InfoSelectListView?>
 <?import egl.client.view.pane.CustomBorderPane?>
 <CustomBorderPane fx:controller="egl.client.controller.topic.TopicTasksController"
                   xmlns:fx="http://javafx.com/fxml">
 
     <center>
-        <NameSelectListView fx:id="tasksListView" nameTitle="Задание"/>
+        <InfoSelectListView fx:id="tasksListView" nameTitle="Задание"/>
     </center>
 </CustomBorderPane>

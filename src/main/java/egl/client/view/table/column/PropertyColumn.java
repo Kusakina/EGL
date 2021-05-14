@@ -1,4 +1,4 @@
-package egl.client.view.table;
+package egl.client.view.table.column;
 
 import javafx.beans.NamedArg;
 import javafx.scene.control.TableColumn;

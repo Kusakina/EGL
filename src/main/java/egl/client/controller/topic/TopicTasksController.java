@@ -7,7 +7,7 @@ import egl.client.controller.Controller;
 import egl.client.controller.task.TaskController;
 import egl.client.model.topic.LocalTopic;
 import egl.client.service.FxmlService;
-import egl.client.view.table.NameSelectListView;
+import egl.client.view.table.list.InfoSelectListView;
 import egl.core.model.task.Task;
 import javafx.fxml.FXML;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class TopicTasksController implements Controller {
 
     private final FxmlService fxmlService;
 
-    @FXML private NameSelectListView<Task> tasksListView;
+    @FXML private InfoSelectListView<Task> tasksListView;
 
     private LocalTopic controllerTopic;
 

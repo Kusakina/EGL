@@ -1,20 +1,20 @@
-package egl.client.view.table;
+package egl.client.view.table.list;
 
 import egl.client.service.FxmlService;
 import egl.client.service.model.EntityService;
 import egl.core.model.DescribedEntity;
 import lombok.Setter;
 
-public class EntityServiceListView<T extends DescribedEntity> extends EditRemoveListView<T> {
+public class InfoSelectEditRemoveListView<T extends DescribedEntity> extends InfoSelectListView<T> {
 
     @Setter private EntityService<T> service;
 
-    public EntityServiceListView() {
-        FxmlService.loadView(this, EntityServiceListView.class);
+    public InfoSelectEditRemoveListView() {
+        FxmlService.loadView(this, InfoSelectEditRemoveListView.class);
     }
 
     public void showItems() {
-        showItems(service.findAll());
+        setItems(service.findAll());
     }
 
     @Override

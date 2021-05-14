@@ -9,7 +9,7 @@ import egl.client.model.topic.category.Category;
 import egl.client.service.FxmlService;
 import egl.client.service.model.profile.LocalProfileService;
 import egl.client.service.model.topic.CategoryService;
-import egl.client.view.table.EntityServiceListView;
+import egl.client.view.table.list.InfoSelectEditRemoveListView;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.util.StringConverter;
@@ -29,7 +29,7 @@ public class LocalTopicsController implements Controller {
     private final CategoryService categoryService;
     private final LocalProfileService localProfileService;
 
-    @FXML private EntityServiceListView<Category> categoriesListView;
+    @FXML private InfoSelectEditRemoveListView<Category> categoriesListView;
     @FXML private Button localProfilesListButton;
 
     @Override

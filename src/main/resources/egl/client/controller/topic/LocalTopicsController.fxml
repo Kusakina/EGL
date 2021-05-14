@@ -1,4 +1,4 @@
-<?import egl.client.view.table.EntityServiceListView?>
+<?import egl.client.view.table.list.InfoSelectEditRemoveListView?>
 <?import egl.client.view.pane.CustomBorderPane?>
 <?import javafx.scene.control.Button?>
 <CustomBorderPane fx:controller="egl.client.controller.topic.LocalTopicsController"
@@ -13,6 +13,6 @@
     </top>
 
     <center>
-        <EntityServiceListView fx:id="categoriesListView" nameTitle="Название"/>
+        <InfoSelectEditRemoveListView fx:id="categoriesListView" nameTitle="Название"/>
     </center>
 </CustomBorderPane>

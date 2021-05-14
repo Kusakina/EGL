@@ -4,7 +4,7 @@ import egl.client.controller.Controller;
 import egl.client.model.profile.LocalProfile;
 import egl.client.service.FxmlService;
 import egl.client.service.model.profile.LocalProfileService;
-import egl.client.view.table.EntityServiceListView;
+import egl.client.view.table.list.InfoSelectEditRemoveListView;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableRow;
@@ -21,7 +21,7 @@ public class LocalProfilesController implements Controller {
     private final FxmlService fxmlService;
     private final LocalProfileService localProfileService;
 
-    @FXML private EntityServiceListView<LocalProfile> localProfilesListView;
+    @FXML private InfoSelectEditRemoveListView<LocalProfile> localProfilesListView;
     @FXML private Button createProfileButton;
     @FXML private Button exitProfileButton;
 
