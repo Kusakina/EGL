@@ -25,7 +25,7 @@ public class TranslationsListView extends CustomListView<Translation> implements
     public void validateData() {
         for (Translation translation : getItems()) {
             boolean invalid = Stream.of(translation.getSource(), translation.getTarget())
-                    .anyMatch(word -> word.getText().isBlank());
+                    .anyMatch(word -> null == word || word.getText().isBlank());
 
             if (invalid) {
                 throw new IllegalArgumentException("Слово не может быть пустым");

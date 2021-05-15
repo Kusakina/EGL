@@ -14,7 +14,7 @@ public class TranslationWordColumn extends PropertyColumn<Translation, Word> {
         return new StringConverter<>() {
             @Override
             public String toString(Word word) {
-                return word.getText();
+                return (null == word ? "" : word.getText());
             }
 
             @Override
