@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
-public abstract class CustomListView<T> extends CustomTableView<T> {
+public class CustomListView<T> extends CustomTableView<T> {
 
     @FXML protected TableColumn<T, String> nameColumn;
     @FXML protected ButtonColumn<T> selectColumn;
