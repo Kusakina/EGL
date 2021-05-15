@@ -44,30 +44,27 @@ public class DatabaseInitializationService {
                 "Информация о категории",
                 "Здесь описаны все переводы в категории",
                 "task.category.CategoryTheoryTaskController");
-        taskRepository.save(categoryTheoryTask);
+
         Task missingLettersTask = new Task(
                 "Буквоед",
                 "Вставьте правильные буквы на места пропусков так, чтобы полученное слово соответсвовало переводу",
                 "task.category.MissingLettersTaskController");
-        taskRepository.save(missingLettersTask);
 
         Task oneOfFourTask = new Task(
                 "1 верный ответ из 4",
                 "Выберите из 4 вариантов ответов верный",
                 "task.category.OneOfFourTaskController");
-        taskRepository.save(oneOfFourTask);
 
         Task matchIndexTask = new Task(
                 "Сопоставь переводы",
                 "Соедините слова из левой и правой колонок",
                 "task.category.MatchIndexTaskController");
-        taskRepository.save(matchIndexTask);
 
         Task trueFalseTask = new Task(
                 "Верно / неверно",
                 "Необходимо указать, соответствует ли слово своему переводу",
                 "task.category.TrueFalseTaskController");
-        taskRepository.save(trueFalseTask);
+
         /*Task TestTable = new Task(
                 "Задание 4",
                 "Необходимо заполнить таблицу",
@@ -79,7 +76,6 @@ public class DatabaseInitializationService {
 
         List<Task> categoryTestTasks = Arrays.asList(oneOfFourTask, matchIndexTask, trueFalseTask);
         Test categoryTest = new Test("Итоговый тест по категории", testDescription, testSceneName, categoryTestTasks);
-        testRepository.save(categoryTest);
 
         List<Task> categoryTasks = Arrays.asList(missingLettersTask);
         TopicType categoryTopicType = new TopicType(
@@ -96,7 +92,6 @@ public class DatabaseInitializationService {
                         "'(R)ichard (o)f (Y)ork (g)ave (b)attle (i)n (v)ain'."
 
         );
-        theoryRepository.save(rainbowColorsTheory);
 
         List<String> russianRainbowColors = Arrays.asList(
                 "красный", "оранжевый", "желтый", "зеленый", "голубой", "синий", "фиолетовый"
@@ -109,13 +104,8 @@ public class DatabaseInitializationService {
         List<Translation> rainbowColorsTranslations = new ArrayList<>();
         for (int i = 0; i < russianRainbowColors.size(); ++i) {
             Word russianWord = new Word(russianRainbowColors.get(i), Language.RUSSIAN);
-            wordRepository.save(russianWord);
-
             Word englishWord = new Word(englishRainbowColors.get(i), Language.ENGLISH);
-            wordRepository.save(englishWord);
-
             Translation translation = new Translation(russianWord, englishWord);
-            translationRepository.save(translation);
 
             rainbowColorsTranslations.add(translation);
         }
