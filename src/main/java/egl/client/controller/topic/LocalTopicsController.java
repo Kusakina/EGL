@@ -9,7 +9,7 @@ import egl.client.model.topic.category.Category;
 import egl.client.service.FxmlService;
 import egl.client.service.model.profile.LocalProfileService;
 import egl.client.service.model.topic.CategoryService;
-import egl.client.view.table.EntityServiceListView;
+import egl.client.view.table.list.InfoSelectEditRemoveListView;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.util.StringConverter;
@@ -29,8 +29,9 @@ public class LocalTopicsController implements Controller {
     private final CategoryService categoryService;
     private final LocalProfileService localProfileService;
 
-    @FXML private EntityServiceListView<Category> categoriesListView;
+    @FXML private InfoSelectEditRemoveListView<Category> categoriesListView;
     @FXML private Button localProfilesListButton;
+    @FXML private Button createCategoryButton;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -41,6 +42,9 @@ public class LocalTopicsController implements Controller {
     private void initializeCategories() {
         categoriesListView.setService(categoryService);
         categoriesListView.setOnSelect(this::onTopicSelect);
+        categoriesListView.setOnEdit(this::onCategoryEdit);
+
+        createCategoryButton.setOnAction(event -> onCategoryCreate());
     }
 
     private void initializeProfiles() {
@@ -71,12 +75,34 @@ public class LocalTopicsController implements Controller {
     private void onTopicSelect(LocalTopic topic) {
         var localTopicRoot = fxmlService.load(TopicTasksController.class);
 
-        var topicController = (TopicTasksController) localTopicRoot.getController();
+        var topicController = localTopicRoot.getController();
         topicController.setContext(topic);
 
         fxmlService.showStage(
                 localTopicRoot, topic.getName(), WindowController.CLOSE
         );
+    }
+
+    private void onCategoryEdit(Category category) {
+        onCategoryEdit(category, false, "Изменить данные");
+    }
+
+    private void onCategoryCreate() {
+        var category = new Category();
+        onCategoryEdit(category, true, "Новая категория");
+    }
+
+    private void onCategoryEdit(Category category, boolean isCreated, String title) {
+        var changed = fxmlService.showInfoDialog(
+                CategoryInfoController.class,
+                category,
+                title, isCreated
+        );
+
+        if (changed) {
+            categoryService.save(category);
+            categoriesListView.showItems();
+        }
     }
 
     @Override

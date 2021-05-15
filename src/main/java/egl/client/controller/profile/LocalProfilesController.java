@@ -4,7 +4,7 @@ import egl.client.controller.Controller;
 import egl.client.model.profile.LocalProfile;
 import egl.client.service.FxmlService;
 import egl.client.service.model.profile.LocalProfileService;
-import egl.client.view.table.EntityServiceListView;
+import egl.client.view.table.list.InfoSelectEditRemoveListView;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableRow;
@@ -21,7 +21,7 @@ public class LocalProfilesController implements Controller {
     private final FxmlService fxmlService;
     private final LocalProfileService localProfileService;
 
-    @FXML private EntityServiceListView<LocalProfile> localProfilesListView;
+    @FXML private InfoSelectEditRemoveListView<LocalProfile> localProfilesListView;
     @FXML private Button createProfileButton;
     @FXML private Button exitProfileButton;
 
@@ -42,8 +42,8 @@ public class LocalProfilesController implements Controller {
                     var selectedProfile = localProfileService.getSelectedProfile();
                     boolean selected = selectedProfile != null && selectedProfile.equals(profile);
 
-                    String color = (selected ? "06c806" : "white");
-                    setStyle(String.format("-fx-text-inner-color: black; -fx-background-color: #%s;", color));
+                    String color = (selected ? "#06c806" : "white");
+                    setStyle(String.format("-fx-text-inner-color: black; -fx-background-color: %s;", color));
                 }
             }
         });

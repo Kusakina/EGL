@@ -3,6 +3,7 @@ package egl.client.model.topic.category;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
@@ -22,7 +23,7 @@ import org.hibernate.annotations.FetchMode;
 @NoArgsConstructor
 public class Category extends LocalTopic {
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @Fetch(value = FetchMode.SUBSELECT)
     private List<Translation> translations;
 
@@ -33,6 +34,8 @@ public class Category extends LocalTopic {
     }
 
     public List<Translation> getTranslations() {
-        return new ArrayList<>(translations);
+        var translationsCopy = new ArrayList<Translation>();
+        if (null != translations) translationsCopy.addAll(translations);
+        return translationsCopy;
     }
 }

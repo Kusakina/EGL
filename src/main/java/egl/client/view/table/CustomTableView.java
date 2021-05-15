@@ -1,18 +1,16 @@
 package egl.client.view.table;
 
 import egl.client.service.FxmlService;
+import javafx.fxml.Initializable;
 import javafx.scene.control.TableView;
 
-import java.util.List;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class CustomTableView<T> extends TableView<T> {
+public class CustomTableView<T> extends TableView<T> implements Initializable {
 
     public CustomTableView() {
         FxmlService.loadView(this, CustomTableView.class);
-    }
-
-    public void showItems(List<T> items) {
-        this.getItems().setAll(items);
     }
 
     private void rescaleColumns() {
@@ -29,5 +27,10 @@ public class CustomTableView<T> extends TableView<T> {
     public void setPrefSize(double parentWidth, double parentHeight) {
         super.setPrefSize(parentWidth, parentHeight);
         rescaleColumns();
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
     }
 }

@@ -1,0 +1,30 @@
+package egl.client.controller.topic.info;
+
+import egl.client.model.topic.Theory;
+import egl.client.model.topic.category.Category;
+import egl.client.view.info.EntityInfoView;
+import javafx.scene.control.TextArea;
+
+public class TheoryTextArea extends TextArea implements EntityInfoView<Category>  {
+
+    @Override
+    public void initData(Category category, boolean isCreated) {
+        var text = (isCreated ? "" : category.getTheory().getText());
+        setText(text);
+    }
+
+    @Override
+    public void validateData() {
+
+    }
+
+    @Override
+    public void fillData(Category category) {
+        var theory = category.getTheory();
+        if (null == theory) {
+            category.setTheory(theory = new Theory());
+        }
+
+        theory.setText(getText());
+    }
+}
