@@ -42,8 +42,8 @@ public class LocalProfilesController implements Controller {
                     var selectedProfile = localProfileService.getSelectedProfile();
                     boolean selected = selectedProfile != null && selectedProfile.equals(profile);
 
-                    String color = (selected ? "06c806" : "white");
-                    setStyle(String.format("-fx-text-inner-color: black; -fx-background-color: #%s;", color));
+                    String color = (selected ? "#06c806" : "white");
+                    setStyle(String.format("-fx-text-inner-color: black; -fx-background-color: %s;", color));
                 }
             }
         });
