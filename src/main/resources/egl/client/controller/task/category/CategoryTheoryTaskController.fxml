@@ -1,5 +1,5 @@
 <?import egl.client.view.pane.CustomBorderPane?>
-<?import egl.client.view.table.column.PropertyColumn?>
+<?import egl.client.view.table.column.TranslationWordColumn?>
 <?import egl.client.view.table.list.CustomListView?>
 <?import javafx.scene.control.TextArea?>
 <CustomBorderPane fx:controller="egl.client.controller.task.category.CategoryTheoryTaskController"
@@ -12,8 +12,8 @@
     <center>
         <CustomListView fx:id="translationsTableView">
             <columns>
-                <PropertyColumn text="Оригинал" property="source"/>
-                <PropertyColumn text="Перевод" property="target"/>
+                <TranslationWordColumn text="Оригинал" property="source" language="RUSSIAN"/>
+                <TranslationWordColumn text="Перевод" property="target" language="ENGLISH"/>
             </columns>
         </CustomListView>
     </center>
