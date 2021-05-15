@@ -15,10 +15,10 @@
         </HBox>
     </top>
 
-    <bottom>
+    <center>
         <VBox>
             <Label text="Описание"/>
             <TextArea fx:id="descriptionTextArea"/>
         </VBox>
-    </bottom>
+    </center>
 </fx:root>
