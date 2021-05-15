@@ -31,6 +31,7 @@ public class LocalTopicsController implements Controller {
 
     @FXML private InfoSelectEditRemoveListView<Category> categoriesListView;
     @FXML private Button localProfilesListButton;
+    @FXML private Button createCategoryButton;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -42,6 +43,8 @@ public class LocalTopicsController implements Controller {
         categoriesListView.setService(categoryService);
         categoriesListView.setOnSelect(this::onTopicSelect);
         categoriesListView.setOnEdit(this::onCategoryEdit);
+
+        createCategoryButton.setOnAction(event -> onCategoryCreate());
     }
 
     private void initializeProfiles() {
@@ -84,7 +87,8 @@ public class LocalTopicsController implements Controller {
         onCategoryEdit(category, false, "Изменить данные");
     }
 
-    private void onCategoryCreate(Category category) {
+    private void onCategoryCreate() {
+        var category = new Category();
         onCategoryEdit(category, true, "Новая категория");
     }
 

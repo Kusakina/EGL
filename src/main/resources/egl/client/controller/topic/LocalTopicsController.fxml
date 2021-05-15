@@ -15,4 +15,12 @@
     <center>
         <InfoSelectEditRemoveListView fx:id="categoriesListView" nameTitle="Название"/>
     </center>
+
+    <bottom>
+        <CustomBorderPane>
+            <right>
+                <Button fx:id="createCategoryButton" text="Создать категорию"/>
+            </right>
+        </CustomBorderPane>
+    </bottom>
 </CustomBorderPane>
