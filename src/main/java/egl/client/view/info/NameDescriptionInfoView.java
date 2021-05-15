@@ -15,7 +15,7 @@ public class NameDescriptionInfoView<T extends DescribedEntity> extends CustomBo
     @FXML private TextArea descriptionTextArea;
 
     public NameDescriptionInfoView() {
-        FxmlService.loadView(this, NameDescriptionInfoView.class, true);
+        FxmlService.loadView(this, NameDescriptionInfoView.class);
     }
 
     public void setNameTitle(String nameTitle) {

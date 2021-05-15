@@ -31,7 +31,7 @@ public class OneOfFourQuestionView extends GridPane implements Initializable {
         this.correctTranslation = correctTranslation;
         this.incorrectAnswers = incorrectAnswers;
 
-        FxmlService.loadView(this, OneOfFourQuestionView.class, true);
+        FxmlService.loadView(this, OneOfFourQuestionView.class);
     }
 
     @Override
