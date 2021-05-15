@@ -1,6 +1,5 @@
 package egl.client.view.table.list;
 
-import egl.client.service.FxmlService;
 import egl.client.view.table.CustomTableView;
 import egl.client.view.table.column.ButtonColumn;
 import javafx.fxml.FXML;
