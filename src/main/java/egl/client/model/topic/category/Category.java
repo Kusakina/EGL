@@ -34,6 +34,8 @@ public class Category extends LocalTopic {
     }
 
     public List<Translation> getTranslations() {
-        return new ArrayList<>(translations);
+        var translationsCopy = new ArrayList<Translation>();
+        if (null != translations) translationsCopy.addAll(translations);
+        return translationsCopy;
     }
 }
