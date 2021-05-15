@@ -1,6 +1,8 @@
 package egl.client.controller.topic;
 
 import egl.client.controller.info.AbstractEntityInfoController;
+import egl.client.controller.topic.info.TheoryTextArea;
+import egl.client.controller.topic.info.TranslationsListView;
 import egl.client.model.topic.category.Category;
 import egl.client.view.info.NameDescriptionInfoView;
 import javafx.fxml.FXML;

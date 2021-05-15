@@ -1,6 +1,6 @@
-<?import egl.client.controller.topic.TranslationsListView?>
+<?import egl.client.controller.topic.info.TranslationsListView?>
 <?import egl.client.view.table.column.ButtonColumn?>
-<fx:root type="egl.client.controller.topic.TranslationsListView"
+<fx:root type="TranslationsListView"
          xmlns:fx="http://javafx.com/fxml">
     <columns>
         <ButtonColumn fx:id="removeColumn" text="Удалить"/>

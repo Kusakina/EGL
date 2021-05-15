@@ -1,4 +1,4 @@
-package egl.client.controller.topic;
+package egl.client.controller.topic.info;
 
 import egl.client.service.FxmlService;
 

@@ -1,4 +1,4 @@
-<?import egl.client.controller.topic.TranslationWordColumn?>
+<?import egl.client.controller.topic.info.TranslationWordColumn?>
 <?import egl.client.view.table.list.CustomListView?>
 <fx:root type="egl.client.view.table.list.CustomListView"
           xmlns:fx="http://javafx.com/fxml">

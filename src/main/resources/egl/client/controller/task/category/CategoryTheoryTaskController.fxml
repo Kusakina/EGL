@@ -1,4 +1,4 @@
-<?import egl.client.controller.topic.TranslationsListView?>
+<?import egl.client.controller.topic.info.TranslationsListView?>
 <?import egl.client.view.pane.CustomBorderPane?>
 <?import javafx.scene.control.TextArea?>
 <CustomBorderPane fx:controller="egl.client.controller.task.category.CategoryTheoryTaskController"

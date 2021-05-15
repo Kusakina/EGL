@@ -1,5 +1,5 @@
-<?import egl.client.controller.topic.TheoryTextArea?>
-<?import egl.client.controller.topic.TranslationsEditableListView?>
+<?import egl.client.controller.topic.info.TheoryTextArea?>
+<?import egl.client.controller.topic.info.TranslationsEditableListView?>
 <?import egl.client.view.info.NameDescriptionInfoView?>
 <?import egl.client.view.pane.CustomBorderPane?>
 <CustomBorderPane fx:controller="egl.client.controller.topic.CategoryInfoController"
