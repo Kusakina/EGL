@@ -4,7 +4,9 @@ import egl.client.controller.info.AbstractEntityInfoController;
 import egl.client.controller.topic.info.TheoryTextArea;
 import egl.client.controller.topic.info.TranslationsListView;
 import egl.client.model.topic.category.Category;
+import egl.client.model.topic.category.Translation;
 import egl.client.view.info.NameDescriptionInfoView;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxmlView;
@@ -32,5 +34,9 @@ public class CategoryInfoController extends AbstractEntityInfoController<Categor
         nameDescriptionInfoView.setPrefSize(parentWidth, parentHeight);
         translationsListView.setPrefSize(parentWidth, parentHeight);
         theoryTextArea.setPrefSize(parentWidth, parentHeight);
+    }
+
+    public void onAddTranslation(ActionEvent actionEvent) {
+        translationsListView.getItems().add(new Translation());
     }
 }

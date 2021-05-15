@@ -7,6 +7,9 @@ import egl.client.view.table.column.PropertyColumn;
 import javafx.beans.NamedArg;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.StringConverter;
+import lombok.Setter;
+
+import java.util.function.BiConsumer;
 
 public class TranslationWordColumn extends PropertyColumn<Translation, Word> {
 
@@ -24,10 +27,18 @@ public class TranslationWordColumn extends PropertyColumn<Translation, Word> {
         };
     }
 
+    @Setter private BiConsumer<Translation, Word> wordProperty;
+
     public TranslationWordColumn(@NamedArg("text") String title, @NamedArg("property") String propertyName, @NamedArg("language") Language language) {
         super(title, propertyName);
 
         var wordConverter = createWordConverter(language);
-        setCellFactory(column -> new TextFieldTableCell<>(wordConverter));
+        setCellFactory(TextFieldTableCell.forTableColumn(wordConverter));
+
+        setOnEditCommit(event -> {
+            var translations =  event.getTableView().getItems();
+            var translation = translations.get(event.getTablePosition().getRow());
+            wordProperty.accept(translation, event.getNewValue());
+        });
     }
 }

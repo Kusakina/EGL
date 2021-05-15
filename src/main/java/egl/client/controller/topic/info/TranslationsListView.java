@@ -5,14 +5,28 @@ import egl.client.model.topic.category.Translation;
 import egl.client.service.FxmlService;
 import egl.client.view.info.EntityInfoView;
 import egl.client.view.table.list.CustomListView;
+import javafx.fxml.FXML;
 
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 import java.util.stream.Stream;
 
 public class TranslationsListView extends CustomListView<Translation> implements EntityInfoView<Category>  {
 
+    @FXML private TranslationWordColumn sourceColumn;
+    @FXML private TranslationWordColumn targetColumn;
+
     public TranslationsListView() {
         FxmlService.loadView(this, TranslationsListView.class);
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        super.initialize(url, resourceBundle);
+
+        sourceColumn.setWordProperty(Translation::setSource);
+        targetColumn.setWordProperty(Translation::setTarget);
     }
 
     @Override
