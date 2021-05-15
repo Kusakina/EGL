@@ -30,7 +30,6 @@ public class CategoryTheoryTaskController extends TheoryTaskController {
     @Override
     protected void prepareSpecificTheory() {
         Category category = (Category) controllerTopic;
-        var categoryTranslations = category.getTranslations();
-        translationsListView.setItems(categoryTranslations);
+        translationsListView.initData(category, false);
     }
 }
