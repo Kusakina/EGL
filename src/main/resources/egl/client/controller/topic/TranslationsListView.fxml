@@ -1,0 +1,9 @@
+<?import egl.client.controller.topic.TranslationWordColumn?>
+<?import egl.client.view.table.list.CustomListView?>
+<fx:root type="egl.client.view.table.list.CustomListView"
+          xmlns:fx="http://javafx.com/fxml">
+    <columns>
+        <TranslationWordColumn text="Оригинал" property="source" language="RUSSIAN"/>
+        <TranslationWordColumn text="Перевод" property="target" language="ENGLISH"/>
+    </columns>
+</fx:root>

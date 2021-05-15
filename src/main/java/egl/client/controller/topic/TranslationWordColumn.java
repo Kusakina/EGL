@@ -1,8 +1,9 @@
-package egl.client.view.table.column;
+package egl.client.controller.topic;
 
 import egl.client.model.topic.category.Language;
 import egl.client.model.topic.category.Translation;
 import egl.client.model.topic.category.Word;
+import egl.client.view.table.column.PropertyColumn;
 import javafx.beans.NamedArg;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.StringConverter;
