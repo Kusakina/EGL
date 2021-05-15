@@ -1,14 +1,19 @@
-<?import egl.client.controller.topic.TranslationsListView?>
-<?import egl.client.view.pane.CustomBorderPane?>
+<?import egl.client.controller.topic.TheoryTextArea?>
+<?import egl.client.controller.topic.TranslationsEditableListView?>
 <?import egl.client.view.info.NameDescriptionInfoView?>
+<?import egl.client.view.pane.CustomBorderPane?>
 <CustomBorderPane fx:controller="egl.client.controller.topic.CategoryInfoController"
                   xmlns:fx="http://javafx.com/fxml" margin="5">
 
     <top>
-        <NameDescriptionInfoView fx:id="nameDescriptionInfoView"/>
+        <NameDescriptionInfoView fx:id="nameDescriptionInfoView" nameTitle="Название"/>
     </top>
 
+    <right>
+        <TranslationsEditableListView fx:id="translationsListView"/>
+    </right>
+
     <center>
-        <TranslationsListView fx:id="translationsListView"/>
+        <TheoryTextArea fx:id="theoryTextArea"/>
     </center>
 </CustomBorderPane>

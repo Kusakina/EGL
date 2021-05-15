@@ -18,31 +18,11 @@ public class LocalProfileInfoController extends AbstractEntityInfoController<Loc
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
-    }
-
-    @Override
-    public void validateData() {
-        nameDescriptionInfoView.validateData();
-    }
-
-    @Override
-    public void fillData() {
-        nameDescriptionInfoView.fillData(entity);
+        addInnerInfoViews(nameDescriptionInfoView);
     }
 
     @Override
     public void setPrefSize(double parentWidth, double parentHeight) {
         nameDescriptionInfoView.setPrefSize(parentWidth, parentHeight);
-    }
-
-    @Override
-    public void prepareToShow() {
-        nameDescriptionInfoView.initData(entity, isCreated);
-    }
-
-    @Override
-    public void prepareToClose() {
-
     }
 }

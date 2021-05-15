@@ -24,8 +24,7 @@ public class EntityInfoDialog<T extends DatabaseEntity> extends Dialog<T> {
 
         setOnCloseRequest(dialogEvent -> {
             try {
-                controller.validateData();
-                controller.prepareToClose();
+                if (null != getResult()) controller.prepareToClose();
             } catch (IllegalArgumentException e) {
                 dialogEvent.consume();
                 new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK).show();
@@ -34,7 +33,6 @@ public class EntityInfoDialog<T extends DatabaseEntity> extends Dialog<T> {
 
         setResultConverter(buttonType -> {
             if (ButtonType.OK.equals(buttonType)) {
-                controller.fillData();
                 return controller.getEntity();
             } else {
                 return null;
