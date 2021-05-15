@@ -86,12 +86,14 @@ public class FxmlService {
         controller.setContext(entity, isCreated);
 
         var dialog = new EntityInfoDialog<>(controller);
-        dialog.getDialogPane().setContent(controllerRoot.getView().orElseThrow());
         dialog.setTitle(title);
 
+        var dialogPane = dialog.getDialogPane();
+        dialogPane.setContent(controllerRoot.getView().orElseThrow());
+
         var windowSize = getWindowSize();
-        dialog.setWidth(windowSize.getWidth());
-        dialog.setHeight(windowSize.getHeight());
+        dialogPane.setPrefWidth(windowSize.getWidth());
+        dialogPane.setPrefHeight(windowSize.getHeight());
 
         return dialog.showInfo();
     }
