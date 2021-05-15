@@ -16,7 +16,6 @@ public class CustomBorderPane extends BorderPane {
     @Getter private double margin;
 
     public CustomBorderPane() {
-        FxmlService.loadView(this, CustomBorderPane.class);
         setSpacing(DEFAULT_SPACING);
         setMargin(DEFAULT_MARGIN);
     }

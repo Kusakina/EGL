@@ -18,10 +18,6 @@ public class CustomListView<T> extends CustomTableView<T> {
     @FXML protected ButtonColumn<T> editColumn;
     @FXML protected ButtonColumn<T> removeColumn;
 
-    public CustomListView() {
-        FxmlService.loadView(this, CustomListView.class);
-    }
-
     public void setItems(List<T> items) {
         getItems().setAll(items);
     }
