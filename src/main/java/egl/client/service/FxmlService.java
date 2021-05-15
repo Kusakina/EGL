@@ -80,22 +80,28 @@ public class FxmlService {
             > boolean showInfoDialog(
             Class<ControllerType> controllerClass, T entity,
             String title, boolean isCreated) {
-        var controllerRoot = load(controllerClass);
+        try {
+            var loader = createFxmlLoader(controllerClass);
 
-        var controller = controllerRoot.getController();
-        controller.setContext(entity, isCreated);
+            Parent root = loader.load();
 
-        var dialog = new EntityInfoDialog<>(controller);
-        dialog.setTitle(title);
+            var controller = loader.<ControllerType>getController();
+            controller.setContext(entity, isCreated);
 
-        var dialogPane = dialog.getDialogPane();
-        dialogPane.setContent(controllerRoot.getView().orElseThrow());
+            var dialog = new EntityInfoDialog<>(controller);
+            dialog.setTitle(title);
 
-        var windowSize = getWindowSize();
-        dialogPane.setPrefWidth(windowSize.getWidth());
-        dialogPane.setPrefHeight(windowSize.getHeight());
+            var dialogPane = dialog.getDialogPane();
+            dialogPane.setContent(root);
 
-        return dialog.showInfo();
+            var windowSize = getWindowSize();
+            dialogPane.setPrefWidth(windowSize.getWidth());
+            dialogPane.setPrefHeight(windowSize.getHeight());
+
+            return dialog.showInfo();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static FXMLLoader createFxmlLoader(Class<?> controllerClass) {

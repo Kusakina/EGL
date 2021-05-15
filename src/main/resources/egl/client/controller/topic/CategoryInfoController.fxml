@@ -3,7 +3,7 @@
 <?import egl.client.view.info.NameDescriptionInfoView?>
 <?import egl.client.view.pane.CustomBorderPane?>
 <?import javafx.scene.control.Button?>
-<CustomBorderPane fx:controller="egl.client.controller.topic.CategoryInfoController"
+<CustomBorderPane fx:id="parentPane" fx:controller="egl.client.controller.topic.CategoryInfoController"
                   xmlns:fx="http://javafx.com/fxml" margin="5">
 
     <top>
@@ -11,7 +11,7 @@
     </top>
 
     <right>
-        <CustomBorderPane>
+        <CustomBorderPane fx:id="editableTranslationsPane">
             <center>
                 <TranslationsEditableListView fx:id="translationsListView"/>
             </center>
