@@ -17,7 +17,6 @@ import net.rgielen.fxweaver.core.FxWeaver;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -38,18 +37,18 @@ public class FxmlService {
         return load(controllerClassWith(controllerClassName));
     }
 
-    public <T extends Controller> FxControllerAndView<? extends T, Parent> load(Class<? extends T> controllerClass) {
+    public <T extends Controller> FxControllerAndView<T, Parent> load(Class<T> controllerClass) {
         return fxWeaver.load(controllerClass);
     }
 
     public <T extends Controller> void showStage(
-            FxControllerAndView<? extends T, Parent> innerRoot,
+            FxControllerAndView<T, Parent> innerRoot,
             String title, String closeButtonText) {
         showStage(innerRoot, title, closeButtonText, new Stage());
     }
 
     public <T extends Controller> void showStage(
-            FxControllerAndView<? extends T, Parent> innerRoot,
+            FxControllerAndView<T, Parent> innerRoot,
             String title, String closeButtonText,
             Stage stage) {
         try {

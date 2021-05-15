@@ -1,0 +1,14 @@
+<?import egl.client.controller.topic.TranslationsListView?>
+<?import egl.client.view.pane.CustomBorderPane?>
+<?import egl.client.view.info.NameDescriptionInfoView?>
+<CustomBorderPane fx:controller="egl.client.controller.topic.CategoryInfoController"
+                  xmlns:fx="http://javafx.com/fxml" margin="5">
+
+    <top>
+        <NameDescriptionInfoView fx:id="nameDescriptionInfoView"/>
+    </top>
+
+    <center>
+        <TranslationsListView fx:id="translationsListView"/>
+    </center>
+</CustomBorderPane>

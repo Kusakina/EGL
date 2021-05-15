@@ -41,6 +41,7 @@ public class LocalTopicsController implements Controller {
     private void initializeCategories() {
         categoriesListView.setService(categoryService);
         categoriesListView.setOnSelect(this::onTopicSelect);
+        categoriesListView.setOnEdit(this::onCategoryEdit);
     }
 
     private void initializeProfiles() {
@@ -71,12 +72,33 @@ public class LocalTopicsController implements Controller {
     private void onTopicSelect(LocalTopic topic) {
         var localTopicRoot = fxmlService.load(TopicTasksController.class);
 
-        var topicController = (TopicTasksController) localTopicRoot.getController();
+        var topicController = localTopicRoot.getController();
         topicController.setContext(topic);
 
         fxmlService.showStage(
                 localTopicRoot, topic.getName(), WindowController.CLOSE
         );
+    }
+
+    private void onCategoryEdit(Category category) {
+        onCategoryEdit(category, false, "Изменить данные");
+    }
+
+    private void onCategoryCreate(Category category) {
+        onCategoryEdit(category, true, "Новая категория");
+    }
+
+    private void onCategoryEdit(Category category, boolean isCreated, String title) {
+        var changed = fxmlService.showInfoDialog(
+                CategoryInfoController.class,
+                category,
+                title, isCreated
+        );
+
+        if (changed) {
+            categoryService.save(category);
+            categoriesListView.showItems();
+        }
     }
 
     @Override
