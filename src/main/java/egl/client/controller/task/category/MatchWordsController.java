@@ -10,15 +10,19 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import net.rgielen.fxweaver.core.FxmlView;
 
 import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class MatchWordsController extends AbstractTaskController implements Initializable {
+@FxmlView
+public class MatchWordsController extends AbstractTaskController {
 
-@FXML
+    @FXML
     public void initialize(URL location, ResourceBundle resourceBundle) {
+        super.initialize(location, resourceBundle);
+
         WordCase[] Colors = new WordCase[10];
         Colors[0] = new WordCase("Red", "Красный", 1);
         Colors[1] = new WordCase("Blue", "Синий", 2);
@@ -51,7 +55,7 @@ public class MatchWordsController extends AbstractTaskController implements Init
         column3.setPercentWidth(33.3);
         //table.getColumnConstraints().add(column3);
 
-        ArrayList<WordCase> rightList = new  ArrayList<>();
+        ArrayList<WordCase> rightList = new ArrayList<>();
         for (WordCase wordCase : leftList) {
             rightList.add(new WordCase(wordCase.getOriginal(), wordCase.getTranslation(), wordCase.getId()));
         }
@@ -99,14 +103,14 @@ public class MatchWordsController extends AbstractTaskController implements Init
                     ToggleButton origin = leftList.get(i).button, translation = rightList.get(j).button;
                     translation.selectedProperty().addListener((observableValue, oldValue, newValue) -> { // read documentation
                         if (newValue && origin.isSelected()) {
-                            answers[finalI].setText(leftList.get(finalI).getOriginal()+ " - " + rightList.get(finalJ).getTranslation());
+                            answers[finalI].setText(leftList.get(finalI).getOriginal() + " - " + rightList.get(finalJ).getTranslation());
                             rightList.get(finalJ).button.setText("");
                             leftList.get(finalI).button.setText("");
                         }
                     });
                     origin.selectedProperty().addListener((observableValue, oldValue, newValue) -> {
                         if (newValue && translation.isSelected()) {
-                            answers[finalI].setText(leftList.get(finalI).getOriginal()+ " - " + rightList.get(finalJ).getTranslation());
+                            answers[finalI].setText(leftList.get(finalI).getOriginal() + " - " + rightList.get(finalJ).getTranslation());
                             rightList.get(finalJ).button.setText("");
                             leftList.get(finalI).button.setText("");
                         }
@@ -114,5 +118,18 @@ public class MatchWordsController extends AbstractTaskController implements Init
                 }
             }
         }
+    }
+
+    @Override
+    protected void prepareToStart() {
+
+    }
+
+    @Override
+    protected void prepareToFinish() {
+    }
+
+    @Override
+    public void setPrefSize(double parentWidth, double parentHeight) {
     }
 }
