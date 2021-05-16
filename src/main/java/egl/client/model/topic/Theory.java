@@ -17,6 +17,10 @@ public class Theory extends DatabaseEntity {
     @Column(columnDefinition = "LONGTEXT")
     private String text;
 
+    public Theory(Theory other) {
+        this.text = (null != other) ? other.text : "";
+    }
+
     public Theory(String text) {
         this.text = text;
     }

@@ -21,6 +21,11 @@ public class Translation extends DatabaseEntity {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     private Word target;
 
+    public Translation(Translation other) {
+        this.source = new Word(other.source);
+        this.target = new Word(other.target);
+    }
+
     public Translation(Word source, Word target) {
         this.source = source;
         this.target = target;

@@ -23,6 +23,13 @@ public class Word extends DatabaseEntity {
     @Enumerated(EnumType.STRING)
     private Language language;
 
+    public Word(Word other) {
+        if (null != other) {
+            this.text = other.text;
+            this.language = other.language;
+        }
+    }
+
     public Word(String text, Language language) {
         this.text = text;
         this.language = language;

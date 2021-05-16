@@ -2,6 +2,7 @@ package egl.client.model.topic.category;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -26,6 +27,13 @@ public class Category extends LocalTopic {
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     @Fetch(value = FetchMode.SUBSELECT)
     private List<Translation> translations;
+
+    public Category(Category other) {
+        super(other);
+
+        this.translations = other.getTranslations()
+                .stream().map(Translation::new).collect(Collectors.toList());
+    }
 
     public Category(String name, String description, TopicType topicType, Theory theory,
                     List<Translation> translations) {
