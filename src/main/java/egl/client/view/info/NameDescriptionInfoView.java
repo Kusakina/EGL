@@ -28,8 +28,11 @@ public class NameDescriptionInfoView<T extends DescribedEntity> extends CustomBo
 
     @Override
     public void initData(T entity, boolean isCreated) {
-        nameTextField.setText(isCreated ? "" : entity.getName());
-        descriptionTextArea.setText(isCreated ? "" : entity.getDescription());
+        var name = (null != entity.getName() ? entity.getName() : "");
+        nameTextField.setText(name);
+
+        var description = (null != entity.getDescription() ? entity.getDescription() : "");
+        descriptionTextArea.setText(description);
     }
 
     @Override

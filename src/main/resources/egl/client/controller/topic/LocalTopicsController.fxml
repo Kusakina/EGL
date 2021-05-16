@@ -1,6 +1,7 @@
 <?import egl.client.view.table.list.InfoSelectEditRemoveListView?>
 <?import egl.client.view.pane.CustomBorderPane?>
 <?import javafx.scene.control.Button?>
+<?import egl.client.view.table.column.ButtonColumn?>
 <CustomBorderPane fx:controller="egl.client.controller.topic.LocalTopicsController"
                   xmlns:fx="http://javafx.com/fxml" margin="5">
 
@@ -13,7 +14,11 @@
     </top>
 
     <center>
-        <InfoSelectEditRemoveListView fx:id="categoriesListView" nameTitle="Название"/>
+        <InfoSelectEditRemoveListView fx:id="categoriesListView" nameTitle="Название">
+            <columns>
+                <ButtonColumn fx:id="copyCategoryColumn" text="Скопировать"/>
+            </columns>
+        </InfoSelectEditRemoveListView>
     </center>
 
     <bottom>

@@ -9,7 +9,8 @@ public class TheoryTextArea extends TextArea implements EntityInfoView<Category>
 
     @Override
     public void initData(Category category, boolean isCreated) {
-        var text = (isCreated ? "" : category.getTheory().getText());
+        var theory = category.getTheory();
+        var text= (null != theory && null != theory.getText() ? theory.getText() : "");
         setText(text);
     }
 

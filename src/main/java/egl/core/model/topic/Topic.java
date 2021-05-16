@@ -17,6 +17,11 @@ public abstract class Topic extends DescribedEntity {
     @ManyToOne
     TopicType topicType;
 
+    public Topic(Topic other){
+        super(other);
+        this.topicType = other.topicType;
+    }
+
     public Topic(String name, String description, TopicType topicType) {
         super(name, description);
         this.topicType = topicType;

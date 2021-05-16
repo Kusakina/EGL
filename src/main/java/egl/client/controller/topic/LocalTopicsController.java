@@ -9,6 +9,7 @@ import egl.client.model.topic.category.Category;
 import egl.client.service.FxmlService;
 import egl.client.service.model.profile.LocalProfileService;
 import egl.client.service.model.topic.CategoryService;
+import egl.client.view.table.column.ButtonColumn;
 import egl.client.view.table.list.InfoSelectEditRemoveListView;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -30,6 +31,8 @@ public class LocalTopicsController implements Controller {
     private final LocalProfileService localProfileService;
 
     @FXML private InfoSelectEditRemoveListView<Category> categoriesListView;
+    @FXML private ButtonColumn<Category> copyCategoryColumn;
+
     @FXML private Button localProfilesListButton;
     @FXML private Button createCategoryButton;
 
@@ -43,6 +46,8 @@ public class LocalTopicsController implements Controller {
         categoriesListView.setService(categoryService);
         categoriesListView.setOnSelect(this::onTopicSelect);
         categoriesListView.setOnEdit(this::onCategoryEdit);
+
+        copyCategoryColumn.setOnAction(this::onCategoryCopy);
 
         createCategoryButton.setOnAction(event -> onCategoryCreate());
     }
@@ -88,8 +93,11 @@ public class LocalTopicsController implements Controller {
     }
 
     private void onCategoryCreate() {
-        var category = new Category();
-        onCategoryEdit(category, true, "Новая категория");
+        onCategoryCopy(new Category());
+    }
+
+    private void onCategoryCopy(Category category) {
+        onCategoryEdit(new Category(category), true, "Новая категория");
     }
 
     private void onCategoryEdit(Category category, boolean isCreated, String title) {

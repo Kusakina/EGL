@@ -23,6 +23,11 @@ public abstract class LocalTopic extends Topic {
     @Column
     private long ratingId;
 
+    public LocalTopic(LocalTopic other) {
+        super(other);
+        this.theory = new Theory(other.getTheory());
+    }
+
     public LocalTopic(String name, String description, TopicType topicType, Theory theory) {
         super(name, description, topicType);
         this.theory = theory;

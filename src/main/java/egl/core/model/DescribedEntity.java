@@ -19,6 +19,10 @@ public abstract class DescribedEntity extends DatabaseEntity {
     @Column
     private String description;
 
+    public DescribedEntity(DescribedEntity other) {
+        this(other.getName(), other.getDescription());
+    }
+
     protected DescribedEntity(String name, String description) {
         this.name = name;
         this.description = description;
