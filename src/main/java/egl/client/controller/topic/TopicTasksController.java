@@ -7,7 +7,12 @@ import egl.client.controller.Controller;
 import egl.client.controller.task.TaskController;
 import egl.client.model.topic.LocalTopic;
 import egl.client.service.FxmlService;
+import egl.client.service.model.profile.LocalProfileService;
+import egl.client.service.model.statistic.LocalStatisticService;
 import egl.client.view.table.list.InfoSelectListView;
+import egl.core.model.profile.Profile;
+import egl.core.model.statistic.Result;
+import egl.core.model.statistic.TopicStatistic;
 import egl.core.model.task.Task;
 import javafx.fxml.FXML;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +25,8 @@ import org.springframework.stereotype.Component;
 public class TopicTasksController implements Controller {
 
     private final FxmlService fxmlService;
+    private final LocalProfileService localProfileService;
+    private final LocalStatisticService localStatisticService;
 
     @FXML private InfoSelectListView<Task> tasksListView;
 
@@ -42,11 +49,28 @@ public class TopicTasksController implements Controller {
         var taskRoot = fxmlService.load(task.getSceneName());
 
         var taskController = (TaskController) taskRoot.getController();
-        taskController.setContext(task, controllerTopic, (result) -> {}); // FIXME would sent data
+        taskController.setContext(task, controllerTopic, (result) -> tryUpdateStatistic(task, result));
 
         fxmlService.showStage(
                 taskRoot, task.getName(), TaskController.FINISH_BUTTON_TEXT
         );
+    }
+
+    private void tryUpdateStatistic(Task task, Result result) {
+        /*
+         FIXME show dialog with question
+         local/global profiles
+         can select/login right there
+         */
+        Profile localProfile = localProfileService.getSelectedProfile();
+        if (null == localProfile) {
+            return;
+        }
+
+        TopicStatistic topicStatistic = localStatisticService.findBy(localProfile, controllerTopic);
+        if (topicStatistic.updateBy(task, result)) {
+            localStatisticService.save(topicStatistic);
+        }
     }
 
     @Override
