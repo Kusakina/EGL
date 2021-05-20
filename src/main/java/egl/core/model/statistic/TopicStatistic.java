@@ -21,12 +21,16 @@ import java.util.Set;
 public class TopicStatistic extends DatabaseEntity {
 
     @ManyToOne
+    private ProfileStatistic profileStatistic;
+
+    @ManyToOne
     private Topic topic;
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE})
     private Set<TaskStatistic> taskStatistics;
 
-    public TopicStatistic(Topic topic) {
+    public TopicStatistic(ProfileStatistic profileStatistic, Topic topic) {
+        this.profileStatistic = profileStatistic;
         this.topic = topic;
         this.taskStatistics = new HashSet<>();
     }
