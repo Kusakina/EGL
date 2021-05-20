@@ -15,9 +15,9 @@
 
     <center>
         <InfoSelectEditRemoveListView fx:id="categoriesListView" nameTitle="Название">
-            <columns>
+            <buttonColumns>
                 <ButtonColumn fx:id="copyCategoryColumn" text="Скопировать"/>
-            </columns>
+            </buttonColumns>
         </InfoSelectEditRemoveListView>
     </center>
 

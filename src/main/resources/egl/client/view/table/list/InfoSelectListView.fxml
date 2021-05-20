@@ -4,9 +4,11 @@
 <?import egl.client.view.table.column.ButtonColumn?>
 <fx:root type="egl.client.view.table.list.CustomListView" xmlns="http://javafx.com/javafx"
          xmlns:fx="http://javafx.com/fxml">
-    <columns>
+    <infoColumns>
         <PropertyColumn fx:id="nameColumn" property="name"/>
         <PropertyColumn text="Описание" property="description"/>
+    </infoColumns>
+    <buttonColumns>
         <ButtonColumn fx:id="selectColumn" text="Выбрать"/>
-    </columns>
+    </buttonColumns>
 </fx:root>
