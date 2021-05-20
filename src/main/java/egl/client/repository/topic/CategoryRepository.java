@@ -1,4 +1,4 @@
-package egl.client.repository.topic.category;
+package egl.client.repository.topic;
 
 import egl.client.model.topic.category.Category;
 import egl.client.repository.DatabaseEntityRepository;
