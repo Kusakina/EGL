@@ -1,9 +1,15 @@
-package egl.core.model.task;
+package egl.core.model.statistic;
 
+import egl.core.model.DatabaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+import javax.persistence.Entity;
+
+@EqualsAndHashCode(callSuper = true)
+@Entity
 @Data
-public class Result {
+public class Result extends DatabaseEntity {
 
     private int totalAnswers;
     private int correctAnswers;

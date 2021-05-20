@@ -4,7 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
-import egl.core.model.task.Result;
+import egl.core.model.statistic.Result;
 import egl.core.model.task.Task;
 import egl.core.model.topic.Topic;
 import javafx.fxml.FXML;
