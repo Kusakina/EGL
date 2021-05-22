@@ -6,11 +6,10 @@ import egl.core.model.topic.Topic;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -24,7 +23,8 @@ public class ProfileStatistic extends DatabaseEntity {
     @ManyToOne
     private Profile profile;
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE})
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Fetch(value = FetchMode.SUBSELECT)
     private Set<TopicStatistic> topicStatistics;
 
     public ProfileStatistic(Profile profile) {

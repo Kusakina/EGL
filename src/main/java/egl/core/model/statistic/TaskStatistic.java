@@ -21,7 +21,7 @@ public class TaskStatistic extends DatabaseEntity {
     @ManyToOne
     private Task task;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE})
+    @OneToOne(cascade = CascadeType.ALL)
     private Result result;
 
     public TaskStatistic(Task task, Result result) {

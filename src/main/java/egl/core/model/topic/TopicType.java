@@ -20,14 +20,14 @@ import org.hibernate.annotations.FetchMode;
 @NoArgsConstructor
 public class TopicType extends DescribedEntity {
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     Task theoryTask;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @Fetch(value = FetchMode.SUBSELECT)
     List<Task> tasks;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     Test test;
 
     public TopicType(String name, String description, Task theoryTask, List<Task> tasks, Test test) {

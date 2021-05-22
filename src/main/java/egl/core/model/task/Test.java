@@ -20,7 +20,7 @@ import org.hibernate.annotations.FetchMode;
 @NoArgsConstructor
 public class Test extends Task {
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @Fetch(value = FetchMode.SUBSELECT)
     private List<Task> tasks;
 

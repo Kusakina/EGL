@@ -7,7 +7,9 @@ import egl.core.model.statistic.TopicStatistic;
 import egl.core.model.topic.Topic;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class LocalStatisticService {
@@ -38,7 +40,7 @@ public class LocalStatisticService {
         var topicStatistic = new TopicStatistic(profileStatistic, topic);
         profileStatistic.getTopicStatistics().add(topicStatistic);
         save(profileStatistic);
-        return topicStatistic;
+        return profileStatistic.getTopicStatisticFor(topic).orElseThrow();
     }
 
     public void save(TopicStatistic topicStatistic) {
