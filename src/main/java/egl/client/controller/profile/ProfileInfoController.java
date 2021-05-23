@@ -4,21 +4,21 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import egl.client.controller.info.AbstractEntityInfoController;
-import egl.client.view.info.NameDescriptionInfoView;
+import egl.client.controller.profile.info.ProfileInfoView;
 import egl.core.model.profile.Profile;
 import javafx.fxml.FXML;
 
 public class ProfileInfoController extends AbstractEntityInfoController<Profile> {
 
-    @FXML private NameDescriptionInfoView<Profile> nameDescriptionInfoView;
+    @FXML private ProfileInfoView profileInfoView;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        addInnerInfoViews(nameDescriptionInfoView);
+        addInnerInfoViews(profileInfoView);
     }
 
     @Override
     public void setPrefSize(double parentWidth, double parentHeight) {
-        nameDescriptionInfoView.setPrefSize(parentWidth, parentHeight);
+        profileInfoView.setPrefSize(parentWidth, parentHeight);
     }
 }
