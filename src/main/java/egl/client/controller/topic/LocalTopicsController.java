@@ -8,11 +8,16 @@ import egl.client.model.topic.LocalTopic;
 import egl.client.model.topic.category.Category;
 import egl.client.service.FxmlService;
 import egl.client.service.model.profile.LocalProfileService;
+import egl.client.service.model.statistic.LocalStatisticService;
 import egl.client.service.model.topic.CategoryService;
 import egl.client.view.table.column.ButtonColumn;
 import egl.client.view.table.list.InfoSelectEditRemoveListView;
+import egl.core.model.statistic.TaskStatistic;
+import egl.core.model.statistic.TopicStatistic;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
 import javafx.util.StringConverter;
 import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxmlView;
@@ -29,9 +34,11 @@ public class LocalTopicsController implements Controller {
     private final FxmlService fxmlService;
     private final CategoryService categoryService;
     private final LocalProfileService localProfileService;
+    private final LocalStatisticService localStatisticService;
 
     @FXML private InfoSelectEditRemoveListView<Category> categoriesListView;
     @FXML private ButtonColumn<Category> copyCategoryColumn;
+    @FXML private TableColumn<Category, String> topicStatisticColumn;
 
     @FXML private Button localProfilesListButton;
     @FXML private Button createCategoryButton;
@@ -48,8 +55,27 @@ public class LocalTopicsController implements Controller {
         categoriesListView.setOnEdit(this::onCategoryEdit);
 
         copyCategoryColumn.setOnAction(this::onCategoryCopy);
-
         createCategoryButton.setOnAction(event -> onCategoryCreate());
+
+        topicStatisticColumn.setCellValueFactory(param -> {
+            var category = param.getValue();
+            var statisticString = getCategoryStatistic(category);
+            return new SimpleStringProperty(statisticString);
+        });
+    }
+
+    private String getCategoryStatistic(Category category) {
+        var profile = localProfileService.getSelectedProfile();
+        if (null == profile) return "Нет данных";
+
+        TopicStatistic topicStatistic = localStatisticService.findBy(profile, category);
+
+        var passedTasksCount = topicStatistic.getTaskStatistics().stream()
+                .map(TaskStatistic::getResult)
+                .filter(result -> result.getCorrectAnswers() > 0)
+                .count();
+
+        return String.format("Количество пройденных заданий: %d", passedTasksCount);
     }
 
     private void initializeProfiles() {
@@ -70,6 +96,8 @@ public class LocalTopicsController implements Controller {
                     }
                 }
         );
+
+        localProfileService.selectedProfileProperty().addListener((observableValue, oldProfile, newProfile) -> categoriesListView.refresh());
     }
 
     private void openProfilesList() {

@@ -1,7 +1,7 @@
 package egl.client.service.model.topic;
 
 import egl.client.model.topic.category.Category;
-import egl.client.repository.topic.category.CategoryRepository;
+import egl.client.repository.topic.CategoryRepository;
 import egl.client.service.model.AbstractEntityService;
 import egl.core.model.topic.TopicType;
 import lombok.Setter;
