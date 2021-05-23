@@ -1,9 +1,11 @@
 package egl.client.controller.topic;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import egl.client.controller.Controller;
 import egl.client.controller.WindowController;
 import egl.client.controller.profile.LocalProfilesController;
-import egl.client.model.profile.LocalProfile;
 import egl.client.model.topic.LocalTopic;
 import egl.client.model.topic.category.Category;
 import egl.client.service.FxmlService;
@@ -12,6 +14,7 @@ import egl.client.service.model.statistic.LocalStatisticService;
 import egl.client.service.model.topic.CategoryService;
 import egl.client.view.table.column.ButtonColumn;
 import egl.client.view.table.list.InfoSelectEditRemoveListView;
+import egl.core.model.profile.Profile;
 import egl.core.model.statistic.TaskStatistic;
 import egl.core.model.statistic.TopicStatistic;
 import javafx.beans.property.SimpleStringProperty;
@@ -22,9 +25,6 @@ import javafx.util.StringConverter;
 import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
-
-import java.net.URL;
-import java.util.ResourceBundle;
 
 @Component
 @FxmlView
@@ -85,13 +85,13 @@ public class LocalTopicsController implements Controller {
                 localProfileService.selectedProfileProperty(),
                 new StringConverter<>() {
                     @Override
-                    public String toString(LocalProfile localProfile) {
+                    public String toString(Profile localProfile) {
                         if (null == localProfile) return "Выбрать локальный профиль";
                         return String.format("Локальный профиль: %s", localProfile.getName());
                     }
 
                     @Override
-                    public LocalProfile fromString(String s) {
+                    public Profile fromString(String s) {
                         return null;
                     }
                 }

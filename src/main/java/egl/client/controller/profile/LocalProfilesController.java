@@ -68,7 +68,7 @@ public class LocalProfilesController implements Controller {
 
     private void onEdit(LocalProfile localProfile, boolean isCreated, String title) {
         var changed = fxmlService.showInfoDialog(
-                LocalProfileInfoController.class,
+                ProfileInfoController.class,
                 localProfile,
                 title, isCreated
         );

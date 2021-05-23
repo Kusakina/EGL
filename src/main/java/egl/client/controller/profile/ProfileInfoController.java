@@ -1,16 +1,16 @@
 package egl.client.controller.profile;
 
-import egl.client.controller.info.AbstractEntityInfoController;
-import egl.client.model.profile.LocalProfile;
-import egl.client.view.info.NameDescriptionInfoView;
-import javafx.fxml.FXML;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class LocalProfileInfoController extends AbstractEntityInfoController<LocalProfile> {
+import egl.client.controller.info.AbstractEntityInfoController;
+import egl.client.view.info.NameDescriptionInfoView;
+import egl.core.model.profile.Profile;
+import javafx.fxml.FXML;
 
-    @FXML private NameDescriptionInfoView<LocalProfile> nameDescriptionInfoView;
+public class ProfileInfoController extends AbstractEntityInfoController<Profile> {
+
+    @FXML private NameDescriptionInfoView<Profile> nameDescriptionInfoView;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
