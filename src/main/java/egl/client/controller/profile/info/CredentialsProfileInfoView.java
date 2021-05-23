@@ -28,4 +28,9 @@ public class CredentialsProfileInfoView extends CustomBorderPane implements Enti
     public void fillData(Credentials credentials) {
         profileInfoView.fillData(credentials.getProfile());
     }
+
+    @Override
+    public void setPrefSize(double prefWidth, double prefHeight) {
+        profileInfoView.setPrefSize(prefWidth, prefHeight);
+    }
 }

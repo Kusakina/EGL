@@ -29,4 +29,9 @@ public class ProfileInfoView extends CustomBorderPane implements EntityInfoView<
     public void fillData(Profile profile) {
         nameDescriptionInfoView.fillData(profile);
     }
+
+    @Override
+    public void setPrefSize(double prefWidth, double prefHeight) {
+        nameDescriptionInfoView.setPrefSize(prefWidth, prefHeight);
+    }
 }
