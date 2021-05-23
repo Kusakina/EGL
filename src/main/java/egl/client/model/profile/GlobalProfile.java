@@ -1,4 +1,4 @@
-package egl.global.model.profile;
+package egl.client.model.profile;
 
 import egl.core.model.profile.Profile;
 import lombok.Data;
