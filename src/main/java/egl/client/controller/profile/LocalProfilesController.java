@@ -1,33 +1,30 @@
 package egl.client.controller.profile;
 
-import egl.client.controller.Controller;
-import egl.client.model.profile.LocalProfile;
-import egl.client.service.FxmlService;
-import egl.client.service.model.profile.LocalProfileService;
-import egl.client.view.table.list.InfoSelectEditRemoveListView;
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableRow;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
-@Component
-@RequiredArgsConstructor
-public class LocalProfilesController implements Controller {
+import egl.client.model.profile.LocalProfile;
+import egl.client.service.FxmlService;
+import egl.client.service.model.profile.ProfileService;
+import egl.client.view.table.list.InfoSelectEditRemoveListView;
+import javafx.fxml.FXML;
+import javafx.scene.control.TableRow;
+import org.springframework.stereotype.Component;
 
-    private final FxmlService fxmlService;
-    private final LocalProfileService localProfileService;
+@Component
+public class LocalProfilesController extends ProfileSelectController<LocalProfile> {
 
     @FXML private InfoSelectEditRemoveListView<LocalProfile> localProfilesListView;
-    @FXML private Button createProfileButton;
-    @FXML private Button exitProfileButton;
+
+    public LocalProfilesController(
+            FxmlService fxmlService,
+            ProfileService<LocalProfile> profileService) {
+        super(fxmlService, profileService);
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        localProfilesListView.setService(localProfileService);
+        localProfilesListView.setService(profileService);
         localProfilesListView.setOnSelect(this::onSelect);
         localProfilesListView.setOnEdit(this::onEdit);
 
@@ -39,7 +36,7 @@ public class LocalProfilesController implements Controller {
                 if (profile == null) {
                     setStyle("");
                 } else {
-                    var selectedProfile = localProfileService.getSelectedProfile();
+                    var selectedProfile = profileService.getSelectedProfile();
                     boolean selected = selectedProfile != null && selectedProfile.equals(profile);
 
                     String color = (selected ? "#06c806" : "white");
@@ -52,21 +49,19 @@ public class LocalProfilesController implements Controller {
         exitProfileButton.setOnAction(event -> onSelect(null));
     }
 
-    private void onSelect(LocalProfile localProfile) {
-        localProfileService.select(localProfile);
+    @Override
+    protected void onSelect(LocalProfile localProfile) {
+        super.onSelect(localProfile);
         localProfilesListView.refresh();
     }
 
-    private void onCreate() {
-        LocalProfile localProfile = new LocalProfile();
-        onEdit(localProfile, true, "Новый профиль");
+    @Override
+    protected LocalProfile createProfile() {
+        return new LocalProfile();
     }
 
-    private void onEdit(LocalProfile localProfile) {
-        onEdit(localProfile, false, "Изменить данные");
-    }
-
-    private void onEdit(LocalProfile localProfile, boolean isCreated, String title) {
+    @Override
+    protected void onEdit(LocalProfile localProfile, boolean isCreated, String title) {
         var changed = fxmlService.showInfoDialog(
                 ProfileInfoController.class,
                 localProfile,
@@ -74,7 +69,7 @@ public class LocalProfilesController implements Controller {
         );
 
         if (changed) {
-            localProfileService.save(localProfile);
+            profileService.save(localProfile);
             localProfilesListView.showItems();
         }
     }
@@ -87,10 +82,5 @@ public class LocalProfilesController implements Controller {
     @Override
     public void prepareToShow() {
         localProfilesListView.showItems();
-    }
-
-    @Override
-    public void prepareToClose() {
-
     }
 }

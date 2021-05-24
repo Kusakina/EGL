@@ -19,11 +19,11 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public abstract class ProfileSelectController<ProfileType extends Profile> implements Controller {
 
-    private final FxmlService fxmlService;
-    private final ProfileService<ProfileType> profileService;
+    protected final FxmlService fxmlService;
+    protected final ProfileService<ProfileType> profileService;
 
-    @FXML private Button createProfileButton;
-    @FXML private Button exitProfileButton;
+    @FXML protected Button createProfileButton;
+    @FXML protected Button exitProfileButton;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
