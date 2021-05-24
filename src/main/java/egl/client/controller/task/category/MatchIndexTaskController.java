@@ -4,12 +4,10 @@ import egl.client.controller.task.AbstractTaskController;
 import egl.client.model.topic.category.Category;
 import egl.client.model.topic.category.Translation;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
@@ -25,6 +23,11 @@ import java.util.function.UnaryOperator;
 @FxmlView
 public class MatchIndexTaskController extends AbstractTaskController {
 
+    private static final int MAX_TASKS_COUNT = 8;
+    private List<Translation> translations;
+    List<InputIndexView> inputIndexViews;
+    List<FixedIndexView> fixedIndexViews;
+
     @FXML
     private VBox tasksVBoxes;
 
@@ -33,49 +36,46 @@ public class MatchIndexTaskController extends AbstractTaskController {
     }
 
     private void prepareTasks(){
-        int taskCount = 7;
         Category category = (Category) controllerTopic;
-        List<Translation> task = category.getTranslations();
+
+        this.translations = category.getTranslations();
+        Collections.shuffle(translations);
+
+        final int tasksCount = Math.min(MAX_TASKS_COUNT, translations.size());
+
+        this.inputIndexViews = new ArrayList<>();
+        this.fixedIndexViews = new ArrayList<>();
         List<Integer> position = new ArrayList<>();
-        int[] trueAnswersSecondTask = new int[taskCount];//запоминаем правильные ответы
-        for (int i = 0; i<taskCount; ++i)
+        for (int i = 0; i<tasksCount; ++i)
             position.add(i);
-        Collections.shuffle(task);
         Collections.shuffle(position);
-        for (int i = 0; i<taskCount; ++i) {
-            trueAnswersSecondTask[i] = position.get(i) + 1;
-            //trueAnswersFirstTask[i] = position.get(0);
-            //addTestQuestion(task, translations, position, i);
-            var vBoxChildren = tasksVBoxes.getChildren();
-            GridPane questionPane = new GridPane();
-            questionPane.setStyle("-fx-font: 22 arial;");
-            TextField questionField = new TextField();
-            questionField.setStyle("-fx-font: 22 arial;");
-            questionPane.getColumnConstraints().add(new ColumnConstraints(40));
 
-            UnaryOperator<TextFormatter.Change> integerFilter = change -> {
-                String input = change.getText();
-                if (input.matches("[0-9]*") && ((taskCount < 10 && change.getControlNewText().length()<2) ||
-                        (taskCount >= 10 && change.getControlNewText().length()<=2))) {
-                    return change;
-                }
-                return null;
-            };
-            questionField.setTextFormatter(new TextFormatter<String>(integerFilter));
-
-            questionPane.add(questionField, 0, 0, 1, 1);
-            Text questionText = new Text(" " + task.get(position.get(i)).getSource().getText());
-            questionPane.getColumnConstraints().add(new ColumnConstraints(500));
-            questionPane.getRowConstraints().add(new RowConstraints(70));
-            questionPane.add(questionText, 1, 0, 3, 1);
-            Text questionAnswer = new Text(i+1 + ". " + task.get(i).getTarget().getText());
-            questionPane.add(questionAnswer, 5, 0, 3, 1);
-
-            vBoxChildren.add(questionPane);
+        for (int i = 0; i < tasksCount; ++i) {
+            var questionView = createTestQuestion(i);
+            var answerView = createTestAnswer(position.get(i));
+            HBox hbox = new HBox(questionView, answerView);
+            hbox.setSpacing(300);
+            //hbox.setMaxWidth(1000);
+            //hbox.setPrefWidth(700);
+            //HBox.setHgrow(questionView, Priority.ALWAYS);
+            //HBox.setHgrow(answerView, Priority.ALWAYS);
+           // hbox.setMaxWidth(1000);
+            //hbox.getChildren().addAll(questionView, answerView);
+            tasksVBoxes.getChildren().add(hbox);
+            inputIndexViews.add(questionView);
+            fixedIndexViews.add(answerView);
         }
 
     }
+    private InputIndexView createTestQuestion(int correctIndex)
+    {
+        return new InputIndexView(translations.get(correctIndex));
+    }
 
+    private FixedIndexView createTestAnswer(int Index)
+    {
+        return new FixedIndexView(translations.get(Index));
+    }
 
     @Override
     protected void prepareToStart() {
