@@ -5,10 +5,12 @@ import java.util.ResourceBundle;
 
 import egl.client.controller.Controller;
 import egl.client.controller.WindowController;
+import egl.client.controller.profile.GlobalProfileController;
 import egl.client.controller.profile.LocalProfilesController;
 import egl.client.model.topic.LocalTopic;
 import egl.client.model.topic.category.Category;
 import egl.client.service.FxmlService;
+import egl.client.service.model.profile.GlobalProfileService;
 import egl.client.service.model.profile.LocalProfileService;
 import egl.client.service.model.statistic.LocalStatisticService;
 import egl.client.service.model.topic.CategoryService;
@@ -35,12 +37,14 @@ public class LocalTopicsController implements Controller {
     private final CategoryService categoryService;
     private final LocalProfileService localProfileService;
     private final LocalStatisticService localStatisticService;
+    private final GlobalProfileService globalProfileService;
 
     @FXML private InfoSelectEditRemoveListView<Category> categoriesListView;
     @FXML private ButtonColumn<Category> copyCategoryColumn;
     @FXML private TableColumn<Category, String> topicStatisticColumn;
 
     @FXML private Button localProfilesListButton;
+    @FXML private Button globalProfileListButton;
     @FXML private Button createCategoryButton;
 
     @Override
@@ -79,7 +83,12 @@ public class LocalTopicsController implements Controller {
     }
 
     private void initializeProfiles() {
-        localProfilesListButton.setOnAction(event -> openProfilesList());
+        initializeLocalProfiles();
+        initializeGlobalProfiles();
+    }
+
+    private void initializeLocalProfiles() {
+        localProfilesListButton.setOnAction(event -> openLocalProfilesList());
 
         localProfilesListButton.textProperty().bindBidirectional(
                 localProfileService.selectedProfileProperty(),
@@ -100,9 +109,36 @@ public class LocalTopicsController implements Controller {
         localProfileService.selectedProfileProperty().addListener((observableValue, oldProfile, newProfile) -> categoriesListView.refresh());
     }
 
-    private void openProfilesList() {
-        var profilesRoot = fxmlService.load(LocalProfilesController.class);
-        fxmlService.showStage(profilesRoot, "Локальные профили", WindowController.CLOSE);
+    private void initializeGlobalProfiles() {
+        globalProfileListButton.setOnAction(event -> openGlobalProfileController());
+
+        globalProfileListButton.textProperty().bindBidirectional(
+                globalProfileService.selectedProfileProperty(),
+                new StringConverter<>() {
+                    @Override
+                    public String toString(Profile globalProfile) {
+                        if (null == globalProfile) return "Выбрать глобальный профиль";
+                        return String.format("Глобальный профиль: %s", globalProfile.getName());
+                    }
+
+                    @Override
+                    public Profile fromString(String s) {
+                        return null;
+                    }
+                }
+        );
+
+        globalProfileService.selectedProfileProperty().addListener((observableValue, oldProfile, newProfile) -> categoriesListView.refresh());
+    }
+
+    private void openLocalProfilesList() {
+        var localProfilesRoot = fxmlService.load(LocalProfilesController.class);
+        fxmlService.showStage(localProfilesRoot, "Локальные профили", WindowController.CLOSE);
+    }
+
+    private void openGlobalProfileController() {
+        var globalProfileRoot = fxmlService.load(GlobalProfileController.class);
+        fxmlService.showStage(globalProfileRoot, "Глобальный профиль", WindowController.CLOSE);
     }
 
     private void onTopicSelect(LocalTopic topic) {

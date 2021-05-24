@@ -3,13 +3,17 @@
 <?import javafx.scene.control.Button?>
 <?import egl.client.view.table.column.ButtonColumn?>
 <?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.layout.HBox?>
 <CustomBorderPane fx:controller="egl.client.controller.topic.LocalTopicsController"
                   xmlns:fx="http://javafx.com/fxml" margin="5">
 
     <top>
         <CustomBorderPane>
             <right>
-                <Button fx:id="localProfilesListButton"/>
+                <HBox spacing="10">
+                    <Button fx:id="localProfilesListButton"/>
+                    <Button fx:id="globalProfileListButton"/>
+                </HBox>
             </right>
         </CustomBorderPane>
     </top>
