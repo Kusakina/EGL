@@ -15,12 +15,18 @@ public class LabeledTextField extends VBox {
         FxmlService.loadView(this, LabeledTextField.class, true);
     }
 
-    public void setLabel(String label) {
-        this.label.setText(label);
+    public void setLabel(String labelText) {
+        label.setText(labelText);
     }
 
     public String getLabel() {
         return label.getText();
+    }
+
+    public void setText(String text) { textField.setText(text);}
+
+    public String getText() {
+        return textField.getText();
     }
 
     @Override
