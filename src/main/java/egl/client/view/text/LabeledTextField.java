@@ -31,6 +31,7 @@ public class LabeledTextField extends VBox {
 
     @Override
     public void setPrefSize(double parentWidth, double parentHeight) {
+        super.setPrefSize(parentWidth, parentHeight);
         textField.setPrefWidth(parentWidth * 0.9);
     }
 }
