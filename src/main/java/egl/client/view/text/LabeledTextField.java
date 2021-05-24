@@ -4,9 +4,10 @@ import egl.client.service.FxmlService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-public class LabeledTextField extends VBox {
+public class LabeledTextField extends HBox {
 
     @FXML private Label label;
     @FXML private TextField textField;
