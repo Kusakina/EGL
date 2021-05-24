@@ -20,4 +20,13 @@ public abstract class Credentials extends DatabaseEntity {
 
     private String login;
     private long passwordHash;
+
+    protected Credentials(Profile profile) {
+        this.profile = profile;
+    }
+
+    // TODO check maybe replace with better hash
+    public static long calculatePasswordHash(String password) {
+        return password.hashCode();
+    }
 }
