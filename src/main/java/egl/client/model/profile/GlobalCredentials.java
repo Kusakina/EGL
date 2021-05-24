@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class GlobalCredentials extends Credentials {
 
-    protected GlobalCredentials(Profile profile) {
+    public GlobalCredentials(Profile profile) {
         super(profile);
     }
 }
