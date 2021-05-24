@@ -5,7 +5,7 @@ import java.util.ResourceBundle;
 
 import egl.client.model.profile.LocalProfile;
 import egl.client.service.FxmlService;
-import egl.client.service.model.profile.ProfileService;
+import egl.client.service.model.profile.LocalProfileService;
 import egl.client.view.table.list.InfoSelectEditRemoveListView;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableRow;
@@ -18,7 +18,7 @@ public class LocalProfilesController extends ProfileSelectController<LocalProfil
 
     public LocalProfilesController(
             FxmlService fxmlService,
-            ProfileService<LocalProfile> profileService) {
+            LocalProfileService profileService) {
         super(fxmlService, profileService);
     }
 
