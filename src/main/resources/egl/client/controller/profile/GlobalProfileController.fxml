@@ -1,0 +1,23 @@
+<?import egl.client.view.pane.CustomBorderPane?>
+<?import javafx.scene.control.Button?>
+<CustomBorderPane fx:controller="egl.client.controller.profile.GlobalProfileController"
+                  xmlns:fx="http://javafx.com/fxml" margin="5">
+
+    <top>
+        <CustomBorderPane>
+            <right>
+                <Button fx:id="exitProfileButton" text="Выйти из профиля"/>
+            </right>
+        </CustomBorderPane>
+    </top>
+    <center>
+
+    </center>
+    <bottom>
+        <CustomBorderPane>
+            <right>
+                <Button fx:id="createProfileButton" text="Зарегистрировать профиль"/>
+            </right>
+        </CustomBorderPane>
+    </bottom>
+</CustomBorderPane>
