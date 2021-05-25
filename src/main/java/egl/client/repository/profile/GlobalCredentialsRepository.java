@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 public interface GlobalCredentialsRepository extends EntityRepository<GlobalCredentials> {
 
     GlobalCredentials findByProfile(Profile profile);
+
+    GlobalCredentials findByLogin(String login);
 }
