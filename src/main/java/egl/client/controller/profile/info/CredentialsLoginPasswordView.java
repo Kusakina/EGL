@@ -60,7 +60,7 @@ public class CredentialsLoginPasswordView extends GridPane
             throw new IllegalArgumentException("Введенные новые пароли не совпадают");
         }
 
-        boolean isCreated = currentPasswordTextField.isVisible();
+        boolean isCreated = !currentPasswordTextField.isVisible();
 
         long actualPasswordHash = Credentials.calculatePasswordHash(currentPasswordTextField.getText());
         boolean infoCanBeChanged = isCreated || (expectedPasswordHash == actualPasswordHash);

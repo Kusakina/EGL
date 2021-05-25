@@ -133,6 +133,8 @@ public class GlobalProfileController extends ProfileSelectController<GlobalProfi
             return;
         }
 
+        loginTextField.setText("");
+        passwordTextField.setText("");
         errorText.setText("");
 
         onSelect((GlobalProfile) credentials.getProfile());
