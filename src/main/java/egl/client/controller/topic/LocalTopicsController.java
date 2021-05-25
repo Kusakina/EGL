@@ -1,8 +1,5 @@
 package egl.client.controller.topic;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import egl.client.controller.Controller;
 import egl.client.controller.WindowController;
 import egl.client.controller.profile.GlobalProfileController;
@@ -12,6 +9,7 @@ import egl.client.model.topic.category.Category;
 import egl.client.service.FxmlService;
 import egl.client.service.model.profile.GlobalProfileService;
 import egl.client.service.model.profile.LocalProfileService;
+import egl.client.service.model.profile.ProfileService;
 import egl.client.service.model.statistic.LocalStatisticService;
 import egl.client.service.model.topic.CategoryService;
 import egl.client.view.table.column.ButtonColumn;
@@ -28,6 +26,9 @@ import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 @Component
 @FxmlView
 @RequiredArgsConstructor
@@ -43,8 +44,8 @@ public class LocalTopicsController implements Controller {
     @FXML private ButtonColumn<Category> copyCategoryColumn;
     @FXML private TableColumn<Category, String> topicStatisticColumn;
 
-    @FXML private Button localProfilesListButton;
-    @FXML private Button globalProfileListButton;
+    @FXML private Button selectLocalProfileButton;
+    @FXML private Button selectGlobalProfileButton;
     @FXML private Button createCategoryButton;
 
     @Override
@@ -83,62 +84,39 @@ public class LocalTopicsController implements Controller {
     }
 
     private void initializeProfiles() {
-        initializeLocalProfiles();
-        initializeGlobalProfiles();
+        initSelectProfileButton(selectLocalProfileButton, localProfileService, LocalProfilesController.class, "Локальный");
+        initSelectProfileButton(selectGlobalProfileButton, globalProfileService, GlobalProfileController.class, "Глобальный");
     }
 
-    private void initializeLocalProfiles() {
-        localProfilesListButton.setOnAction(event -> openLocalProfilesList());
+    private <ProfileType extends Profile> void initSelectProfileButton(
+            Button selectProfileButton,
+            ProfileService<ProfileType> profileService,
+            Class<? extends Controller> selectProfileControllerClass,
+            String profileTypeName) {
+        String profileText = String.format("%s профиль", profileTypeName);
 
-        localProfilesListButton.textProperty().bindBidirectional(
-                localProfileService.selectedProfileProperty(),
+        selectProfileButton.setOnAction(event -> {
+            var selectProfileRoot = fxmlService.load(selectProfileControllerClass);
+            fxmlService.showStage(selectProfileRoot, profileText, WindowController.CLOSE);
+        });
+
+        selectProfileButton.textProperty().bindBidirectional(
+                profileService.selectedProfileProperty(),
                 new StringConverter<>() {
                     @Override
-                    public String toString(Profile localProfile) {
-                        if (null == localProfile) return "Выбрать локальный профиль";
-                        return String.format("Локальный профиль: %s", localProfile.getName());
+                    public String toString(ProfileType localProfile) {
+                        if (null == localProfile) return String.format("Выбрать %s", profileText.toLowerCase());
+                        return String.format("%s профиль: %s", profileText, localProfile.getName());
                     }
 
                     @Override
-                    public Profile fromString(String s) {
+                    public ProfileType fromString(String s) {
                         return null;
                     }
                 }
         );
 
-        localProfileService.selectedProfileProperty().addListener((observableValue, oldProfile, newProfile) -> categoriesListView.refresh());
-    }
-
-    private void initializeGlobalProfiles() {
-        globalProfileListButton.setOnAction(event -> openGlobalProfileController());
-
-        globalProfileListButton.textProperty().bindBidirectional(
-                globalProfileService.selectedProfileProperty(),
-                new StringConverter<>() {
-                    @Override
-                    public String toString(Profile globalProfile) {
-                        if (null == globalProfile) return "Выбрать глобальный профиль";
-                        return String.format("Глобальный профиль: %s", globalProfile.getName());
-                    }
-
-                    @Override
-                    public Profile fromString(String s) {
-                        return null;
-                    }
-                }
-        );
-
-        globalProfileService.selectedProfileProperty().addListener((observableValue, oldProfile, newProfile) -> categoriesListView.refresh());
-    }
-
-    private void openLocalProfilesList() {
-        var localProfilesRoot = fxmlService.load(LocalProfilesController.class);
-        fxmlService.showStage(localProfilesRoot, "Локальные профили", WindowController.CLOSE);
-    }
-
-    private void openGlobalProfileController() {
-        var globalProfileRoot = fxmlService.load(GlobalProfileController.class);
-        fxmlService.showStage(globalProfileRoot, "Глобальный профиль", WindowController.CLOSE);
+        profileService.selectedProfileProperty().addListener((observableValue, oldProfile, newProfile) -> categoriesListView.refresh());
     }
 
     private void onTopicSelect(LocalTopic topic) {

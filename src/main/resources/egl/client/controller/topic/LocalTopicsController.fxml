@@ -11,8 +11,8 @@
         <CustomBorderPane>
             <right>
                 <HBox spacing="10">
-                    <Button fx:id="localProfilesListButton"/>
-                    <Button fx:id="globalProfileListButton"/>
+                    <Button fx:id="selectLocalProfileButton"/>
+                    <Button fx:id="selectGlobalProfileButton"/>
                 </HBox>
             </right>
         </CustomBorderPane>
