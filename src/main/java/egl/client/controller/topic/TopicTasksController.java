@@ -6,12 +6,10 @@ import java.util.ResourceBundle;
 import egl.client.controller.Controller;
 import egl.client.controller.task.TaskController;
 import egl.client.model.topic.LocalTopic;
-import egl.client.model.topic.category.Category;
 import egl.client.service.FxmlService;
 import egl.client.service.model.profile.LocalProfileService;
 import egl.client.service.model.statistic.LocalStatisticService;
 import egl.client.view.table.list.InfoSelectListView;
-import egl.core.model.profile.Profile;
 import egl.core.model.statistic.Result;
 import egl.core.model.statistic.TaskStatistic;
 import egl.core.model.statistic.TopicStatistic;
@@ -88,7 +86,7 @@ public class TopicTasksController implements Controller {
          local/global profiles
          can select/login right there
          */
-        Profile localProfile = localProfileService.getSelectedProfile();
+        var localProfile = localProfileService.getSelectedProfile();
         if (null == localProfile) {
             return;
         }

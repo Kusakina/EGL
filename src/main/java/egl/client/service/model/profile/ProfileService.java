@@ -8,22 +8,22 @@ import javafx.beans.property.SimpleObjectProperty;
 
 public abstract class ProfileService<ProfileType extends Profile> extends AbstractEntityService<ProfileType, EntityRepository<ProfileType>> {
 
-    private final Property<Profile> selectedProfileProperty;
+    private final Property<ProfileType> selectedProfileProperty;
 
     public ProfileService(EntityRepository<ProfileType> repository) {
         super(repository);
         this.selectedProfileProperty = new SimpleObjectProperty<>();
     }
 
-    public void select(Profile profile) {
+    public void select(ProfileType profile) {
         selectedProfileProperty.setValue(profile);
     }
 
-    public Property<Profile> selectedProfileProperty() {
+    public Property<ProfileType> selectedProfileProperty() {
         return selectedProfileProperty;
     }
 
-    public Profile getSelectedProfile() {
+    public ProfileType getSelectedProfile() {
         return selectedProfileProperty.getValue();
     }
 }

@@ -2,16 +2,19 @@ package egl.client.controller.topic;
 
 import egl.client.controller.Controller;
 import egl.client.controller.WindowController;
+import egl.client.controller.profile.GlobalProfileController;
 import egl.client.controller.profile.LocalProfilesController;
-import egl.client.model.profile.LocalProfile;
 import egl.client.model.topic.LocalTopic;
 import egl.client.model.topic.category.Category;
 import egl.client.service.FxmlService;
+import egl.client.service.model.profile.GlobalProfileService;
 import egl.client.service.model.profile.LocalProfileService;
+import egl.client.service.model.profile.ProfileService;
 import egl.client.service.model.statistic.LocalStatisticService;
 import egl.client.service.model.topic.CategoryService;
 import egl.client.view.table.column.ButtonColumn;
 import egl.client.view.table.list.InfoSelectEditRemoveListView;
+import egl.core.model.profile.Profile;
 import egl.core.model.statistic.TaskStatistic;
 import egl.core.model.statistic.TopicStatistic;
 import javafx.beans.property.SimpleStringProperty;
@@ -35,12 +38,14 @@ public class LocalTopicsController implements Controller {
     private final CategoryService categoryService;
     private final LocalProfileService localProfileService;
     private final LocalStatisticService localStatisticService;
+    private final GlobalProfileService globalProfileService;
 
     @FXML private InfoSelectEditRemoveListView<Category> categoriesListView;
     @FXML private ButtonColumn<Category> copyCategoryColumn;
     @FXML private TableColumn<Category, String> topicStatisticColumn;
 
-    @FXML private Button localProfilesListButton;
+    @FXML private Button selectLocalProfileButton;
+    @FXML private Button selectGlobalProfileButton;
     @FXML private Button createCategoryButton;
 
     @Override
@@ -79,30 +84,39 @@ public class LocalTopicsController implements Controller {
     }
 
     private void initializeProfiles() {
-        localProfilesListButton.setOnAction(event -> openProfilesList());
+        initSelectProfileButton(selectLocalProfileButton, localProfileService, LocalProfilesController.class, "Локальный");
+        initSelectProfileButton(selectGlobalProfileButton, globalProfileService, GlobalProfileController.class, "Глобальный");
+    }
 
-        localProfilesListButton.textProperty().bindBidirectional(
-                localProfileService.selectedProfileProperty(),
+    private <ProfileType extends Profile> void initSelectProfileButton(
+            Button selectProfileButton,
+            ProfileService<ProfileType> profileService,
+            Class<? extends Controller> selectProfileControllerClass,
+            String profileTypeName) {
+        String profileText = String.format("%s профиль", profileTypeName);
+
+        selectProfileButton.setOnAction(event -> {
+            var selectProfileRoot = fxmlService.load(selectProfileControllerClass);
+            fxmlService.showStage(selectProfileRoot, profileText, WindowController.CLOSE);
+        });
+
+        selectProfileButton.textProperty().bindBidirectional(
+                profileService.selectedProfileProperty(),
                 new StringConverter<>() {
                     @Override
-                    public String toString(LocalProfile localProfile) {
-                        if (null == localProfile) return "Выбрать локальный профиль";
-                        return String.format("Локальный профиль: %s", localProfile.getName());
+                    public String toString(ProfileType localProfile) {
+                        if (null == localProfile) return String.format("Выбрать %s", profileText.toLowerCase());
+                        return String.format("%s профиль: %s", profileText, localProfile.getName());
                     }
 
                     @Override
-                    public LocalProfile fromString(String s) {
+                    public ProfileType fromString(String s) {
                         return null;
                     }
                 }
         );
 
-        localProfileService.selectedProfileProperty().addListener((observableValue, oldProfile, newProfile) -> categoriesListView.refresh());
-    }
-
-    private void openProfilesList() {
-        var profilesRoot = fxmlService.load(LocalProfilesController.class);
-        fxmlService.showStage(profilesRoot, "Локальные профили", WindowController.CLOSE);
+        profileService.selectedProfileProperty().addListener((observableValue, oldProfile, newProfile) -> categoriesListView.refresh());
     }
 
     private void onTopicSelect(LocalTopic topic) {
