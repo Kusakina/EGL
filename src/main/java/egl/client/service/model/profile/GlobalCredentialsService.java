@@ -16,4 +16,8 @@ public class GlobalCredentialsService extends AbstractEntityService<GlobalCreden
     public GlobalCredentials findBy(Profile profile) {
         return repository.findByProfile(profile);
     }
+
+    public GlobalCredentials findBy(String login) {
+        return repository.findByLogin(login);
+    }
 }
