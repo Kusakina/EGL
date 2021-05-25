@@ -9,7 +9,6 @@ import egl.client.view.text.LabeledTextField;
 import egl.core.model.profile.Credentials;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import org.springframework.stereotype.Component;
@@ -22,19 +21,26 @@ public class GlobalProfileController extends ProfileSelectController<GlobalProfi
 
     private final GlobalCredentialsService globalCredentialsService;
 
-    @FXML private GridPane loginGridPane;
-    @FXML private Text loginInfoText;
-    @FXML private LabeledTextField loginTextField;
-    @FXML private LabeledTextField passwordTextField;
-    @FXML private Button editProfileButton;
-    @FXML private Button loginButton;
-    @FXML private Text errorText;
+    @FXML
+    private GridPane loginGridPane;
+    @FXML
+    private Text loginInfoText;
+    @FXML
+    private LabeledTextField loginTextField;
+    @FXML
+    private LabeledTextField passwordTextField;
+    @FXML
+    private Button editProfileButton;
+    @FXML
+    private Button loginButton;
+    @FXML
+    private Text errorText;
 
     public GlobalProfileController(
             FxmlService fxmlService,
             GlobalProfileService globalProfileService,
             GlobalCredentialsService globalCredentialsService
-            ) {
+    ) {
         super(fxmlService, globalProfileService);
         this.globalCredentialsService = globalCredentialsService;
     }
@@ -47,8 +53,8 @@ public class GlobalProfileController extends ProfileSelectController<GlobalProfi
     @Override
     protected void onEdit(GlobalProfile globalProfile, boolean isCreated, String title) {
         var globalCredentials = (isCreated
-            ? new GlobalCredentials(globalProfile)
-            : globalCredentialsService.findBy(globalProfile)
+                ? new GlobalCredentials(globalProfile)
+                : globalCredentialsService.findBy(globalProfile)
         );
 
         // TODO check errors
@@ -71,6 +77,12 @@ public class GlobalProfileController extends ProfileSelectController<GlobalProfi
     @Override
     public void setPrefSize(double parentWidth, double parentHeight) {
         loginGridPane.setPrefSize(parentWidth, parentHeight);
+    }
+
+    @Override
+    protected void onSelect(GlobalProfile profile) {
+        super.onSelect(profile);
+        showSelectedProfile();
     }
 
     private void showSelectedProfile() {
@@ -123,7 +135,6 @@ public class GlobalProfileController extends ProfileSelectController<GlobalProfi
 
         errorText.setText("");
 
-        profileService.select((GlobalProfile) credentials.getProfile());
-        showSelectedProfile();
+        onSelect((GlobalProfile) credentials.getProfile());
     }
 }
