@@ -2,7 +2,7 @@ package egl.client.controller.topic;
 
 import egl.client.controller.Controller;
 import egl.client.controller.WindowController;
-import egl.client.controller.profile.GlobalProfileController;
+import egl.client.controller.profile.GlobalProfilesController;
 import egl.client.controller.profile.LocalProfilesController;
 import egl.client.model.topic.LocalTopic;
 import egl.client.model.topic.category.Category;
@@ -85,7 +85,7 @@ public class LocalTopicsController implements Controller {
 
     private void initializeProfiles() {
         initSelectProfileButton(selectLocalProfileButton, localProfileService, LocalProfilesController.class, "Локальный");
-        initSelectProfileButton(selectGlobalProfileButton, globalProfileService, GlobalProfileController.class, "Глобальный");
+        initSelectProfileButton(selectGlobalProfileButton, globalProfileService, GlobalProfilesController.class, "Глобальный");
     }
 
     private <ProfileType extends Profile> void initSelectProfileButton(
