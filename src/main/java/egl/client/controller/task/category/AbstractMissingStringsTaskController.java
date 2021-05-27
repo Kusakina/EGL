@@ -93,8 +93,10 @@ public abstract class AbstractMissingStringsTaskController extends AbstractTaskC
     protected static class Question{
        private final List<String> expectedOrder;
         private final String sourceText;
+        private final String expectedString;
         private final List<Integer>removedPositions;
         private final List<String> buttonStrings;
+
     }
     protected List<Question> questions;
     private int curMissingQuestionIndex;
@@ -106,16 +108,16 @@ public abstract class AbstractMissingStringsTaskController extends AbstractTaskC
             lettersVBox.setVisible(false);
             return;
         }
-
+        var questions1= questions.get(curIndex);
         //добавление текстфилдов в каждый класс
-        sourceWordText.setText(questions.get(curIndex).sourceText);//тут либо слово, либо предложение
-        TextField[] letterFields = new TextField[questions.get(curIndex).expectedOrder.size()];
+        sourceWordText.setText(questions1.sourceText);//тут либо слово, либо предложение
+        TextField[] letterFields = new TextField[questions1.expectedOrder.size()];
 
-        for (int index = 0; index < questions.get(curIndex).expectedOrder.size(); ++index) {
-            letterFields[index] = createLetterTextField(questions.get(curIndex).expectedOrder.get(index));
+        for (int index = 0; index < questions1.expectedOrder.size(); ++index) {
+            letterFields[index] = createLetterTextField(questions1.expectedOrder.get(index));
         }
 
-        var removedPositions = questions.get(curIndex).removedPositions;
+        var removedPositions = questions1.removedPositions;
 
         //исключение выбранных букв
         for (int index : removedPositions) {
@@ -126,7 +128,7 @@ public abstract class AbstractMissingStringsTaskController extends AbstractTaskC
         selectedLettersHBox.getChildren().setAll(letterFields);
 
 
-        var buttonString = questions.get(curIndex).buttonStrings;
+        var buttonString = questions1.buttonStrings;
         //генерация кнопок с буквами
         Button[] buttonStrings = new Button[buttonString.size()];
         for (int j = 0; j < buttonString.size(); ++j) {
@@ -168,7 +170,7 @@ public abstract class AbstractMissingStringsTaskController extends AbstractTaskC
             }
 
             //тут тоже непонятно до массива преобразовать или вынести в класссы
-            boolean isCorrect = questions.get(curIndex).expectedOrder.equals(ans.toString());
+            boolean isCorrect = questions1.expectedString.equals(ans.toString());
             result.registerAnswer(isCorrect);
 
             if (isCorrect) {
@@ -202,8 +204,8 @@ public abstract class AbstractMissingStringsTaskController extends AbstractTaskC
 
         showQuestion(0);
     }
-
-    abstract List<Question> fillQuestions();
+    //List<Question>
+    abstract void fillQuestions();
     @Override
     protected void prepareToStart() {
         initializeTask();

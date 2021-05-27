@@ -45,19 +45,22 @@ public class MissingLettersTaskController2 extends AbstractMissingStringsTaskCon
     @FXML
     private VBox lettersVBox;
 
-    private final Random random;
+    private Random random;
+
+    //public MissingLettersTaskController2() {
+        //this.random = new Random();
+    //}
+
+    //private List<Translation> translations;
+    //private int curMissingLetterIndex;
 
     public MissingLettersTaskController2() {
-        this.random = new Random();
     }
 
-    private List<Translation> translations;
-    private int curMissingLetterIndex;
-
     Question createQuestion(Translation translation) {
-        String sourceText = translation.getSource().getText();
-
+        String sourceText = translation.getSource().toString();
         List<String> expectedOrder = new ArrayList<>();
+        String expectedString = translation.getTarget().toString();
         String target = translation.getTarget().toString();
         for (int index = 0; index < target.length(); ++index) {
             expectedOrder.add( Character.toString(target.charAt(index)));
@@ -70,7 +73,7 @@ public class MissingLettersTaskController2 extends AbstractMissingStringsTaskCon
             removedPositions.add(index);
         }
         Collections.shuffle(removedPositions, random);
-        int needRemove = translation.getTarget().toString().length() / 2;
+        int needRemove = target.length() / 2;
         removedPositions = removedPositions.subList(0, needRemove);
         Collections.sort(removedPositions);
 
@@ -92,16 +95,15 @@ public class MissingLettersTaskController2 extends AbstractMissingStringsTaskCon
         }
         Collections.shuffle(buttonStrings, random);
 
-        return new Question(expectedOrder,sourceText, removedPositions, buttonStrings);
+        return new Question(expectedOrder,sourceText, expectedString, removedPositions, buttonStrings);
     }
 
     @Override
-    List<Question> fillQuestions() {
+    void fillQuestions() {
         Category category = (Category) controllerTopic;
         for (Translation translation : category.getTranslations()) {
             questions.add(createQuestion(translation));
         }
-        return null;
     }
 }
 
