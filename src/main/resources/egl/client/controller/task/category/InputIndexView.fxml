@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.text.Text?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.control.TextField?>
 <fx:root type="javafx.scene.layout.GridPane" xmlns="http://javafx.com/javafx"
          xmlns:fx="http://javafx.com/fxml">
@@ -9,11 +8,6 @@
     <style>
         -fx-font: 24 arial;
     </style>
-
-    <rowConstraints>
-        <RowConstraints/>
-        <RowConstraints/>
-    </rowConstraints>
 
     <TextField fx:id="inputIndexTextField">
         <style>

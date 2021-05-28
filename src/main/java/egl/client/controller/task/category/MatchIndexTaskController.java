@@ -29,7 +29,7 @@ public class MatchIndexTaskController extends AbstractTaskController {
     List<FixedIndexView> fixedIndexViews;
 
     @FXML
-    private VBox tasksVBoxes;
+    private GridPane tasksGridPane;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -51,30 +51,24 @@ public class MatchIndexTaskController extends AbstractTaskController {
         Collections.shuffle(position);
 
         for (int i = 0; i < tasksCount; ++i) {
-            var questionView = createTestQuestion(i);
-            var answerView = createTestAnswer(position.get(i));
-            HBox hbox = new HBox(questionView, answerView);
-            hbox.setSpacing(300);
-            //hbox.setMaxWidth(1000);
-            //hbox.setPrefWidth(700);
-            //HBox.setHgrow(questionView, Priority.ALWAYS);
-            //HBox.setHgrow(answerView, Priority.ALWAYS);
-           // hbox.setMaxWidth(1000);
-            //hbox.getChildren().addAll(questionView, answerView);
-            tasksVBoxes.getChildren().add(hbox);
+            var questionView = createTestQuestion(i, tasksCount);
+            var answerView = createTestAnswer(position.get(i), i);
+            tasksGridPane.getColumnConstraints().add(new ColumnConstraints(550));
+            tasksGridPane.add(questionView, 0, i);
+            tasksGridPane.add(answerView,  1, i);
             inputIndexViews.add(questionView);
             fixedIndexViews.add(answerView);
         }
 
     }
-    private InputIndexView createTestQuestion(int correctIndex)
+    private InputIndexView createTestQuestion(int correctIndex, int taskCount)
     {
-        return new InputIndexView(translations.get(correctIndex));
+        return new InputIndexView(translations.get(correctIndex), taskCount);
     }
 
-    private FixedIndexView createTestAnswer(int Index)
+    private FixedIndexView createTestAnswer(int Index, int IncorrectIndex)
     {
-        return new FixedIndexView(translations.get(Index));
+        return new FixedIndexView(translations.get(Index), IncorrectIndex);
     }
 
     @Override
