@@ -64,8 +64,9 @@ public class DatabaseInitializationService {
         String testDescription = "На каждой вкладке одно задание.\n" +
                 "Чтобы задание зачли - необходимо нажать кнопку \"Завершить\" внутри вкладки с заданием.\n";
 
-        List<Task> categoryTestTasks = Arrays.asList(oneOfFourTask, matchIndexTask, trueFalseTask);
-        Test categoryTest = new Test("Итоговый тест по категории", testDescription, testSceneName, categoryTestTasks);
+        Task categoryTestTask = new Task("Итоговый тест по категории", testDescription, testSceneName);
+        List<Task> categoryTestInnerTasks = Arrays.asList(oneOfFourTask, matchIndexTask, trueFalseTask);
+        Test categoryTest = new Test(categoryTestTask, categoryTestInnerTasks);
 
         List<Task> categoryTasks = Arrays.asList(missingLettersTask);
         TopicType categoryTopicType = new TopicType(
