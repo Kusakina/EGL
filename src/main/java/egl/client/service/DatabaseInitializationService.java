@@ -11,7 +11,7 @@ import egl.client.service.model.topic.CategoryService;
 import egl.client.service.model.topic.TopicTypeService;
 import egl.client.model.core.task.Task;
 import egl.client.model.core.task.Test;
-import egl.core.model.topic.TopicType;
+import egl.client.model.core.topic.TopicType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

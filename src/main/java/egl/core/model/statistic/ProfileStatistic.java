@@ -2,7 +2,7 @@ package egl.core.model.statistic;
 
 import egl.client.model.core.DatabaseEntity;
 import egl.core.model.profile.Profile;
-import egl.core.model.topic.Topic;
+import egl.client.model.core.topic.Topic;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;

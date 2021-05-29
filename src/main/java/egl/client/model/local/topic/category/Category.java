@@ -11,7 +11,7 @@ import javax.persistence.ManyToMany;
 
 import egl.client.model.local.topic.LocalTopic;
 import egl.client.model.local.topic.Theory;
-import egl.core.model.topic.TopicType;
+import egl.client.model.core.topic.TopicType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;

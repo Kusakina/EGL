@@ -1,4 +1,4 @@
-package egl.core.model.topic;
+package egl.client.model.core.topic;
 
 import java.util.ArrayList;
 import java.util.List;

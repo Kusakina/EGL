@@ -1,4 +1,4 @@
-package egl.core.model.topic;
+package egl.client.model.core.topic;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;

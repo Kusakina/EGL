@@ -6,7 +6,7 @@ import java.util.function.Consumer;
 
 import egl.core.model.statistic.Result;
 import egl.client.model.core.task.Task;
-import egl.core.model.topic.Topic;
+import egl.client.model.core.topic.Topic;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 

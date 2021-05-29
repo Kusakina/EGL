@@ -3,7 +3,7 @@ package egl.client.service.model.topic;
 import egl.client.model.local.topic.category.Category;
 import egl.client.repository.local.topic.CategoryRepository;
 import egl.client.service.model.AbstractEntityService;
-import egl.core.model.topic.TopicType;
+import egl.client.model.core.topic.TopicType;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
 

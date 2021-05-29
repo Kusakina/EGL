@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 import egl.client.controller.Controller;
 import egl.core.model.statistic.Result;
 import egl.client.model.core.task.Task;
-import egl.core.model.topic.Topic;
+import egl.client.model.core.topic.Topic;
 
 public interface TaskController extends Controller {
 
