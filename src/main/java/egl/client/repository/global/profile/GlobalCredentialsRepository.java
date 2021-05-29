@@ -1,4 +1,4 @@
-package egl.client.repository.profile;
+package egl.client.repository.global.profile;
 
 import egl.client.model.global.profile.GlobalCredentials;
 import egl.client.repository.EntityRepository;
