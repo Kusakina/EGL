@@ -4,7 +4,7 @@
 //import egl.client.model.local.topic.category.Category;
 //import egl.client.model.local.topic.category.Translation;
 //import egl.client.model.local.topic.category.Word;
-//import egl.core.model.statistic.Result;
+//import egl.client.model.core.statistic.Result;
 //import egl.core.model.task.Task;
 //import egl.core.model.topic.Topic;
 //import javafx.application.Platform;

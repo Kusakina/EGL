@@ -1,4 +1,4 @@
-package egl.core.model.statistic;
+package egl.client.model.core.statistic;
 
 import egl.client.model.core.DatabaseEntity;
 import lombok.Data;
