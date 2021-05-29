@@ -3,7 +3,7 @@ package egl.client.controller.task;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import egl.client.model.topic.LocalTopic;
+import egl.client.model.local.topic.LocalTopic;
 
 public abstract class TheoryTaskController extends AbstractTaskController {
 

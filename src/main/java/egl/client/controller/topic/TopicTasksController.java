@@ -5,7 +5,7 @@ import java.util.ResourceBundle;
 
 import egl.client.controller.Controller;
 import egl.client.controller.task.TaskController;
-import egl.client.model.topic.LocalTopic;
+import egl.client.model.local.topic.LocalTopic;
 import egl.client.service.FxmlService;
 import egl.client.service.model.profile.LocalProfileService;
 import egl.client.service.model.statistic.LocalStatisticService;

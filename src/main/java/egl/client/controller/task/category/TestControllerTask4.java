@@ -1,9 +1,9 @@
 //package egl.client.controller.task.category;
 //
 //import egl.client.controller.task.AbstractTaskController;
-//import egl.client.model.topic.category.Category;
-//import egl.client.model.topic.category.Translation;
-//import egl.client.model.topic.category.Word;
+//import egl.client.model.local.topic.category.Category;
+//import egl.client.model.local.topic.category.Translation;
+//import egl.client.model.local.topic.category.Word;
 //import egl.core.model.statistic.Result;
 //import egl.core.model.task.Task;
 //import egl.core.model.topic.Topic;

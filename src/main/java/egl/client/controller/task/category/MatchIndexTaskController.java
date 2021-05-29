@@ -1,8 +1,8 @@
 package egl.client.controller.task.category;
 
 import egl.client.controller.task.AbstractTaskController;
-import egl.client.model.topic.category.Category;
-import egl.client.model.topic.category.Translation;
+import egl.client.model.local.topic.category.Category;
+import egl.client.model.local.topic.category.Translation;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;

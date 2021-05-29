@@ -1,7 +1,7 @@
 package egl.client.controller.topic.info;
 
-import egl.client.model.topic.Theory;
-import egl.client.model.topic.category.Category;
+import egl.client.model.local.topic.Theory;
+import egl.client.model.local.topic.category.Category;
 import egl.client.view.info.EntityInfoView;
 import javafx.scene.control.TextArea;
 

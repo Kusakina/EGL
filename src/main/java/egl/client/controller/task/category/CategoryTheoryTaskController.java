@@ -2,7 +2,7 @@ package egl.client.controller.task.category;
 
 import egl.client.controller.task.TheoryTaskController;
 import egl.client.controller.topic.info.TranslationsListView;
-import egl.client.model.topic.category.Category;
+import egl.client.model.local.topic.category.Category;
 import javafx.fxml.FXML;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;

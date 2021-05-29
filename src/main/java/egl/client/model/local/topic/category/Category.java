@@ -1,4 +1,4 @@
-package egl.client.model.topic.category;
+package egl.client.model.local.topic.category;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,8 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 
-import egl.client.model.topic.LocalTopic;
-import egl.client.model.topic.Theory;
+import egl.client.model.local.topic.LocalTopic;
+import egl.client.model.local.topic.Theory;
 import egl.core.model.topic.TopicType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

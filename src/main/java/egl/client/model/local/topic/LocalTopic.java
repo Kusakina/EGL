@@ -1,4 +1,4 @@
-package egl.client.model.topic;
+package egl.client.model.local.topic;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;

@@ -1,11 +1,11 @@
 package egl.client.service;
 
-import egl.client.model.profile.LocalProfile;
-import egl.client.model.topic.Theory;
-import egl.client.model.topic.category.Category;
-import egl.client.model.topic.category.Language;
-import egl.client.model.topic.category.Translation;
-import egl.client.model.topic.category.Word;
+import egl.client.model.local.profile.LocalProfile;
+import egl.client.model.local.topic.Theory;
+import egl.client.model.local.topic.category.Category;
+import egl.client.model.local.topic.category.Language;
+import egl.client.model.local.topic.category.Translation;
+import egl.client.model.local.topic.category.Word;
 import egl.client.service.model.profile.LocalProfileService;
 import egl.client.service.model.topic.CategoryService;
 import egl.client.service.model.topic.TopicTypeService;

@@ -5,8 +5,8 @@ import java.util.Collections;
 import java.util.List;
 
 import egl.client.controller.task.AbstractTaskController;
-import egl.client.model.topic.category.Category;
-import egl.client.model.topic.category.Translation;
+import egl.client.model.local.topic.category.Category;
+import egl.client.model.local.topic.category.Translation;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;

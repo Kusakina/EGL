@@ -1,4 +1,4 @@
-package egl.client.model.topic.category;
+package egl.client.model.local.topic.category;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

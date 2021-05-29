@@ -8,9 +8,9 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import egl.client.controller.task.AbstractTaskController;
-import egl.client.model.topic.category.Category;
-import egl.client.model.topic.category.Translation;
-import egl.client.model.topic.category.Word;
+import egl.client.model.local.topic.category.Category;
+import egl.client.model.local.topic.category.Translation;
+import egl.client.model.local.topic.category.Word;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
 import net.rgielen.fxweaver.core.FxmlView;
