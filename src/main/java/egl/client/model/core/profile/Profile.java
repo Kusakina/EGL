@@ -1,4 +1,4 @@
-package egl.core.model.profile;
+package egl.client.model.core.profile;
 
 import egl.client.model.core.DescribedEntity;
 import lombok.Data;

@@ -6,7 +6,7 @@ import java.util.ResourceBundle;
 import egl.client.controller.Controller;
 import egl.client.service.FxmlService;
 import egl.client.service.model.profile.ProfileService;
-import egl.core.model.profile.Profile;
+import egl.client.model.core.profile.Profile;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import lombok.RequiredArgsConstructor;

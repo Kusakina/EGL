@@ -1,6 +1,6 @@
 package egl.client.model.global.profile;
 
-import egl.core.model.profile.Profile;
+import egl.client.model.core.profile.Profile;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;

@@ -2,7 +2,7 @@ package egl.client.repository.global.profile;
 
 import egl.client.model.global.profile.GlobalCredentials;
 import egl.client.repository.EntityRepository;
-import egl.core.model.profile.Profile;
+import egl.client.model.core.profile.Profile;
 import org.springframework.stereotype.Repository;
 
 @Repository

@@ -2,7 +2,7 @@ package egl.client.service.model.profile;
 
 import egl.client.repository.EntityRepository;
 import egl.client.service.model.AbstractEntityService;
-import egl.core.model.profile.Profile;
+import egl.client.model.core.profile.Profile;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
 

@@ -6,7 +6,7 @@ import egl.client.service.FxmlService;
 import egl.client.service.model.profile.GlobalCredentialsService;
 import egl.client.service.model.profile.GlobalProfileService;
 import egl.client.view.text.LabeledTextField;
-import egl.core.model.profile.Credentials;
+import egl.client.model.core.profile.Credentials;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;

@@ -6,7 +6,7 @@ import java.util.ResourceBundle;
 import egl.client.service.FxmlService;
 import egl.client.view.info.EntityInfoView;
 import egl.client.view.text.LabeledTextField;
-import egl.core.model.profile.Credentials;
+import egl.client.model.core.profile.Credentials;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;

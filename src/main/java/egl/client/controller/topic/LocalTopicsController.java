@@ -14,7 +14,7 @@ import egl.client.service.model.statistic.LocalStatisticService;
 import egl.client.service.model.topic.CategoryService;
 import egl.client.view.table.column.ButtonColumn;
 import egl.client.view.table.list.InfoSelectEditRemoveListView;
-import egl.core.model.profile.Profile;
+import egl.client.model.core.profile.Profile;
 import egl.core.model.statistic.TaskStatistic;
 import egl.core.model.statistic.TopicStatistic;
 import javafx.beans.property.SimpleStringProperty;

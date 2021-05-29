@@ -1,7 +1,7 @@
 package egl.client.model.global.profile;
 
-import egl.core.model.profile.Credentials;
-import egl.core.model.profile.Profile;
+import egl.client.model.core.profile.Credentials;
+import egl.client.model.core.profile.Profile;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
