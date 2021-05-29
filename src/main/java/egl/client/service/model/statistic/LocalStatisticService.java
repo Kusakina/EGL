@@ -1,6 +1,6 @@
 package egl.client.service.model.statistic;
 
-import egl.client.repository.statistic.LocalProfileStatisticRepository;
+import egl.client.repository.local.statistic.LocalProfileStatisticRepository;
 import egl.core.model.profile.Profile;
 import egl.core.model.statistic.ProfileStatistic;
 import egl.core.model.statistic.TopicStatistic;

@@ -1,4 +1,4 @@
-package egl.client.repository.statistic;
+package egl.client.repository.local.statistic;
 
 import egl.client.repository.EntityRepository;
 import egl.core.model.profile.Profile;
