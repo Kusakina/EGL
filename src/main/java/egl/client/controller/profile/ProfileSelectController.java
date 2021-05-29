@@ -4,17 +4,12 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import egl.client.controller.Controller;
-import egl.client.model.profile.LocalProfile;
 import egl.client.service.FxmlService;
-import egl.client.service.model.profile.LocalProfileService;
 import egl.client.service.model.profile.ProfileService;
-import egl.client.view.table.list.InfoSelectEditRemoveListView;
 import egl.core.model.profile.Profile;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.TableRow;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 public abstract class ProfileSelectController<ProfileType extends Profile> implements Controller {
