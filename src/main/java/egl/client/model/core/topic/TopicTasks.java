@@ -17,7 +17,7 @@ import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
-public class TopicType extends DescribedEntity {
+public class TopicTasks extends DescribedEntity {
 
     @Id
     @GeneratedValue
@@ -33,7 +33,7 @@ public class TopicType extends DescribedEntity {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     Test test;
 
-    public TopicType(String name, String description, Task theoryTask, List<Task> tasks, Test test) {
+    public TopicTasks(String name, String description, Task theoryTask, List<Task> tasks, Test test) {
         super(name, description);
         this.theoryTask = theoryTask;
         this.tasks = tasks;

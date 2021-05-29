@@ -1,25 +1,25 @@
 package egl.client.controller.topic;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import egl.client.controller.Controller;
 import egl.client.controller.task.TaskController;
+import egl.client.model.core.statistic.Result;
+import egl.client.model.core.statistic.TaskStatistic;
+import egl.client.model.core.statistic.TopicStatistic;
+import egl.client.model.core.task.Task;
 import egl.client.model.local.topic.LocalTopic;
 import egl.client.service.FxmlService;
 import egl.client.service.model.profile.LocalProfileService;
 import egl.client.service.model.statistic.LocalStatisticService;
 import egl.client.view.table.list.InfoSelectListView;
-import egl.client.model.core.statistic.Result;
-import egl.client.model.core.statistic.TaskStatistic;
-import egl.client.model.core.statistic.TopicStatistic;
-import egl.client.model.core.task.Task;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
+
+import java.net.URL;
+import java.util.ResourceBundle;
 
 @Component
 @FxmlView
@@ -107,10 +107,10 @@ public class TopicTasksController implements Controller {
         var tableTasks = tasksListView.getItems();
         tableTasks.clear();
 
-        var topicType = controllerTopic.getTopicType();
-        tableTasks.add(topicType.getTheoryTask());
-        tableTasks.addAll(topicType.getTasks());
-        tableTasks.add(topicType.getTest().getTask());
+        var TopicTasks = controllerTopic.getTopicTasks();
+        tableTasks.add(TopicTasks.getTheoryTask());
+        tableTasks.addAll(TopicTasks.getTasks());
+        tableTasks.add(TopicTasks.getTest().getTask());
     }
 
     @Override

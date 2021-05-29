@@ -1,6 +1,6 @@
 package egl.client.model.local.topic.category;
 
-import egl.client.model.core.topic.TopicType;
+import egl.client.model.core.topic.TopicTasks;
 import egl.client.model.local.topic.LocalTopic;
 import egl.client.model.local.topic.Theory;
 import lombok.Data;
@@ -35,9 +35,9 @@ public class Category extends LocalTopic {
                 .stream().map(Translation::new).collect(Collectors.toList());
     }
 
-    public Category(String name, String description, TopicType topicType, Theory theory,
+    public Category(String name, String description, TopicTasks topicTasks, Theory theory,
                     List<Translation> translations) {
-        super(name, description, topicType, theory);
+        super(name, description, topicTasks, theory);
         this.translations = translations;
     }
 

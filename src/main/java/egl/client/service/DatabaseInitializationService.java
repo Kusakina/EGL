@@ -2,7 +2,7 @@ package egl.client.service;
 
 import egl.client.model.core.task.Task;
 import egl.client.model.core.task.Test;
-import egl.client.model.core.topic.TopicType;
+import egl.client.model.core.topic.TopicTasks;
 import egl.client.model.local.profile.LocalProfile;
 import egl.client.model.local.topic.Theory;
 import egl.client.model.local.topic.category.Category;
@@ -11,7 +11,7 @@ import egl.client.model.local.topic.category.Translation;
 import egl.client.model.local.topic.category.Word;
 import egl.client.service.model.profile.LocalProfileService;
 import egl.client.service.model.topic.CategoryService;
-import egl.client.service.model.topic.LocalTopicTypeService;
+import egl.client.service.model.topic.LocalTopicTasksService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +27,7 @@ import java.util.List;
 @PersistenceContext(name = "localEntityManager")
 public class DatabaseInitializationService {
 
-    private final LocalTopicTypeService localTopicTypeService;
+    private final LocalTopicTasksService localTopicTasksService;
     private final CategoryService categoryService;
     private final LocalProfileService localProfileService;
 
@@ -71,12 +71,12 @@ public class DatabaseInitializationService {
         Test categoryTest = new Test(categoryTestTask, categoryTestInnerTasks);
 
         List<Task> categoryTasks = Arrays.asList(missingLettersTask);
-        TopicType categoryTopicType = new TopicType(
+        TopicTasks categoryTopicTasks = new TopicTasks(
                 "Категория", "Набор переводов, объединенных общей темой",
                 categoryTheoryTask, categoryTasks, categoryTest
         );
-        localTopicTypeService.save(categoryTopicType);
-        categoryService.setCategoryTopicType(categoryTopicType);
+        localTopicTasksService.save(categoryTopicTasks);
+        categoryService.setCategoryTopicTasks(categoryTopicTasks);
 
         Theory rainbowColorsTheory = new Theory(
                 "В радуге 7 цветов - красный, оранжевый, желтый, зеленый,\n" +
@@ -106,7 +106,7 @@ public class DatabaseInitializationService {
 
         Category rainbowColorsTopic = new Category(
                 "Цвета радуги", "7 цветов радуги",
-                categoryTopicType, rainbowColorsTheory, rainbowColorsTranslations
+                categoryTopicTasks, rainbowColorsTheory, rainbowColorsTranslations
         );
 
         categoryService.save(rainbowColorsTopic);
