@@ -1,10 +1,5 @@
 package egl.client.model.core.topic;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.*;
-
 import egl.client.model.core.DescribedEntity;
 import egl.client.model.core.task.Task;
 import egl.client.model.core.task.Test;
@@ -14,11 +9,19 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @NoArgsConstructor
 public class TopicType extends DescribedEntity {
+
+    @Id
+    @GeneratedValue
+    private long id;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     Task theoryTask;

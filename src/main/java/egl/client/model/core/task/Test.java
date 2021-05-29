@@ -1,22 +1,23 @@
 package egl.client.model.core.task;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.*;
-
 import egl.client.model.core.DatabaseEntity;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-@EqualsAndHashCode(callSuper = true)
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Data
 @NoArgsConstructor
-public class Test extends DatabaseEntity {
+public class Test implements DatabaseEntity {
+
+    @Id
+    @GeneratedValue
+    private long id;
 
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private Task task;

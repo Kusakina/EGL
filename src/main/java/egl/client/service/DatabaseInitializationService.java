@@ -1,5 +1,8 @@
 package egl.client.service;
 
+import egl.client.model.core.task.Task;
+import egl.client.model.core.task.Test;
+import egl.client.model.core.topic.TopicType;
 import egl.client.model.local.profile.LocalProfile;
 import egl.client.model.local.topic.Theory;
 import egl.client.model.local.topic.category.Category;
@@ -9,20 +12,19 @@ import egl.client.model.local.topic.category.Word;
 import egl.client.service.model.profile.LocalProfileService;
 import egl.client.service.model.topic.CategoryService;
 import egl.client.service.model.topic.LocalTopicTypeService;
-import egl.client.model.core.task.Task;
-import egl.client.model.core.task.Test;
-import egl.client.model.core.topic.TopicType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(transactionManager = "localTransactionManager")
+@PersistenceContext(name = "localEntityManager")
 public class DatabaseInitializationService {
 
     private final LocalTopicTypeService localTopicTypeService;

@@ -1,20 +1,19 @@
 package egl.client.model.local.topic.category;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-
 import egl.client.model.core.DatabaseEntity;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-@EqualsAndHashCode(callSuper = true)
+import javax.persistence.*;
+
 @Entity
 @Data
 @NoArgsConstructor
-public class Word extends DatabaseEntity {
+public class Word implements DatabaseEntity {
+
+    @Id
+    @GeneratedValue
+    private long id;
 
     @Column
     private String text;

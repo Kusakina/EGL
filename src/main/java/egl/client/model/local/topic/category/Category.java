@@ -1,28 +1,28 @@
 package egl.client.model.local.topic.category;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
-
+import egl.client.model.core.topic.TopicType;
 import egl.client.model.local.topic.LocalTopic;
 import egl.client.model.local.topic.Theory;
-import egl.client.model.core.topic.TopicType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @NoArgsConstructor
 public class Category extends LocalTopic {
+
+    @Id
+    @GeneratedValue
+    private long id;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @Fetch(value = FetchMode.SUBSELECT)

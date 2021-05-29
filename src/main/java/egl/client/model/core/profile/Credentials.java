@@ -1,19 +1,19 @@
 package egl.client.model.core.profile;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-
 import egl.client.model.core.DatabaseEntity;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-@EqualsAndHashCode(callSuper = true)
+import javax.persistence.*;
+
 @Entity
 @Data
 @NoArgsConstructor
-public abstract class Credentials extends DatabaseEntity {
+public abstract class Credentials implements DatabaseEntity {
+
+    @Id
+    @GeneratedValue
+    private long id;
 
     @OneToOne(cascade = CascadeType.ALL)
     private Profile profile;

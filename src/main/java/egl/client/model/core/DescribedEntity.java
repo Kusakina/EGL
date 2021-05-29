@@ -1,17 +1,15 @@
 package egl.client.model.core;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-@EqualsAndHashCode(callSuper = true)
-@Entity
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
+
+@MappedSuperclass
 @Data
 @NoArgsConstructor
-public abstract class DescribedEntity extends DatabaseEntity {
+public abstract class DescribedEntity implements DatabaseEntity {
 
     @Column
     private String name;

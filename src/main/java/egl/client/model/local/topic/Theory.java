@@ -1,24 +1,30 @@
 package egl.client.model.local.topic;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-
 import egl.client.model.core.DatabaseEntity;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-@EqualsAndHashCode(callSuper = true)
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import java.util.Optional;
+
 @Entity
 @Data
 @NoArgsConstructor
-public class Theory extends DatabaseEntity {
+public class Theory implements DatabaseEntity {
+
+    @Id
+    @GeneratedValue
+    private long id;
 
     @Column(columnDefinition = "LONGTEXT")
     private String text;
 
+    @SuppressWarnings("CopyConstructorMissesField")
     public Theory(Theory other) {
-        this.text = (null != other) ? other.text : "";
+        this(Optional.of(other).map(Theory::getText).orElse(""));
     }
 
     public Theory(String text) {
