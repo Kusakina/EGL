@@ -3,7 +3,7 @@ package egl.client.controller.profile;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import egl.client.model.profile.LocalProfile;
+import egl.client.model.local.profile.LocalProfile;
 import egl.client.service.FxmlService;
 import egl.client.service.model.profile.LocalProfileService;
 import egl.client.view.table.list.InfoSelectEditRemoveListView;
