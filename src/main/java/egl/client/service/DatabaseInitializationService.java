@@ -8,7 +8,7 @@ import egl.client.model.local.topic.category.Translation;
 import egl.client.model.local.topic.category.Word;
 import egl.client.service.model.profile.LocalProfileService;
 import egl.client.service.model.topic.CategoryService;
-import egl.client.service.model.topic.TopicTypeService;
+import egl.client.service.model.topic.LocalTopicTypeService;
 import egl.client.model.core.task.Task;
 import egl.client.model.core.task.Test;
 import egl.client.model.core.topic.TopicType;
@@ -25,7 +25,7 @@ import java.util.List;
 @Transactional
 public class DatabaseInitializationService {
 
-    private final TopicTypeService topicTypeService;
+    private final LocalTopicTypeService localTopicTypeService;
     private final CategoryService categoryService;
     private final LocalProfileService localProfileService;
 
@@ -72,7 +72,7 @@ public class DatabaseInitializationService {
                 "Категория", "Набор переводов, объединенных общей темой",
                 categoryTheoryTask, categoryTasks, categoryTest
         );
-        topicTypeService.save(categoryTopicType);
+        localTopicTypeService.save(categoryTopicType);
         categoryService.setCategoryTopicType(categoryTopicType);
 
         Theory rainbowColorsTheory = new Theory(
