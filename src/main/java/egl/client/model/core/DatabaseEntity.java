@@ -1,4 +1,4 @@
-package egl.core.model;
+package egl.client.model.core;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

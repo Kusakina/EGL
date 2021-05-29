@@ -1,7 +1,7 @@
 package egl.client.service.model;
 
 import egl.client.repository.EntityRepository;
-import egl.core.model.DatabaseEntity;
+import egl.client.model.core.DatabaseEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 

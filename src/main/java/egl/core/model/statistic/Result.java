@@ -1,6 +1,6 @@
 package egl.core.model.statistic;
 
-import egl.core.model.DatabaseEntity;
+import egl.client.model.core.DatabaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

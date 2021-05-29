@@ -3,6 +3,7 @@ package egl.core.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
+import egl.client.model.core.DatabaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
