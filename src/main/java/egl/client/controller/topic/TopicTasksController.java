@@ -110,7 +110,7 @@ public class TopicTasksController implements Controller {
         var topicType = controllerTopic.getTopicType();
         tableTasks.add(topicType.getTheoryTask());
         tableTasks.addAll(topicType.getTasks());
-        tableTasks.add(topicType.getTest());
+        tableTasks.add(topicType.getTest().getTask());
     }
 
     @Override

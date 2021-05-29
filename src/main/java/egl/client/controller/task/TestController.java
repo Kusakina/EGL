@@ -9,6 +9,7 @@ import egl.client.controller.Controller;
 import egl.client.service.FxmlService;
 import egl.client.model.core.task.Task;
 import egl.client.model.core.task.Test;
+import egl.client.service.model.task.LocalTestService;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Tab;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Component;
 public class TestController extends AbstractTaskController {
 
     private final FxmlService fxmlService;
+    private final LocalTestService localTestService;
 
     @FXML private TabPane tabPane;
     @FXML private Tab descriptionTab;
@@ -64,8 +66,8 @@ public class TestController extends AbstractTaskController {
         this.taskControllers = new ArrayList<>();
         List<Tab> taskTabs = new ArrayList<>();
 
-        Test test = (Test) controllerTask;
-        for (Task task : test.getTasks()) {
+        Test test = localTestService.findBy(controllerTask);
+        for (Task task : test.getInnerTasks()) {
             FxControllerAndView<? extends Controller, Parent> controllerAndView = fxmlService.load(task.getSceneName());
 
             TaskController taskController = (TaskController) controllerAndView.getController();
