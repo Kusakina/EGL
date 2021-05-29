@@ -1,7 +1,7 @@
 package egl.client.controller.profile;
 
-import egl.client.model.profile.GlobalCredentials;
-import egl.client.model.profile.GlobalProfile;
+import egl.client.model.global.profile.GlobalCredentials;
+import egl.client.model.global.profile.GlobalProfile;
 import egl.client.service.FxmlService;
 import egl.client.service.model.profile.GlobalCredentialsService;
 import egl.client.service.model.profile.GlobalProfileService;

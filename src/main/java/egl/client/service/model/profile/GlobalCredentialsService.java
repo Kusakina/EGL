@@ -1,6 +1,6 @@
 package egl.client.service.model.profile;
 
-import egl.client.model.profile.GlobalCredentials;
+import egl.client.model.global.profile.GlobalCredentials;
 import egl.client.repository.profile.GlobalCredentialsRepository;
 import egl.client.service.model.AbstractEntityService;
 import egl.core.model.profile.Profile;

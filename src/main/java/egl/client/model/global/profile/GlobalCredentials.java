@@ -1,10 +1,10 @@
-package egl.client.model.profile;
-
-import javax.persistence.Entity;
+package egl.client.model.global.profile;
 
 import egl.core.model.profile.Credentials;
 import egl.core.model.profile.Profile;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.Entity;
 
 @Entity
 @NoArgsConstructor
