@@ -1,4 +1,4 @@
-package egl.core.model.task;
+package egl.client.model.core.task;
 
 import java.util.ArrayList;
 import java.util.List;

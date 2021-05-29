@@ -1,7 +1,7 @@
 package egl.core.model.statistic;
 
 import egl.client.model.core.DatabaseEntity;
-import egl.core.model.task.Task;
+import egl.client.model.core.task.Task;
 import egl.core.model.topic.Topic;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

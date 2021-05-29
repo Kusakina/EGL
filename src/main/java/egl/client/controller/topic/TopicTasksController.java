@@ -13,7 +13,7 @@ import egl.client.view.table.list.InfoSelectListView;
 import egl.core.model.statistic.Result;
 import egl.core.model.statistic.TaskStatistic;
 import egl.core.model.statistic.TopicStatistic;
-import egl.core.model.task.Task;
+import egl.client.model.core.task.Task;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;

@@ -1,4 +1,4 @@
-package egl.core.model.task;
+package egl.client.model.core.task;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

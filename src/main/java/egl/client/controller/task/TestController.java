@@ -7,8 +7,8 @@ import java.util.ResourceBundle;
 
 import egl.client.controller.Controller;
 import egl.client.service.FxmlService;
-import egl.core.model.task.Task;
-import egl.core.model.task.Test;
+import egl.client.model.core.task.Task;
+import egl.client.model.core.task.Test;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Tab;

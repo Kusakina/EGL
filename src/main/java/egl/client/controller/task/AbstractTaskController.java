@@ -5,7 +5,7 @@ import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
 import egl.core.model.statistic.Result;
-import egl.core.model.task.Task;
+import egl.client.model.core.task.Task;
 import egl.core.model.topic.Topic;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;

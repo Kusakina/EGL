@@ -6,8 +6,8 @@ import java.util.List;
 import javax.persistence.*;
 
 import egl.client.model.core.DescribedEntity;
-import egl.core.model.task.Task;
-import egl.core.model.task.Test;
+import egl.client.model.core.task.Task;
+import egl.client.model.core.task.Test;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
