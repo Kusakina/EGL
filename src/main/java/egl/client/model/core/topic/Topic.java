@@ -6,13 +6,19 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @NoArgsConstructor
-public abstract class Topic extends DescribedEntity {
+public class Topic extends DescribedEntity {
+
+    @Id
+    @GeneratedValue
+    private long id;
 
     @ManyToOne
     TopicTasks topicTasks;
