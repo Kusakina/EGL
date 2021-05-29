@@ -2,7 +2,6 @@ package egl.client.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.jdbc.DataSourceBuilder;
-import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -11,6 +10,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
+import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 public abstract class PersistenceAutoConfiguration {
@@ -18,14 +18,14 @@ public abstract class PersistenceAutoConfiguration {
     private final Environment env;
     private final String location;
 
-    protected DataSource dataSource() {
+    public DataSource dataSource() {
         return DataSourceBuilder.create().build();
     }
 
-    protected LocalContainerEntityManagerFactoryBean entityManager() {
+    public LocalContainerEntityManagerFactoryBean entityManager() {
         final LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource());
-        em.setPackagesToScan("egl.client.model." + location, "egl.client.model.core");
+        em.setPackagesToScan(Stream.of(location, "core").map(location -> "egl.client.model." + location).toArray(String[]::new));
 
         final HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
@@ -37,8 +37,7 @@ public abstract class PersistenceAutoConfiguration {
         return em;
     }
 
-    @Bean
-    protected PlatformTransactionManager transactionManager() {
+    public PlatformTransactionManager transactionManager() {
         final JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManager().getObject());
         return transactionManager;

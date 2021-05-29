@@ -21,21 +21,19 @@ public class PersistenceGlobalAutoConfiguration extends PersistenceAutoConfigura
         super(env, "global");
     }
 
-    @Bean
+    @Bean(name = "globalDataSource")
     @ConfigurationProperties(prefix="spring.global-datasource")
-    public DataSource globalDataSource() {
-        return dataSource();
+    public DataSource dataSource() {
+        return super.dataSource();
     }
 
-    @Bean
-    public LocalContainerEntityManagerFactoryBean globalEntityManager() {
-        return entityManager();
+    @Bean(name = "globalEntityManager")
+    public LocalContainerEntityManagerFactoryBean entityManager() {
+        return super.entityManager();
     }
 
-    @Bean
-    public PlatformTransactionManager globalTransactionManager() {
-        return transactionManager();
+    @Bean(name = "globalTransactionManager")
+    public PlatformTransactionManager transactionManager() {
+        return super.transactionManager();
     }
-
-
 }

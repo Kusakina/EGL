@@ -3,6 +3,7 @@ package egl.client.config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -21,20 +22,23 @@ public class PersistenceLocalAutoConfiguration extends PersistenceAutoConfigurat
         super(env, "local");
     }
 
-    @Bean
+    @Primary
+    @Bean(name = "localDataSource")
     @ConfigurationProperties(prefix="spring.local-datasource")
-    public DataSource localDataSource() {
-        return dataSource();
+    public DataSource dataSource() {
+        return super.dataSource();
     }
 
-    @Bean
-    public LocalContainerEntityManagerFactoryBean localEntityManager() {
-        return entityManager();
+    @Primary
+    @Bean(name = "localEntityManager")
+    public LocalContainerEntityManagerFactoryBean entityManager() {
+        return super.entityManager();
     }
 
-    @Bean
-    public PlatformTransactionManager localTransactionManager() {
-        return transactionManager();
+    @Primary
+    @Bean(name = "localTransactionManager")
+    public PlatformTransactionManager transactionManager() {
+        return super.transactionManager();
     }
 
 }
