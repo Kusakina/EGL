@@ -1,9 +1,9 @@
 package egl.client.service;
 
 import egl.client.model.core.task.Task;
-import egl.client.model.core.task.Test;
 import egl.client.model.core.topic.TopicTasks;
 import egl.client.model.local.profile.LocalProfile;
+import egl.client.model.local.task.Test;
 import egl.client.model.local.topic.Theory;
 import egl.client.model.local.topic.category.Category;
 import egl.client.model.local.topic.category.Language;

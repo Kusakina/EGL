@@ -1,14 +1,9 @@
 package egl.client.controller.task;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
-
 import egl.client.controller.Controller;
-import egl.client.service.FxmlService;
 import egl.client.model.core.task.Task;
-import egl.client.model.core.task.Test;
+import egl.client.model.local.task.Test;
+import egl.client.service.FxmlService;
 import egl.client.service.model.task.LocalTestService;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -18,6 +13,11 @@ import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
+
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
 
 @Component
 @FxmlView

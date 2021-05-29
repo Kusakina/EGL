@@ -1,6 +1,7 @@
-package egl.client.model.core.task;
+package egl.client.model.local.task;
 
 import egl.client.model.core.DatabaseEntity;
+import egl.client.model.core.task.Task;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
