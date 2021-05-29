@@ -18,27 +18,27 @@ import java.util.HashMap;
 
 @Configuration
 @EnableJpaRepositories(
-        basePackages = { "egl.client.repository.local" },
-        entityManagerFactoryRef = "localEntityManager",
-        transactionManagerRef = "localTransactionManager")
+        basePackages = { "egl.client.repository.global" },
+        entityManagerFactoryRef = "globalEntityManager",
+        transactionManagerRef = "globalTransactionManager")
 @RequiredArgsConstructor
-public class PersistenceLocalAutoConfiguration {
+public class PersistenceGlobalAutoConfiguration {
 
     private final Environment env;
 
     @Bean
     @Primary
-    @ConfigurationProperties(prefix="spring.local-datasource")
-    public DataSource localDataSource() {
+    @ConfigurationProperties(prefix="spring.global-datasource")
+    public DataSource globalDataSource() {
         return DataSourceBuilder.create().build();
     }
 
     @Primary
     @Bean
-    public LocalContainerEntityManagerFactoryBean localEntityManager() {
+    public LocalContainerEntityManagerFactoryBean globalEntityManager() {
         final LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(localDataSource());
-        em.setPackagesToScan("egl.client.model.local", "egl.client.model.core");
+        em.setDataSource(globalDataSource());
+        em.setPackagesToScan("egl.client.model.global", "egl.client.model.core");
 
         final HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
@@ -52,9 +52,9 @@ public class PersistenceLocalAutoConfiguration {
 
     @Primary
     @Bean
-    public PlatformTransactionManager localTransactionManager() {
+    public PlatformTransactionManager globalTransactionManager() {
         final JpaTransactionManager transactionManager = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(localEntityManager().getObject());
+        transactionManager.setEntityManagerFactory(globalEntityManager().getObject());
         return transactionManager;
     }
 
