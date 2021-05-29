@@ -6,7 +6,7 @@ import egl.client.repository.EntityRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface LocalTestRepository extends EntityRepository<Test> {
+public interface TestRepository extends EntityRepository<Test> {
 
     Test findByTask(Task task);
 }
