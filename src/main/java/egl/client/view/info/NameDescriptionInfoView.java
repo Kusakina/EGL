@@ -3,7 +3,7 @@ package egl.client.view.info;
 import egl.client.service.FxmlService;
 import egl.client.view.pane.CustomBorderPane;
 import egl.client.view.text.LabeledTextField;
-import egl.core.model.DescribedEntity;
+import egl.client.model.core.DescribedEntity;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 

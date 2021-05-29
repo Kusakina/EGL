@@ -1,7 +1,7 @@
 package egl.client.view.table.list;
 
 import egl.client.service.FxmlService;
-import egl.core.model.DescribedEntity;
+import egl.client.model.core.DescribedEntity;
 
 public class InfoSelectListView<T extends DescribedEntity> extends CustomListView<T> {
 

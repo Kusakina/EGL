@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
-import egl.core.model.DescribedEntity;
+import egl.client.model.core.DescribedEntity;
 import egl.core.model.task.Task;
 import egl.core.model.task.Test;
 import lombok.Data;
