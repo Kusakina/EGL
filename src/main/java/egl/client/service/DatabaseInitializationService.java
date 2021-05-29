@@ -55,11 +55,10 @@ public class DatabaseInitializationService {
                 "Необходимо указать, соответствует ли слово своему переводу",
                 "task.category.TrueFalseTaskController");
 
-        /*Task TestTable = new Task(
+        Task TestTable = new Task(
                 "Задание 4",
                 "Необходимо заполнить таблицу",
-                "task.TestControllerTask4");
-        taskRepository.save(TestTable);*/
+                "task.category.TableC");
         String testSceneName = "task.TestController";
         String testDescription = "На каждой вкладке одно задание.\n" +
                 "Чтобы задание зачли - необходимо нажать кнопку \"Завершить\" внутри вкладки с заданием.\n";

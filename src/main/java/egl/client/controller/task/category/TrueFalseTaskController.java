@@ -3,10 +3,12 @@ package egl.client.controller.task.category;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import egl.client.controller.task.AbstractTaskController;
 import egl.client.model.topic.category.Category;
 import egl.client.model.topic.category.Translation;
+import egl.client.model.topic.category.Word;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -24,6 +26,9 @@ import org.springframework.stereotype.Component;
 public class TrueFalseTaskController extends AbstractTaskController {
 
     private static final int MAX_QUESTIONS_COUNT = 8;
+    private List<TrueFalseQuestionView> questionViews;
+    private List<Translation> translations;
+    private List<Translation> answers;
 
     @FXML
     private VBox tasksVBox;
@@ -36,50 +41,23 @@ public class TrueFalseTaskController extends AbstractTaskController {
     @Override
     protected void prepareToStart() {
         Category category = (Category) controllerTopic;
-        List<Translation> tasks = category.getTranslations();
-
-        int numTasks = Math.min(MAX_QUESTIONS_COUNT, tasks.size());
-
-        String[] ansTrue = new String[numTasks];
-
-        Collections.shuffle(tasks);
-        tasks.subList(0, numTasks - 1);
-        List<Translation> translations = new ArrayList<>(tasks);
+        this.translations = category.getTranslations();
+        this.answers = category.getTranslations();
         Collections.shuffle(translations);
-        for (int i = 0; i < numTasks; i++) {
-            addTestQuestion(i, tasks, translations, ansTrue);
+        Collections.shuffle(answers);
+
+        final int tasksCount = Math.min(MAX_QUESTIONS_COUNT, translations.size());
+        this.questionViews = new ArrayList<>();
+        for (int i = 0; i < tasksCount; ++i) {
+            var questionView = createTestQuestion(i);
+            tasksVBox.getChildren().add(questionView);
+            questionViews.add(questionView);
         }
     }
-    private void addTestQuestion(int i, List <Translation> tasks, List <Translation> translations, String[] ansTrue) {
-        var vBoxChildren = tasksVBox.getChildren();
-        GridPane questionPane = new GridPane();
-        questionPane.setStyle("-fx-font: 18 arial;");
-        String source = tasks.get(i).getSource().getText();
-        String target = translations.get(i).getTarget().getText();
-        if (source.equals(target)) ansTrue[i] = "True";
-        else ansTrue[i] = "False";
-        Text number = new Text(Integer.toString(i+1) + ". ");
-        questionPane.add(number, 0, 0);
-        questionPane.getColumnConstraints().add(new ColumnConstraints(40));
-        Text sourceText = new Text(source);
-        questionPane.add(sourceText, 1, 0);
-        questionPane.getColumnConstraints().add(new ColumnConstraints(150));
-        Text dash = new Text("-");
-        questionPane.add(dash, 2, 0);
-        questionPane.getColumnConstraints().add(new ColumnConstraints(100));
-        Text targetText = new Text(target);
-        questionPane.add(targetText, 3, 0);
-        ObservableList<String> change = FXCollections.observableArrayList("True", "False");
-        ComboBox<String> changeComboBox = new ComboBox<String>(change);
-        changeComboBox.setStyle("-fx-font-weight:bold;" +
-                " -fx-text-background-color: blue;" +
-                "-fx-font-size:14px;" +
-                "-fx-pref-width: 130;");
-        changeComboBox.setPromptText("True/False");
-        questionPane.add(changeComboBox, 4, 0);
-        questionPane.getColumnConstraints().add(new ColumnConstraints(100));
-        questionPane.getRowConstraints().add(new RowConstraints(40));
-        vBoxChildren.add(questionPane);
+    private TrueFalseQuestionView createTestQuestion(int index) {
+        int bool = (int) (Math.random() * 1.5);
+        if (bool == 0) return new TrueFalseQuestionView(translations.get(index), translations.get(index), index);
+        else return new TrueFalseQuestionView(translations.get(index), answers.get(index), index);
     }
 
     @Override
