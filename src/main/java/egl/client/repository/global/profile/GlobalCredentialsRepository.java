@@ -1,14 +1,14 @@
 package egl.client.repository.global.profile;
 
-import egl.client.model.global.profile.GlobalCredentials;
-import egl.client.repository.EntityRepository;
+import egl.client.model.core.profile.Credentials;
 import egl.client.model.core.profile.Profile;
+import egl.client.repository.EntityRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface GlobalCredentialsRepository extends EntityRepository<GlobalCredentials> {
+public interface GlobalCredentialsRepository extends EntityRepository<Credentials> {
 
-    GlobalCredentials findByProfile(Profile profile);
+    Credentials findByProfile(Profile profile);
 
-    GlobalCredentials findByLogin(String login);
+    Credentials findByLogin(String login);
 }

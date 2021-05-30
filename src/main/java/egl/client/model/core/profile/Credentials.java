@@ -21,7 +21,7 @@ public class Credentials implements DatabaseEntity {
     private String login;
     private long passwordHash;
 
-    protected Credentials(Profile profile) {
+    public Credentials(Profile profile) {
         this.profile = profile;
     }
 

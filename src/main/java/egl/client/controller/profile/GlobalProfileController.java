@@ -2,7 +2,6 @@ package egl.client.controller.profile;
 
 import egl.client.model.core.profile.Credentials;
 import egl.client.model.core.profile.Profile;
-import egl.client.model.global.profile.GlobalCredentials;
 import egl.client.service.FxmlService;
 import egl.client.service.model.profile.GlobalCredentialsService;
 import egl.client.service.model.profile.GlobalProfileService;
@@ -47,24 +46,24 @@ public class GlobalProfileController extends ProfileSelectController {
 
     @Override
     protected void onEdit(Profile profile, boolean isCreated, String title) {
-        var globalCredentials = (isCreated
-                ? new GlobalCredentials(profile)
+        var credentials = (isCreated
+                ? new Credentials(profile)
                 : globalCredentialsService.findBy(profile)
         );
 
         // TODO check errors
-        if (null == globalCredentials) {
+        if (null == credentials) {
             return;
         }
 
         var changed = fxmlService.showInfoDialog(
                 CredentialsInfoController.class,
-                globalCredentials,
+                credentials,
                 title, isCreated
         );
 
         if (changed) {
-            globalCredentialsService.save(globalCredentials);
+            globalCredentialsService.save(credentials);
             onSelect(profile);
         }
     }
