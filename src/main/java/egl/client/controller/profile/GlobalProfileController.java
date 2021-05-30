@@ -1,12 +1,12 @@
 package egl.client.controller.profile;
 
+import egl.client.model.core.profile.Credentials;
+import egl.client.model.core.profile.Profile;
 import egl.client.model.global.profile.GlobalCredentials;
-import egl.client.model.global.profile.GlobalProfile;
 import egl.client.service.FxmlService;
 import egl.client.service.model.profile.GlobalCredentialsService;
 import egl.client.service.model.profile.GlobalProfileService;
 import egl.client.view.text.LabeledTextField;
-import egl.client.model.core.profile.Credentials;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
@@ -17,7 +17,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 @Component
-public class GlobalProfileController extends ProfileSelectController<GlobalProfile> {
+public class GlobalProfileController extends ProfileSelectController<Profile> {
 
     private final GlobalCredentialsService globalCredentialsService;
 
@@ -46,15 +46,15 @@ public class GlobalProfileController extends ProfileSelectController<GlobalProfi
     }
 
     @Override
-    protected GlobalProfile createProfile() {
-        return new GlobalProfile();
+    protected Profile createProfile() {
+        return new Profile();
     }
 
     @Override
-    protected void onEdit(GlobalProfile globalProfile, boolean isCreated, String title) {
+    protected void onEdit(Profile profile, boolean isCreated, String title) {
         var globalCredentials = (isCreated
-                ? new GlobalCredentials(globalProfile)
-                : globalCredentialsService.findBy(globalProfile)
+                ? new GlobalCredentials(profile)
+                : globalCredentialsService.findBy(profile)
         );
 
         // TODO check errors
@@ -70,7 +70,7 @@ public class GlobalProfileController extends ProfileSelectController<GlobalProfi
 
         if (changed) {
             globalCredentialsService.save(globalCredentials);
-            onSelect(globalProfile);
+            onSelect(profile);
         }
     }
 
@@ -80,7 +80,7 @@ public class GlobalProfileController extends ProfileSelectController<GlobalProfi
     }
 
     @Override
-    protected void onSelect(GlobalProfile profile) {
+    protected void onSelect(Profile profile) {
         super.onSelect(profile);
         showSelectedProfile();
     }
@@ -137,6 +137,6 @@ public class GlobalProfileController extends ProfileSelectController<GlobalProfi
         passwordTextField.setText("");
         errorText.setText("");
 
-        onSelect((GlobalProfile) credentials.getProfile());
+        onSelect(credentials.getProfile());
     }
 }
