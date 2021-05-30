@@ -26,14 +26,13 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(transactionManager = "localTransactionManager")
-@PersistenceContext(name = "localEntityManager")
 public class DatabaseInitializationService {
 
     private final LocalTopicTasksService localTopicTasksService;
     private final CategoryService categoryService;
     private final LocalProfileService localProfileService;
 
+    @Transactional(transactionManager = "localTransactionManager")
     public void run() {
         Task categoryTheoryTask = new Task(
                 "Информация о категории",

@@ -24,7 +24,7 @@ public class PersistenceLocalAutoConfiguration extends PersistenceAutoConfigurat
 
     @Primary
     @Bean(name = "localDataSource")
-    @ConfigurationProperties(prefix="spring.local-datasource")
+    @ConfigurationProperties(prefix="spring.datasource")
     public DataSource dataSource() {
         return super.dataSource();
     }
