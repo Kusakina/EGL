@@ -135,9 +135,9 @@ public class LocalTopicsController implements Controller {
         initSelectProfileButton(selectGlobalProfileButton, globalProfileService, GlobalProfileController.class, "Глобальный");
     }
 
-    private <ProfileType extends Profile> void initSelectProfileButton(
+    private void initSelectProfileButton(
             Button selectProfileButton,
-            ProfileService<ProfileType> profileService,
+            ProfileService profileService,
             Class<? extends Controller> selectProfileControllerClass,
             String profileTypeName) {
         String profileText = String.format("%s профиль", profileTypeName);
@@ -151,13 +151,13 @@ public class LocalTopicsController implements Controller {
                 profileService.selectedProfileProperty(),
                 new StringConverter<>() {
                     @Override
-                    public String toString(ProfileType localProfile) {
-                        if (null == localProfile) return String.format("Выбрать %s", profileText.toLowerCase());
-                        return String.format("%s профиль: %s", profileText, localProfile.getName());
+                    public String toString(Profile profile) {
+                        if (null == profile) return String.format("Выбрать %s", profileText.toLowerCase());
+                        return String.format("%s профиль: %s", profileText, profile.getName());
                     }
 
                     @Override
-                    public ProfileType fromString(String s) {
+                    public Profile fromString(String s) {
                         return null;
                     }
                 }

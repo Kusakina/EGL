@@ -17,7 +17,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 @Component
-public class GlobalProfileController extends ProfileSelectController<Profile> {
+public class GlobalProfileController extends ProfileSelectController {
 
     private final GlobalCredentialsService globalCredentialsService;
 
@@ -43,11 +43,6 @@ public class GlobalProfileController extends ProfileSelectController<Profile> {
     ) {
         super(fxmlService, globalProfileService);
         this.globalCredentialsService = globalCredentialsService;
-    }
-
-    @Override
-    protected Profile createProfile() {
-        return new Profile();
     }
 
     @Override

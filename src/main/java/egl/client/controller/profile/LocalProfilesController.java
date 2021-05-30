@@ -12,7 +12,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 @Component
-public class LocalProfilesController extends ProfileSelectController<Profile> {
+public class LocalProfilesController extends ProfileSelectController {
 
     @FXML private InfoSelectEditRemoveListView<Profile> localProfilesListView;
 
@@ -53,11 +53,6 @@ public class LocalProfilesController extends ProfileSelectController<Profile> {
     protected void onSelect(Profile profile) {
         super.onSelect(profile);
         localProfilesListView.refresh();
-    }
-
-    @Override
-    protected Profile createProfile() {
-        return new Profile();
     }
 
     @Override
