@@ -13,7 +13,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableJpaRepositories(
-        basePackages = { "egl.client.repository.local" },
+        basePackages = { "egl.client.repository" },
         entityManagerFactoryRef = "localEntityManager",
         transactionManagerRef = "localTransactionManager")
 public class PersistenceLocalAutoConfiguration extends PersistenceAutoConfiguration {

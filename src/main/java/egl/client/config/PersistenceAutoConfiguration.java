@@ -25,7 +25,7 @@ public abstract class PersistenceAutoConfiguration {
     public LocalContainerEntityManagerFactoryBean entityManager() {
         final LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource());
-        em.setPackagesToScan(Stream.of(location, "core").map(location -> "egl.client.model." + location).toArray(String[]::new));
+        em.setPackagesToScan(Stream.of(location, "core", "global").map(location -> "egl.client.model." + location).toArray(String[]::new));
 
         final HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
