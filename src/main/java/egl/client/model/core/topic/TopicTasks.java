@@ -23,6 +23,10 @@ public class TopicTasks extends DescribedEntity {
     @GeneratedValue
     private long id;
 
+    @Column
+    @Enumerated(EnumType.STRING)
+    private TopicType topicType;
+
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     Task theoryTask;
 
@@ -33,8 +37,9 @@ public class TopicTasks extends DescribedEntity {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     Test test;
 
-    public TopicTasks(String name, String description, Task theoryTask, List<Task> tasks, Test test) {
+    public TopicTasks(String name, String description, TopicType topicType, Task theoryTask, List<Task> tasks, Test test) {
         super(name, description);
+        this.topicType = topicType;
         this.theoryTask = theoryTask;
         this.tasks = tasks;
         this.test = test;

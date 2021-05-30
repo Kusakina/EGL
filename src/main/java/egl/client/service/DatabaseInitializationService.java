@@ -1,7 +1,9 @@
 package egl.client.service;
 
 import egl.client.model.core.task.Task;
+import egl.client.model.core.topic.Topic;
 import egl.client.model.core.topic.TopicTasks;
+import egl.client.model.core.topic.TopicType;
 import egl.client.model.local.profile.LocalProfile;
 import egl.client.model.local.task.Test;
 import egl.client.model.local.topic.Theory;
@@ -73,7 +75,7 @@ public class DatabaseInitializationService {
         List<Task> categoryTasks = Arrays.asList(missingLettersTask);
         TopicTasks categoryTopicTasks = new TopicTasks(
                 "Категория", "Набор переводов, объединенных общей темой",
-                categoryTheoryTask, categoryTasks, categoryTest
+                TopicType.CATEGORY, categoryTheoryTask, categoryTasks, categoryTest
         );
         localTopicTasksService.save(categoryTopicTasks);
         categoryService.setCategoryTopicTasks(categoryTopicTasks);

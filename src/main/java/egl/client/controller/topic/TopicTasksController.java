@@ -6,10 +6,11 @@ import egl.client.model.core.statistic.Result;
 import egl.client.model.core.statistic.TaskStatistic;
 import egl.client.model.core.statistic.TopicStatistic;
 import egl.client.model.core.task.Task;
-import egl.client.model.local.topic.LocalTopic;
+import egl.client.model.core.topic.Topic;
 import egl.client.service.FxmlService;
 import egl.client.service.model.profile.LocalProfileService;
 import egl.client.service.model.statistic.LocalStatisticService;
+import egl.client.service.model.topic.LocalTopicTasksService;
 import egl.client.view.table.list.InfoSelectListView;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
@@ -27,15 +28,16 @@ import java.util.ResourceBundle;
 public class TopicTasksController implements Controller {
 
     private final FxmlService fxmlService;
+    private final LocalTopicTasksService localTopicTasksService;
     private final LocalProfileService localProfileService;
     private final LocalStatisticService localStatisticService;
 
     @FXML private InfoSelectListView<Task> tasksListView;
     @FXML private TableColumn<Task, String> taskStatisticColumn;
 
-    private LocalTopic controllerTopic;
+    private Topic controllerTopic;
 
-    public void setContext(LocalTopic topic) {
+    public void setContext(Topic topic) {
         this.controllerTopic = topic;
     }
 
@@ -107,10 +109,10 @@ public class TopicTasksController implements Controller {
         var tableTasks = tasksListView.getItems();
         tableTasks.clear();
 
-        var TopicTasks = controllerTopic.getTopicTasks();
-        tableTasks.add(TopicTasks.getTheoryTask());
-        tableTasks.addAll(TopicTasks.getTasks());
-        tableTasks.add(TopicTasks.getTest().getTask());
+        var topicTasks = localTopicTasksService.findBy(controllerTopic.getTopicType());
+        tableTasks.add(topicTasks.getTheoryTask());
+        tableTasks.addAll(topicTasks.getTasks());
+        tableTasks.add(topicTasks.getTest().getTask());
     }
 
     @Override

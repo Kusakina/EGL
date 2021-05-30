@@ -5,10 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -20,16 +17,17 @@ public class Topic extends DescribedEntity {
     @GeneratedValue
     private long id;
 
-    @ManyToOne
-    TopicTasks topicTasks;
+    @Column
+    @Enumerated(EnumType.STRING)
+    private TopicType topicType;
 
+    @SuppressWarnings("CopyConstructorMissesField")
     public Topic(Topic other){
-        super(other);
-        this.topicTasks = other.topicTasks;
+        this(other.getName(), other.getDescription(), other.topicType);
     }
 
-    public Topic(String name, String description, TopicTasks topicTasks) {
+    public Topic(String name, String description, TopicType topicType) {
         super(name, description);
-        this.topicTasks = topicTasks;
+        this.topicType = topicType;
     }
 }
