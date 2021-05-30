@@ -1,8 +1,8 @@
 package egl.client.service.model;
 
-import egl.client.repository.EntityRepository;
 import egl.client.model.core.DatabaseEntity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
 @Transactional
 @RequiredArgsConstructor
 public abstract class AbstractEntityService<
-        T extends DatabaseEntity, RepositoryType extends EntityRepository<T>
+        T extends DatabaseEntity, RepositoryType extends JpaRepository<T, Long>
         > implements EntityService<T> {
 
     protected final RepositoryType repository;
