@@ -6,6 +6,7 @@ import egl.client.model.core.topic.TopicTasks;
 import egl.client.model.core.topic.TopicType;
 import egl.client.model.local.profile.LocalProfile;
 import egl.client.model.local.task.Test;
+import egl.client.model.local.topic.LocalTopicInfo;
 import egl.client.model.local.topic.Theory;
 import egl.client.model.local.topic.category.Category;
 import egl.client.model.local.topic.category.Language;
@@ -78,7 +79,6 @@ public class DatabaseInitializationService {
                 TopicType.CATEGORY, categoryTheoryTask, categoryTasks, categoryTest
         );
         localTopicTasksService.save(categoryTopicTasks);
-        categoryService.setCategoryTopicTasks(categoryTopicTasks);
 
         Theory rainbowColorsTheory = new Theory(
                 "В радуге 7 цветов - красный, оранжевый, желтый, зеленый,\n" +
@@ -107,8 +107,10 @@ public class DatabaseInitializationService {
         }
 
         Category rainbowColorsTopic = new Category(
-                "Цвета радуги", "7 цветов радуги",
-                categoryTopicTasks, rainbowColorsTheory, rainbowColorsTranslations
+                new LocalTopicInfo(
+                        new Topic("Цвета радуги", "7 цветов радуги", TopicType.CATEGORY),
+                        rainbowColorsTheory
+                ), rainbowColorsTranslations
         );
 
         categoryService.save(rainbowColorsTopic);

@@ -1,12 +1,10 @@
 package egl.client.controller.task.category;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import egl.client.controller.task.AbstractTaskController;
+import egl.client.controller.task.LocalTaskController;
 import egl.client.model.local.topic.category.Category;
 import egl.client.model.local.topic.category.Translation;
+import egl.client.service.model.topic.CategoryService;
+import egl.client.service.model.topic.LocalTopicInfoService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -19,14 +17,22 @@ import javafx.scene.text.Text;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 @Component
 @FxmlView
-public class TrueFalseTaskController extends AbstractTaskController {
+public class TrueFalseTaskController extends LocalTaskController<Category> {
 
     private static final int MAX_QUESTIONS_COUNT = 8;
 
     @FXML
     private VBox tasksVBox;
+
+    public TrueFalseTaskController(LocalTopicInfoService localTopicInfoService, CategoryService categoryService) {
+        super(localTopicInfoService, categoryService);
+    }
 
     @Override
     public void setPrefSize(double parentWidth, double parentHeight) {
@@ -35,7 +41,7 @@ public class TrueFalseTaskController extends AbstractTaskController {
 
     @Override
     protected void prepareToStart() {
-        Category category = (Category) controllerTopic;
+        Category category = specificLocalTopic;
         List<Translation> tasks = category.getTranslations();
 
         int numTasks = Math.min(MAX_QUESTIONS_COUNT, tasks.size());
