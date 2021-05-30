@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Entity
 @Data
 @NoArgsConstructor
-public abstract class Credentials implements DatabaseEntity {
+public class Credentials implements DatabaseEntity {
 
     @Id
     @GeneratedValue
