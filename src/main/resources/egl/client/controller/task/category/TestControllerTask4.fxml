@@ -11,3 +11,20 @@
 <!--      </VBox>-->
 <!--   </VBox>-->
 <!--</ScrollPane>-->
+<?import egl.client.controller.topic.info.TheoryTextArea?>
+<?import egl.client.controller.topic.info.TranslationsEditableListView?>
+<?import egl.client.view.info.NameDescriptionInfoView?>
+<?import egl.client.view.pane.CustomBorderPane?>
+<?import javafx.scene.control.Button?>
+<CustomBorderPane fx:id="parentPane" fx:controller="egl.client.controller.task.category.TestControllerTask4"
+                  xmlns:fx="http://javafx.com/fxml" margin="5">
+
+    <right>
+        <CustomBorderPane fx:id="editableTranslationsPane">
+            <center>
+                <TranslationsEditableListView fx:id="translationsListView"/>
+            </center>
+        </CustomBorderPane>
+    </right>
+
+</CustomBorderPane>

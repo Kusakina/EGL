@@ -28,6 +28,57 @@
 //import java.util.ArrayList;
 //import java.util.Collections;
 //import java.util.List;
+package egl.client.controller.task.category;
+import egl.client.controller.info.AbstractEntityInfoController;
+import egl.client.controller.task.AbstractTaskController;
+import egl.client.controller.task.TaskController;
+import egl.client.controller.topic.info.TheoryTextArea;
+import egl.client.controller.topic.info.TranslationsEditableListView;
+import egl.client.model.topic.category.Category;
+import egl.client.model.topic.category.Translation;
+import egl.client.view.info.NameDescriptionInfoView;
+import egl.client.view.pane.CustomBorderPane;
+import egl.core.model.task.Result;
+import egl.core.model.task.Task;
+import egl.core.model.topic.Topic;
+import javafx.fxml.FXML;
+import lombok.RequiredArgsConstructor;
+import net.rgielen.fxweaver.core.FxmlView;
+import org.springframework.stereotype.Component;
+
+import java.net.URL;
+import java.util.ResourceBundle;
+import java.util.function.Consumer;
+
+@RequiredArgsConstructor
+@Component
+@FxmlView
+public class TestControllerTask4 extends AbstractEntityInfoController<Category> implements TaskController {
+
+
+    @FXML private CustomBorderPane editableTranslationsPane;
+    @FXML private TranslationsEditableListView translationsListView;
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        addInnerInfoViews(translationsListView);
+    }
+
+
+
+    @Override
+    public void setPrefSize(double parentWidth, double parentHeight) {
+    }
+
+    public void onAddTranslation() {
+        translationsListView.getItems().add(new Translation());
+    }
+
+    @Override
+    public void setContext(Task controllerTask, Topic controllerTopic, Consumer<Result> resultConsumer) {
+
+    }
+}
 //import java.util.ResourceBundle;
 //import java.util.function.Consumer;
 //@Component

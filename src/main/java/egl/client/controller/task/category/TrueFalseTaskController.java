@@ -55,7 +55,7 @@ public class TrueFalseTaskController extends AbstractTaskController {
         }
     }
     private TrueFalseQuestionView createTestQuestion(int index) {
-        int bool = (int) (Math.random() * 1.5);
+        int bool = (int) (Math.random() * 2);
         if (bool == 0) return new TrueFalseQuestionView(translations.get(index), translations.get(index), index);
         else return new TrueFalseQuestionView(translations.get(index), answers.get(index), index);
     }

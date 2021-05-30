@@ -56,14 +56,14 @@ public class DatabaseInitializationService {
                 "task.category.TrueFalseTaskController");
 
         Task TestTable = new Task(
-                "Задание 4",
-                "Необходимо заполнить таблицу",
-                "task.category.TableC");
+                "Перевод",
+                "Необходимо заполнить пропуски нужным переводом",
+                "task.category.TranslateWordController");
         String testSceneName = "task.TestController";
         String testDescription = "На каждой вкладке одно задание.\n" +
                 "Чтобы задание зачли - необходимо нажать кнопку \"Завершить\" внутри вкладки с заданием.\n";
 
-        List<Task> categoryTestTasks = Arrays.asList(oneOfFourTask, matchIndexTask, trueFalseTask);
+        List<Task> categoryTestTasks = Arrays.asList(oneOfFourTask, matchIndexTask, trueFalseTask, TestTable);
         Test categoryTest = new Test("Итоговый тест по категории", testDescription, testSceneName, categoryTestTasks);
 
         List<Task> categoryTasks = Arrays.asList(missingLettersTask);
