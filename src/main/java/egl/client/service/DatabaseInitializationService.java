@@ -1,10 +1,10 @@
 package egl.client.service;
 
+import egl.client.model.core.profile.Profile;
 import egl.client.model.core.task.Task;
 import egl.client.model.core.topic.Topic;
 import egl.client.model.core.topic.TopicTasks;
 import egl.client.model.core.topic.TopicType;
-import egl.client.model.local.profile.LocalProfile;
 import egl.client.model.local.task.Test;
 import egl.client.model.local.topic.LocalTopicInfo;
 import egl.client.model.local.topic.Theory;
@@ -115,7 +115,7 @@ public class DatabaseInitializationService {
 
         categoryService.save(rainbowColorsTopic);
 
-        LocalProfile vasyaPupkinLocalProfile = new LocalProfile("Вася Пупкин", "Едет в Магадан");
+        Profile vasyaPupkinLocalProfile = new Profile("Вася Пупкин", "Едет в Магадан");
         localProfileService.save(vasyaPupkinLocalProfile);
     }
 }

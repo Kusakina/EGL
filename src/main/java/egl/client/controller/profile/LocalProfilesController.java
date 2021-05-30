@@ -1,9 +1,6 @@
 package egl.client.controller.profile;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
-import egl.client.model.local.profile.LocalProfile;
+import egl.client.model.core.profile.Profile;
 import egl.client.service.FxmlService;
 import egl.client.service.model.profile.LocalProfileService;
 import egl.client.view.table.list.InfoSelectEditRemoveListView;
@@ -11,10 +8,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableRow;
 import org.springframework.stereotype.Component;
 
-@Component
-public class LocalProfilesController extends ProfileSelectController<LocalProfile> {
+import java.net.URL;
+import java.util.ResourceBundle;
 
-    @FXML private InfoSelectEditRemoveListView<LocalProfile> localProfilesListView;
+@Component
+public class LocalProfilesController extends ProfileSelectController<Profile> {
+
+    @FXML private InfoSelectEditRemoveListView<Profile> localProfilesListView;
 
     public LocalProfilesController(
             FxmlService fxmlService,
@@ -30,7 +30,7 @@ public class LocalProfilesController extends ProfileSelectController<LocalProfil
 
         localProfilesListView.setRowFactory(tv -> new TableRow<>() {
             @Override
-            protected void updateItem(LocalProfile profile, boolean empty) {
+            protected void updateItem(Profile profile, boolean empty) {
                 super.updateItem(profile, empty);
 
                 if (profile == null) {
@@ -50,26 +50,26 @@ public class LocalProfilesController extends ProfileSelectController<LocalProfil
     }
 
     @Override
-    protected void onSelect(LocalProfile localProfile) {
-        super.onSelect(localProfile);
+    protected void onSelect(Profile profile) {
+        super.onSelect(profile);
         localProfilesListView.refresh();
     }
 
     @Override
-    protected LocalProfile createProfile() {
-        return new LocalProfile();
+    protected Profile createProfile() {
+        return new Profile();
     }
 
     @Override
-    protected void onEdit(LocalProfile localProfile, boolean isCreated, String title) {
+    protected void onEdit(Profile profile, boolean isCreated, String title) {
         var changed = fxmlService.showInfoDialog(
                 ProfileInfoController.class,
-                localProfile,
+                profile,
                 title, isCreated
         );
 
         if (changed) {
-            profileService.save(localProfile);
+            profileService.save(profile);
             localProfilesListView.showItems();
         }
     }
