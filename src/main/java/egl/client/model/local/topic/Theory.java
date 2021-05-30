@@ -2,7 +2,6 @@ package egl.client.model.local.topic;
 
 import egl.client.model.core.DatabaseEntity;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,7 +11,6 @@ import java.util.Optional;
 
 @Entity
 @Data
-@NoArgsConstructor
 public class Theory implements DatabaseEntity {
 
     @Id
@@ -21,6 +19,10 @@ public class Theory implements DatabaseEntity {
 
     @Column(columnDefinition = "LONGTEXT")
     private String text;
+
+    public Theory() {
+        this.text = "";
+    }
 
     @SuppressWarnings("CopyConstructorMissesField")
     public Theory(Theory other) {
