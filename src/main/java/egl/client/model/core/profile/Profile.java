@@ -6,14 +6,20 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @NoArgsConstructor
-public abstract class Profile extends DescribedEntity {
+public class Profile extends DescribedEntity {
 
-    protected Profile(String name, String description) {
+    @Id
+    @GeneratedValue
+    private long id;
+
+    public Profile(String name, String description) {
         super(name, description);
     }
 }
