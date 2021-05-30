@@ -10,7 +10,7 @@ import javax.persistence.*;
 public class Word implements DatabaseEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column

@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class Topic extends DescribedEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column

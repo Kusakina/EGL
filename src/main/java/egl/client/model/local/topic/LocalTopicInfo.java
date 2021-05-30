@@ -13,7 +13,7 @@ public class LocalTopicInfo implements DatabaseEntity {
     private static final long NO_GLOBAL_ID = -1;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})

@@ -18,7 +18,7 @@ import java.util.Set;
 public class TopicStatistic implements DatabaseEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @ManyToOne

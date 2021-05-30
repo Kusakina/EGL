@@ -20,7 +20,7 @@ import java.util.List;
 public class TopicTasks extends DescribedEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column

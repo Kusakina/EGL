@@ -12,7 +12,7 @@ import javax.persistence.*;
 public class Credentials implements DatabaseEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @OneToOne(cascade = CascadeType.ALL)

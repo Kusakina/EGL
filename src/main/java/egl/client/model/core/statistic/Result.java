@@ -3,10 +3,7 @@ package egl.client.model.core.statistic;
 import egl.client.model.core.DatabaseEntity;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Data
@@ -15,7 +12,7 @@ public class Result implements DatabaseEntity, Comparable<Result> {
     public static final Result NONE = new Result(-1, 1);
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column

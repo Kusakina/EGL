@@ -14,7 +14,7 @@ import java.util.Optional;
 public class TaskStatistic implements DatabaseEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @ManyToOne
