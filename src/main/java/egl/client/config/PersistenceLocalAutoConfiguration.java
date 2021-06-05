@@ -8,12 +8,14 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 
 @Configuration
+@EnableTransactionManagement
 @EnableJpaRepositories(
-        basePackages = { "egl.client.repository" },
+        basePackages = { "egl.client.repository.local" },
         entityManagerFactoryRef = "localEntityManager",
         transactionManagerRef = "localTransactionManager")
 public class PersistenceLocalAutoConfiguration extends PersistenceAutoConfiguration {
@@ -24,7 +26,7 @@ public class PersistenceLocalAutoConfiguration extends PersistenceAutoConfigurat
 
     @Primary
     @Bean(name = "localDataSource")
-    @ConfigurationProperties(prefix="spring.datasource")
+    @ConfigurationProperties(prefix="spring.local-datasource")
     public DataSource dataSource() {
         return super.dataSource();
     }

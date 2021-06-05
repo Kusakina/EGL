@@ -8,8 +8,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
 @EnableConfigurationProperties
-@EnableTransactionManagement
-@EntityScan(basePackages = {"egl.client.model"})
 public class SpringClientApplication {
 
 	public static void main(String[] args) {

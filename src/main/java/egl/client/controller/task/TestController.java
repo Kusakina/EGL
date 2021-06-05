@@ -2,7 +2,7 @@ package egl.client.controller.task;
 
 import egl.client.controller.Controller;
 import egl.client.model.core.task.Task;
-import egl.client.model.local.task.Test;
+import egl.client.model.core.task.Test;
 import egl.client.service.FxmlService;
 import egl.client.service.model.task.LocalTestService;
 import javafx.fxml.FXML;

@@ -1,4 +1,4 @@
-package egl.client.model.local.task;
+package egl.client.model.core.task;
 
 import egl.client.model.core.DatabaseEntity;
 import egl.client.model.core.task.Task;

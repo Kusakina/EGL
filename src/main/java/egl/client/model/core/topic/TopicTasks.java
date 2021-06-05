@@ -2,7 +2,7 @@ package egl.client.model.core.topic;
 
 import egl.client.model.core.DescribedEntity;
 import egl.client.model.core.task.Task;
-import egl.client.model.local.task.Test;
+import egl.client.model.core.task.Test;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;

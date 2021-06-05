@@ -5,7 +5,7 @@ import egl.client.model.core.task.Task;
 import egl.client.model.core.topic.Topic;
 import egl.client.model.core.topic.TopicTasks;
 import egl.client.model.core.topic.TopicType;
-import egl.client.model.local.task.Test;
+import egl.client.model.core.task.Test;
 import egl.client.model.local.topic.LocalTopicInfo;
 import egl.client.model.local.topic.Theory;
 import egl.client.model.local.topic.category.Category;
@@ -19,7 +19,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,7 +31,7 @@ public class DatabaseInitializationService {
     private final CategoryService categoryService;
     private final LocalProfileService localProfileService;
 
-    @Transactional(transactionManager = "localTransactionManager")
+    @Transactional("localTransactionManager")
     public void run() {
         Task categoryTheoryTask = new Task(
                 "Информация о категории",
