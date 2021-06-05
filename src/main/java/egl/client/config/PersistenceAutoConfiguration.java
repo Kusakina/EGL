@@ -30,8 +30,10 @@ public abstract class PersistenceAutoConfiguration {
         final HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
         final HashMap<String, Object> properties = new HashMap<>();
-        properties.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
-        properties.put("hibernate.dialect", env.getProperty("hibernate.dialect"));
+
+        String dataSourcePrefix = String.format("spring.%s-datasource", location);
+        properties.put("hibernate.hbm2ddl.auto", env.getProperty(dataSourcePrefix + ".hbm2ddl.auto"));
+        properties.put("hibernate.dialect", env.getProperty(dataSourcePrefix + ".dialect"));
         em.setJpaPropertyMap(properties);
 
         return em;
