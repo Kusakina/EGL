@@ -13,15 +13,10 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Topic extends DescribedEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
     @Column
     @Enumerated(EnumType.STRING)
     private TopicType topicType;
 
-    @SuppressWarnings("CopyConstructorMissesField")
     public Topic(Topic other){
         this(other.getName(), other.getDescription(), other.topicType);
     }

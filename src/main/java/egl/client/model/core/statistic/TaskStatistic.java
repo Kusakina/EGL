@@ -3,19 +3,17 @@ package egl.client.model.core.statistic;
 import egl.client.model.core.DatabaseEntity;
 import egl.client.model.core.task.Task;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Optional;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @NoArgsConstructor
-public class TaskStatistic implements DatabaseEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+public class TaskStatistic extends DatabaseEntity {
 
     @ManyToOne
     private Task task;

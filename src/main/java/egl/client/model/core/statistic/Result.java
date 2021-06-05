@@ -2,18 +2,16 @@ package egl.client.model.core.statistic;
 
 import egl.client.model.core.DatabaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
-public class Result implements DatabaseEntity, Comparable<Result> {
+public class Result extends DatabaseEntity implements Comparable<Result> {
 
     public static final Result NONE = new Result(-1, 1);
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
 
     @Column
     private int correctAnswers;

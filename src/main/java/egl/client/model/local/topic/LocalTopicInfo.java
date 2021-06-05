@@ -3,18 +3,16 @@ package egl.client.model.local.topic;
 import egl.client.model.core.DatabaseEntity;
 import egl.client.model.core.topic.Topic;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
-public class LocalTopicInfo implements DatabaseEntity {
+public class LocalTopicInfo extends DatabaseEntity {
 
     private static final long NO_GLOBAL_ID = -1;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
 
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private Topic topic;

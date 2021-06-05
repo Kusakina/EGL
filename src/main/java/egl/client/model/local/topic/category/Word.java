@@ -2,16 +2,15 @@ package egl.client.model.local.topic.category;
 
 import egl.client.model.core.DatabaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
-public class Word implements DatabaseEntity {
+public class Word extends DatabaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
 
     @Column
     private String text;
@@ -24,10 +23,8 @@ public class Word implements DatabaseEntity {
         this.text = "";
     }
 
-    @SuppressWarnings("CopyConstructorMissesField")
     public Word(Word other) {
-        this.text = other.text;
-        this.language = other.language;
+        this(other.getText(), other.getLanguage());
     }
 
     public Word(String text, Language language) {

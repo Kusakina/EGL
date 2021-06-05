@@ -2,17 +2,15 @@ package egl.client.model.local.topic;
 
 import egl.client.model.core.DatabaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.util.Optional;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
-public class Theory implements DatabaseEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+public class Theory extends DatabaseEntity {
 
     @Column(columnDefinition = "LONGTEXT")
     private String text;

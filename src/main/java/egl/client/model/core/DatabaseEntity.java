@@ -1,6 +1,19 @@
 package egl.client.model.core;
 
-public interface DatabaseEntity {
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 
-    long getId();
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@MappedSuperclass
+@Data
+@NoArgsConstructor
+public abstract class DatabaseEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 }

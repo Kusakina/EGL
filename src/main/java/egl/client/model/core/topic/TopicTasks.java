@@ -19,10 +19,6 @@ import java.util.List;
 @NoArgsConstructor
 public class TopicTasks extends DescribedEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
     @Column
     @Enumerated(EnumType.STRING)
     private TopicType topicType;

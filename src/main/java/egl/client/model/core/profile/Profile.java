@@ -16,10 +16,6 @@ import javax.persistence.Id;
 @NoArgsConstructor
 public class Profile extends DescribedEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
     public Profile(String name, String description) {
         super(name, description);
     }

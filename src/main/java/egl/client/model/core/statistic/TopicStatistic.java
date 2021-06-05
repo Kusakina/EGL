@@ -4,6 +4,7 @@ import egl.client.model.core.DatabaseEntity;
 import egl.client.model.core.task.Task;
 import egl.client.model.core.topic.Topic;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -12,14 +13,11 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @NoArgsConstructor
-public class TopicStatistic implements DatabaseEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+public class TopicStatistic extends DatabaseEntity {
 
     @ManyToOne
     private ProfileStatistic profileStatistic;

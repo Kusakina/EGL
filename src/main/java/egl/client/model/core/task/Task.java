@@ -13,10 +13,6 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Task extends DescribedEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
     @Column
     private String sceneName;
 

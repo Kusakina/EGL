@@ -3,6 +3,7 @@ package egl.client.model.local.topic.category;
 import egl.client.model.core.DatabaseEntity;
 import egl.client.model.local.topic.LocalTopicInfo;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -11,13 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
-public class Category implements DatabaseEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+public class Category extends DatabaseEntity {
 
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private LocalTopicInfo localTopicInfo;
@@ -31,9 +29,8 @@ public class Category implements DatabaseEntity {
         this.translations = new ArrayList<>();
     }
 
-    @SuppressWarnings("CopyConstructorMissesField")
     public Category(Category other) {
-        this.localTopicInfo = other.getLocalTopicInfo();
+        this.localTopicInfo = new LocalTopicInfo(other.getLocalTopicInfo());
         this.translations = other.getTranslations()
                 .stream().map(Translation::new).collect(Collectors.toList());
     }
