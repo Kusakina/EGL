@@ -5,7 +5,7 @@ import java.util.ResourceBundle;
 
 import egl.client.controller.info.AbstractEntityInfoController;
 import egl.client.controller.profile.info.ProfileInfoView;
-import egl.core.model.profile.Profile;
+import egl.client.model.core.profile.Profile;
 import javafx.fxml.FXML;
 
 public class ProfileInfoController extends AbstractEntityInfoController<Profile> {

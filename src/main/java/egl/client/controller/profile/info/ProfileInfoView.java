@@ -4,7 +4,7 @@ import egl.client.service.FxmlService;
 import egl.client.view.info.EntityInfoView;
 import egl.client.view.info.NameDescriptionInfoView;
 import egl.client.view.pane.CustomBorderPane;
-import egl.core.model.profile.Profile;
+import egl.client.model.core.profile.Profile;
 import javafx.fxml.FXML;
 
 public class ProfileInfoView extends CustomBorderPane implements EntityInfoView<Profile> {

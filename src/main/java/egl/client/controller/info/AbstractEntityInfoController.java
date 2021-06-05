@@ -1,7 +1,7 @@
 package egl.client.controller.info;
 
 import egl.client.view.info.EntityInfoView;
-import egl.core.model.DatabaseEntity;
+import egl.client.model.core.DatabaseEntity;
 import lombok.Getter;
 
 import java.util.ArrayList;

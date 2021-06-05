@@ -1,8 +1,10 @@
 package egl.client.controller.task.category;
 
-import egl.client.controller.task.AbstractTaskController;
-import egl.client.model.topic.category.Category;
-import egl.client.model.topic.category.Translation;
+import egl.client.controller.task.LocalTaskController;
+import egl.client.model.local.topic.category.Category;
+import egl.client.model.local.topic.category.Translation;
+import egl.client.service.model.topic.CategoryService;
+import egl.client.service.model.topic.LocalTopicInfoService;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
@@ -14,27 +16,25 @@ import javafx.scene.text.Text;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
 
 @Component
 @FxmlView
-public class MatchIndexTaskController extends AbstractTaskController {
+public class MatchIndexTaskController extends LocalTaskController<Category> {
 
     @FXML
     private VBox tasksVBoxes;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public MatchIndexTaskController(LocalTopicInfoService localTopicInfoService, CategoryService categoryService) {
+        super(localTopicInfoService, categoryService);
     }
 
     private void prepareTasks(){
         int taskCount = 7;
-        Category category = (Category) controllerTopic;
+        Category category = specificLocalTopic;
         List<Translation> task = category.getTranslations();
         List<Integer> position = new ArrayList<>();
         int[] trueAnswersSecondTask = new int[taskCount];//запоминаем правильные ответы

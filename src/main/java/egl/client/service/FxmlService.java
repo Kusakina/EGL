@@ -4,7 +4,7 @@ import egl.client.controller.Controller;
 import egl.client.controller.WindowController;
 import egl.client.controller.info.EntityInfoController;
 import egl.client.controller.info.EntityInfoDialog;
-import egl.core.model.DatabaseEntity;
+import egl.client.model.core.DatabaseEntity;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;

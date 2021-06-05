@@ -1,26 +1,21 @@
 package egl.client.controller.profile;
 
+import egl.client.controller.Controller;
+import egl.client.model.core.profile.Profile;
+import egl.client.service.FxmlService;
+import egl.client.service.model.profile.ProfileService;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import lombok.RequiredArgsConstructor;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import egl.client.controller.Controller;
-import egl.client.model.profile.LocalProfile;
-import egl.client.service.FxmlService;
-import egl.client.service.model.profile.LocalProfileService;
-import egl.client.service.model.profile.ProfileService;
-import egl.client.view.table.list.InfoSelectEditRemoveListView;
-import egl.core.model.profile.Profile;
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableRow;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
-
 @RequiredArgsConstructor
-public abstract class ProfileSelectController<ProfileType extends Profile> implements Controller {
+public abstract class ProfileSelectController implements Controller {
 
     protected final FxmlService fxmlService;
-    protected final ProfileService<ProfileType> profileService;
+    protected final ProfileService profileService;
 
     @FXML protected Button createProfileButton;
     @FXML protected Button exitProfileButton;
@@ -31,22 +26,20 @@ public abstract class ProfileSelectController<ProfileType extends Profile> imple
         exitProfileButton.setOnAction(event -> onSelect(null));
     }
 
-    protected void onSelect(ProfileType profile) {
+    protected void onSelect(Profile profile) {
         profileService.select(profile);
     }
 
-    protected abstract ProfileType createProfile();
-
     protected void onCreate() {
-        ProfileType profile = createProfile();
+        Profile profile = new Profile();
         onEdit(profile, true, "Новый профиль");
     }
 
-    protected void onEdit(ProfileType profile) {
+    protected void onEdit(Profile profile) {
         onEdit(profile, false, "Изменить данные");
     }
 
-    protected abstract void onEdit(ProfileType profile, boolean isCreated, String title);
+    protected abstract void onEdit(Profile profile, boolean isCreated, String title);
 
     @Override
     public void prepareToClose() {

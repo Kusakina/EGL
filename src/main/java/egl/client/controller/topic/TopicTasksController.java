@@ -1,19 +1,17 @@
 package egl.client.controller.topic;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import egl.client.controller.Controller;
 import egl.client.controller.task.TaskController;
-import egl.client.model.topic.LocalTopic;
+import egl.client.model.core.statistic.Result;
+import egl.client.model.core.statistic.TaskStatistic;
+import egl.client.model.core.statistic.TopicStatistic;
+import egl.client.model.core.task.Task;
+import egl.client.model.core.topic.Topic;
 import egl.client.service.FxmlService;
 import egl.client.service.model.profile.LocalProfileService;
 import egl.client.service.model.statistic.LocalStatisticService;
+import egl.client.service.model.topic.LocalTopicTasksService;
 import egl.client.view.table.list.InfoSelectListView;
-import egl.core.model.statistic.Result;
-import egl.core.model.statistic.TaskStatistic;
-import egl.core.model.statistic.TopicStatistic;
-import egl.core.model.task.Task;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -21,21 +19,25 @@ import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 @Component
 @FxmlView
 @RequiredArgsConstructor
 public class TopicTasksController implements Controller {
 
     private final FxmlService fxmlService;
+    private final LocalTopicTasksService localTopicTasksService;
     private final LocalProfileService localProfileService;
     private final LocalStatisticService localStatisticService;
 
     @FXML private InfoSelectListView<Task> tasksListView;
     @FXML private TableColumn<Task, String> taskStatisticColumn;
 
-    private LocalTopic controllerTopic;
+    private Topic controllerTopic;
 
-    public void setContext(LocalTopic topic) {
+    public void setContext(Topic topic) {
         this.controllerTopic = topic;
     }
 
@@ -107,10 +109,10 @@ public class TopicTasksController implements Controller {
         var tableTasks = tasksListView.getItems();
         tableTasks.clear();
 
-        var topicType = controllerTopic.getTopicType();
-        tableTasks.add(topicType.getTheoryTask());
-        tableTasks.addAll(topicType.getTasks());
-        tableTasks.add(topicType.getTest());
+        var topicTasks = localTopicTasksService.findBy(controllerTopic.getTopicType());
+        tableTasks.add(topicTasks.getTheoryTask());
+        tableTasks.addAll(topicTasks.getTasks());
+        tableTasks.add(topicTasks.getTest().getTask());
     }
 
     @Override
