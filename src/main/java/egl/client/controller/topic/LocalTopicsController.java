@@ -48,7 +48,8 @@ public class LocalTopicsController implements Controller {
 
     @FXML private InfoSelectEditRemoveListView<Topic> categoriesListView;
     @FXML private ButtonColumn<Topic> copyCategoryColumn;
-    @FXML private TableColumn<Topic, String> topicStatisticColumn;
+    @FXML private TableColumn<Topic, String> localTopicStatisticColumn;
+    @FXML private TableColumn<Topic, String> globalTopicStatisticColumn;
 
     @FXML private Button selectLocalProfileButton;
     @FXML private Button selectGlobalProfileButton;
@@ -106,21 +107,29 @@ public class LocalTopicsController implements Controller {
         copyCategoryColumn.setOnAction(processCategory(this::onCategoryCopy));
         createCategoryButton.setOnAction(event -> onCategoryCreate());
 
+        initializeStatisticColumn(localTopicStatisticColumn, localStatisticService);
+        initializeStatisticColumn(globalTopicStatisticColumn, globalStatisticService);
+    }
+
+    private void initializeStatisticColumn(
+            TableColumn<Topic, String> topicStatisticColumn,
+            StatisticService statisticService
+    ) {
         topicStatisticColumn.setCellValueFactory(param -> {
             var topic = param.getValue();
-            var statisticString = getTopicStatistic(topic);
+            var statisticString = getTopicStatistic(statisticService, topic);
             return new SimpleStringProperty(statisticString);
         });
     }
 
-    private String getTopicStatistic(Topic topic) {
-        return localStatisticService.findBy(topic).map(topicStatistic -> {
+    private String getTopicStatistic(StatisticService statisticService, Topic topic) {
+        return statisticService.findBy(topic).map(topicStatistic -> {
             var passedTasksCount = topicStatistic.getTaskStatistics().stream()
                     .map(TaskStatistic::getResult)
                     .filter(result -> result.getCorrectAnswers() > 0)
                     .count();
 
-            return String.format("Количество пройденных заданий: %d", passedTasksCount);
+            return String.format("Пройдено заданий: %d", passedTasksCount);
         }).orElse("Нет данных");
     }
 
