@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.TextField?>
+<fx:root type="javafx.scene.layout.GridPane" xmlns="http://javafx.com/javafx"
+         xmlns:fx="http://javafx.com/fxml">
+
+    <style>
+        -fx-font: 24 arial;
+    </style>
+
+    <TextField fx:id="inputIndexTextField">
+        <style>
+            -fx-font: 24 arial;
+        </style>
+    </TextField>
+
+    <Text fx:id="sourceText">
+        <style>
+            -fx-font: 24 arial;
+        </style>
+    </Text>
+</fx:root>
