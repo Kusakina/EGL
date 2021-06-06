@@ -19,6 +19,7 @@ import lombok.Getter;
 public class InputIndexView extends GridPane implements Initializable {
 
     public static final int INCORRECT_INDEX = -1;
+    private static final int DIGIT_WIDTH = 50;
 
     @FXML private TextField inputIndexTextField;
     @FXML private Text sourceText;
@@ -36,19 +37,22 @@ public class InputIndexView extends GridPane implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        final int maxIndexLength = String.valueOf(tasksCount).length();
+
         UnaryOperator<TextFormatter.Change> integerFilter = change -> {
-            String input = change.getText();
-            if (input.matches("[0-9]*") && ((tasksCount < 10 && change.getControlNewText().length()<2) ||
-                    (tasksCount >= 10 && change.getControlNewText().length()<=2))) {
-                return change;
-            }
-            return null;
+            var input = change.getControlNewText();
+
+            boolean isNumber = input.matches("[0-9]*");
+            boolean hasCorrectLength = input.length() <= maxIndexLength;
+
+            return (isNumber && hasCorrectLength) ? change : null;
         };
+
         inputIndexTextField.setTextFormatter(new TextFormatter<String>(integerFilter));
         sourceText.setText(translation.getSource().getText());
         setMargin(sourceText, new Insets(20));
-        inputIndexTextField.setPrefSize(45,45);
         setMargin(inputIndexTextField, new Insets(15));
+        inputIndexTextField.setPrefWidth(maxIndexLength * DIGIT_WIDTH);
         setColumnIndex(inputIndexTextField, 0);
         setColumnIndex(sourceText, 1);
         setRowIndex(inputIndexTextField, 0);
@@ -59,6 +63,7 @@ public class InputIndexView extends GridPane implements Initializable {
     @Override
     public void setPrefSize(double parentWidth, double parentHeight) {
         super.setPrefSize(parentWidth, parentHeight);
+        inputIndexTextField.setPrefHeight(parentHeight);
     }
 
     public int getIndex() {
