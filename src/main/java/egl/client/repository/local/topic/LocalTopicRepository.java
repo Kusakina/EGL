@@ -1,14 +1,14 @@
 package egl.client.repository.local.topic;
 
-import egl.client.model.core.topic.Topic;
-import egl.client.model.core.topic.TopicType;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
 import java.util.List;
 
+import egl.client.model.core.topic.Topic;
+import egl.client.model.core.topic.TopicType;
+import egl.client.repository.core.EntityRepository;
+import org.springframework.stereotype.Repository;
+
 @Repository
-public interface LocalTopicRepository extends JpaRepository<Topic, Long> {
+public interface LocalTopicRepository extends EntityRepository<Topic> {
 
     List<Topic> findByTopicType(TopicType topicType);
 }
