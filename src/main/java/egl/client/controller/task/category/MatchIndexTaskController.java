@@ -67,6 +67,6 @@ public class MatchIndexTaskController extends LocalTaskController<Category> {
 
     @Override
     public void setPrefSize(double parentWidth, double parentHeight) {
-
+        tasksGridPane.setPrefSize(parentWidth, parentHeight);
     }
 }
