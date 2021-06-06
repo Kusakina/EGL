@@ -13,13 +13,16 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import net.rgielen.fxweaver.core.FxmlView;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 @FxmlView
 public class MatchIndexTaskController extends LocalTaskController<Category> {
 
-    private static final int MAX_TASKS_COUNT = 8;
+    @Value("${task.match_index.max_tasks_count}")
+    private int maxTasksCount;
+
     private List<Translation> translations;
     List<InputIndexView> inputIndexViews;
     List<FixedIndexView> fixedIndexViews;
@@ -37,7 +40,7 @@ public class MatchIndexTaskController extends LocalTaskController<Category> {
         this.translations = category.getTranslations();
         Collections.shuffle(translations);
 
-        final int tasksCount = Math.min(MAX_TASKS_COUNT, translations.size());
+        final int tasksCount = Math.min(maxTasksCount, translations.size());
 
         this.inputIndexViews = new ArrayList<>();
         this.fixedIndexViews = new ArrayList<>();
