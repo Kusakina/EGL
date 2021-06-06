@@ -4,7 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
 
-import egl.client.model.topic.category.Translation;
+import egl.client.model.local.topic.category.Translation;
 import egl.client.service.FxmlService;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -38,7 +38,6 @@ public class InputIndexView extends GridPane implements Initializable {
             String input = change.getText();
             if (input.matches("[0-9]*") && ((tasksCount < 10 && change.getControlNewText().length()<2) ||
                     (tasksCount >= 10 && change.getControlNewText().length()<=2))) {
-            //if (input.matches("[1-9]*") && change.getControlNewText().length()<2) {
                 return change;
             }
             return null;
@@ -57,11 +56,7 @@ public class InputIndexView extends GridPane implements Initializable {
 
     @Override
     public void setPrefSize(double parentWidth, double parentHeight) {
-        //super.setPrefSize(parentWidth, parentHeight);
 
-        //for (ColumnConstraints columnConstraints : getColumnConstraints()) {
-         //   columnConstraints.setPercentWidth(50);
-       // }
     }
 
 

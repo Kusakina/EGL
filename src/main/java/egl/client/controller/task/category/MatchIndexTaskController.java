@@ -1,24 +1,19 @@
 package egl.client.controller.task.category;
 
-import egl.client.controller.task.LocalTaskController;
-import egl.client.model.local.topic.category.Category;
-import egl.client.model.local.topic.category.Translation;
-import egl.client.model.topic.category.Category;
-import egl.client.service.model.topic.CategoryService;
-import egl.client.service.model.topic.LocalTopicInfoService;
-import javafx.fxml.FXML;
-import javafx.geometry.Pos;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
-import javafx.scene.layout.*;
-import javafx.scene.text.Text;
-import net.rgielen.fxweaver.core.FxmlView;
-import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.UnaryOperator;
+
+import egl.client.controller.task.LocalTaskController;
+import egl.client.model.local.topic.category.Category;
+import egl.client.model.local.topic.category.Translation;
+import egl.client.service.model.topic.CategoryService;
+import egl.client.service.model.topic.LocalTopicInfoService;
+import javafx.fxml.FXML;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import net.rgielen.fxweaver.core.FxmlView;
+import org.springframework.stereotype.Component;
 
 @Component
 @FxmlView

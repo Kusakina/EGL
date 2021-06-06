@@ -1,6 +1,6 @@
 package egl.client.controller.task.category;
 
-import egl.client.model.topic.category.Translation;
+import egl.client.model.local.topic.category.Translation;
 import egl.client.service.FxmlService;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
