@@ -12,6 +12,8 @@ import egl.client.service.model.profile.GlobalProfileService;
 import egl.client.view.text.LabeledTextField;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import org.springframework.stereotype.Component;
@@ -20,6 +22,12 @@ import org.springframework.stereotype.Component;
 public class GlobalProfilesController extends ProfileSelectController {
 
     private final GlobalCredentialsService globalCredentialsService;
+
+    @FXML
+    private TabPane activitiesTabPane;
+
+    @FXML
+    private Tab globalProfileTab;
 
     @FXML
     private GridPane loginGridPane;
@@ -81,6 +89,8 @@ public class GlobalProfilesController extends ProfileSelectController {
     }
 
     private void showSelectedProfile() {
+        activitiesTabPane.getSelectionModel().select(globalProfileTab);
+
         var selectedProfile = profileService.getSelectedProfile();
 
         boolean selected = Optional.ofNullable(selectedProfile).isPresent();
