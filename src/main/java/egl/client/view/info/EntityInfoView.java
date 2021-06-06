@@ -1,6 +1,6 @@
 package egl.client.view.info;
 
-import egl.core.model.DatabaseEntity;
+import egl.client.model.core.DatabaseEntity;
 
 public interface EntityInfoView<T extends DatabaseEntity> {
 

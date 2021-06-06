@@ -1,11 +1,18 @@
 package egl.client.controller.task;
 
+import egl.client.model.core.DatabaseEntity;
+import egl.client.service.model.topic.LocalTopicInfoService;
+import egl.client.service.model.topic.SpecificLocalTopicInfoService;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import egl.client.model.topic.LocalTopic;
+public abstract class TheoryTaskController<T extends DatabaseEntity> extends LocalTaskController<T> {
 
-public abstract class TheoryTaskController extends AbstractTaskController {
+    public TheoryTaskController(LocalTopicInfoService localTopicInfoService,
+                                SpecificLocalTopicInfoService<T> specificLocalTopicInfoService) {
+        super(localTopicInfoService, specificLocalTopicInfoService);
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -15,16 +22,8 @@ public abstract class TheoryTaskController extends AbstractTaskController {
 
     @Override
     protected void prepareToStart() {
-        prepareTheory();
-        prepareSpecificTheory();
+        descriptionTextArea.setText(localTopicInfo.getTheory().getText());
     }
-
-    private void prepareTheory() {
-        LocalTopic localTopic = (LocalTopic) controllerTopic;
-        descriptionTextArea.setText(localTopic.getTheory().getText());
-    }
-
-    protected abstract void prepareSpecificTheory();
 
     @Override
     protected void prepareToFinish() {
