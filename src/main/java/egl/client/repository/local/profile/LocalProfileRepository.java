@@ -1,8 +1,7 @@
 package egl.client.repository.local.profile;
 
-import egl.client.model.core.profile.Profile;
-import egl.client.repository.EntityRepository;
+import egl.client.repository.core.profile.ProfileRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface LocalProfileRepository extends EntityRepository<Profile> { }
+public interface LocalProfileRepository extends ProfileRepository { }

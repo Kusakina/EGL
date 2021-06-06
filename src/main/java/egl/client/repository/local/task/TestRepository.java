@@ -2,8 +2,7 @@ package egl.client.repository.local.task;
 
 import egl.client.model.core.task.Task;
 import egl.client.model.core.task.Test;
-import egl.client.repository.EntityRepository;
-import org.springframework.data.jpa.repository.JpaRepository;
+import egl.client.repository.core.EntityRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository

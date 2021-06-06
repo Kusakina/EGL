@@ -1,4 +1,4 @@
-package egl.client.repository;
+package egl.client.repository.core;
 
 import egl.client.model.core.DatabaseEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
