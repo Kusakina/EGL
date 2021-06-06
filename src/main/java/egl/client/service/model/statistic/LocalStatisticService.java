@@ -1,10 +1,14 @@
 package egl.client.service.model.statistic;
 
+import java.util.Optional;
+
 import egl.client.repository.local.statistic.LocalProfileStatisticRepository;
 import egl.client.model.core.profile.Profile;
 import egl.client.model.core.statistic.ProfileStatistic;
 import egl.client.model.core.statistic.TopicStatistic;
 import egl.client.model.core.topic.Topic;
+import egl.client.service.model.profile.LocalProfileService;
+import javafx.beans.property.Property;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,9 +18,10 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class LocalStatisticService {
 
+    private final LocalProfileService localProfileService;
     private final LocalProfileStatisticRepository localProfileStatisticRepository;
 
-    public ProfileStatistic findBy(Profile profile) {
+    private ProfileStatistic findBy(Profile profile) {
         var profileStatistic = localProfileStatisticRepository.findByProfile(profile);
         if (null == profileStatistic) {
             profileStatistic = new ProfileStatistic(profile);
@@ -26,14 +31,20 @@ public class LocalStatisticService {
         return profileStatistic;
     }
 
+    public Optional<ProfileStatistic> getSelectedProfileStatistic() {
+        var profile = Optional.ofNullable(localProfileService.getSelectedProfile());
+        return profile.map(this::findBy);
+    }
+
     public void save(ProfileStatistic profileStatistic) {
         localProfileStatisticRepository.save(profileStatistic);
     }
 
-    public TopicStatistic findBy(Profile profile, Topic topic) {
-        var profileStatistic = findBy(profile);
-        return profileStatistic.getTopicStatisticFor(topic)
-                .orElseGet(() -> addStatisticFor(profileStatistic, topic));
+    public Optional<TopicStatistic> findBy(Topic topic) {
+        return getSelectedProfileStatistic().map(profileStatistic ->
+            profileStatistic.getTopicStatisticFor(topic)
+            .orElseGet(() -> addStatisticFor(profileStatistic, topic))
+        );
     }
 
     private TopicStatistic addStatisticFor(ProfileStatistic profileStatistic, Topic topic) {

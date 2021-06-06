@@ -1,12 +1,16 @@
 package egl.client.controller.topic;
 
+import java.net.URL;
+import java.util.List;
+import java.util.ResourceBundle;
+import java.util.function.Consumer;
+
 import egl.client.controller.Controller;
 import egl.client.controller.WindowController;
 import egl.client.controller.profile.GlobalProfilesController;
 import egl.client.controller.profile.LocalProfilesController;
 import egl.client.model.core.profile.Profile;
 import egl.client.model.core.statistic.TaskStatistic;
-import egl.client.model.core.statistic.TopicStatistic;
 import egl.client.model.core.topic.Topic;
 import egl.client.model.core.topic.TopicType;
 import egl.client.model.local.topic.LocalTopicInfo;
@@ -31,11 +35,6 @@ import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
 
-import java.net.URL;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.function.Consumer;
-
 @Component
 @FxmlView
 @RequiredArgsConstructor
@@ -43,9 +42,9 @@ public class LocalTopicsController implements Controller {
 
     private final FxmlService fxmlService;
     private final LocalTopicService localTopicService;
+    private final LocalProfileService localProfileService;
     private final LocalTopicInfoService localTopicInfoService;
     private final CategoryService categoryService;
-    private final LocalProfileService localProfileService;
     private final LocalStatisticService localStatisticService;
     private final GlobalProfileService globalProfileService;
 
@@ -117,17 +116,14 @@ public class LocalTopicsController implements Controller {
     }
 
     private String getTopicStatistic(Topic topic) {
-        var profile = localProfileService.getSelectedProfile();
-        if (null == profile) return "Нет данных";
+        return localStatisticService.findBy(topic).map(topicStatistic -> {
+            var passedTasksCount = topicStatistic.getTaskStatistics().stream()
+                    .map(TaskStatistic::getResult)
+                    .filter(result -> result.getCorrectAnswers() > 0)
+                    .count();
 
-        TopicStatistic topicStatistic = localStatisticService.findBy(profile, topic);
-
-        var passedTasksCount = topicStatistic.getTaskStatistics().stream()
-                .map(TaskStatistic::getResult)
-                .filter(result -> result.getCorrectAnswers() > 0)
-                .count();
-
-        return String.format("Количество пройденных заданий: %d", passedTasksCount);
+            return String.format("Количество пройденных заданий: %d", passedTasksCount);
+        }).orElse("Нет данных");
     }
 
     private void initializeProfiles() {

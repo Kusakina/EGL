@@ -13,6 +13,7 @@ import javafx.scene.text.Text;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 @Component
@@ -45,26 +46,26 @@ public class GlobalProfilesController extends ProfileSelectController {
     }
 
     @Override
-    protected void onEdit(Profile profile, boolean isCreated, String title) {
-        var credentials = (isCreated
-                ? new Credentials(profile)
-                : globalCredentialsService.findBy(profile)
+    protected void onEdit(Profile globalProfile, boolean isCreated, String title) {
+        var globalCredentials = (isCreated
+                ? new Credentials(globalProfile)
+                : globalCredentialsService.findBy(globalProfile)
         );
 
         // TODO check errors
-        if (null == credentials) {
+        if (null == globalCredentials) {
             return;
         }
 
         var changed = fxmlService.showInfoDialog(
                 CredentialsInfoController.class,
-                credentials,
+                globalCredentials,
                 title, isCreated
         );
 
         if (changed) {
-            globalCredentialsService.save(credentials);
-            onSelect(profile);
+            globalCredentialsService.save(globalCredentials);
+            onSelect(globalProfile);
         }
     }
 
@@ -82,7 +83,7 @@ public class GlobalProfilesController extends ProfileSelectController {
     private void showSelectedProfile() {
         var selectedProfile = profileService.getSelectedProfile();
 
-        boolean selected = (null != selectedProfile);
+        boolean selected = Optional.ofNullable(selectedProfile).isPresent();
         String profileText = (selected ? selectedProfile.getName() : "не выбран");
         loginInfoText.setText("Глобальный профиль: " + profileText);
 
