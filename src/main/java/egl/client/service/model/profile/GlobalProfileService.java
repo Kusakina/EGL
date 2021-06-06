@@ -1,11 +1,10 @@
 package egl.client.service.model.profile;
 
-import egl.client.model.profile.GlobalProfile;
-import egl.client.repository.profile.GlobalProfileRepository;
+import egl.client.repository.global.profile.GlobalProfileRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class GlobalProfileService extends ProfileService<GlobalProfile> {
+public class GlobalProfileService extends ProfileService {
 
     public GlobalProfileService(GlobalProfileRepository repository) {
         super(repository);

@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import egl.client.model.topic.category.Translation;
+import egl.client.model.local.topic.category.Translation;
 import egl.client.service.FxmlService;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

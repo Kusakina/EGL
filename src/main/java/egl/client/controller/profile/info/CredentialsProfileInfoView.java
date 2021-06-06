@@ -3,7 +3,7 @@ package egl.client.controller.profile.info;
 import egl.client.service.FxmlService;
 import egl.client.view.info.EntityInfoView;
 import egl.client.view.pane.CustomBorderPane;
-import egl.core.model.profile.Credentials;
+import egl.client.model.core.profile.Credentials;
 import javafx.fxml.FXML;
 
 public class CredentialsProfileInfoView extends CustomBorderPane implements EntityInfoView<Credentials> {

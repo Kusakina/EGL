@@ -1,6 +1,6 @@
 package egl.client.service.model;
 
-import egl.core.model.DatabaseEntity;
+import egl.client.model.core.DatabaseEntity;
 
 import java.util.List;
 

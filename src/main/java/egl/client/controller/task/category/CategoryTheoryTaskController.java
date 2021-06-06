@@ -2,23 +2,21 @@ package egl.client.controller.task.category;
 
 import egl.client.controller.task.TheoryTaskController;
 import egl.client.controller.topic.info.TranslationsListView;
-import egl.client.model.topic.category.Category;
+import egl.client.model.local.topic.category.Category;
+import egl.client.service.model.topic.CategoryService;
+import egl.client.service.model.topic.LocalTopicInfoService;
 import javafx.fxml.FXML;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 @Component
 @FxmlView
-public class CategoryTheoryTaskController extends TheoryTaskController {
+public class CategoryTheoryTaskController extends TheoryTaskController<Category> {
 
     @FXML private TranslationsListView translationsListView;
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        super.initialize(url, resourceBundle);
+    public CategoryTheoryTaskController(LocalTopicInfoService localTopicInfoService, CategoryService categoryService) {
+        super(localTopicInfoService, categoryService);
     }
 
     @Override
@@ -28,8 +26,8 @@ public class CategoryTheoryTaskController extends TheoryTaskController {
     }
 
     @Override
-    protected void prepareSpecificTheory() {
-        Category category = (Category) controllerTopic;
-        translationsListView.initData(category, false);
+    protected void prepareToStart() {
+        super.prepareToStart();
+        translationsListView.initData(specificLocalTopic, false);
     }
 }

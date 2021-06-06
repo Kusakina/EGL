@@ -1,12 +1,11 @@
 package egl.client.controller.profile;
 
-import egl.client.model.profile.GlobalCredentials;
-import egl.client.model.profile.GlobalProfile;
+import egl.client.model.core.profile.Credentials;
+import egl.client.model.core.profile.Profile;
 import egl.client.service.FxmlService;
 import egl.client.service.model.profile.GlobalCredentialsService;
 import egl.client.service.model.profile.GlobalProfileService;
 import egl.client.view.text.LabeledTextField;
-import egl.core.model.profile.Credentials;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
@@ -17,7 +16,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 @Component
-public class GlobalProfilesController extends ProfileSelectController<GlobalProfile> {
+public class GlobalProfilesController extends ProfileSelectController {
 
     private final GlobalCredentialsService globalCredentialsService;
 
@@ -46,31 +45,26 @@ public class GlobalProfilesController extends ProfileSelectController<GlobalProf
     }
 
     @Override
-    protected GlobalProfile createProfile() {
-        return new GlobalProfile();
-    }
-
-    @Override
-    protected void onEdit(GlobalProfile globalProfile, boolean isCreated, String title) {
-        var globalCredentials = (isCreated
-                ? new GlobalCredentials(globalProfile)
-                : globalCredentialsService.findBy(globalProfile)
+    protected void onEdit(Profile profile, boolean isCreated, String title) {
+        var credentials = (isCreated
+                ? new Credentials(profile)
+                : globalCredentialsService.findBy(profile)
         );
 
         // TODO check errors
-        if (null == globalCredentials) {
+        if (null == credentials) {
             return;
         }
 
         var changed = fxmlService.showInfoDialog(
                 CredentialsInfoController.class,
-                globalCredentials,
+                credentials,
                 title, isCreated
         );
 
         if (changed) {
-            globalCredentialsService.save(globalCredentials);
-            onSelect(globalProfile);
+            globalCredentialsService.save(credentials);
+            onSelect(profile);
         }
     }
 
@@ -80,7 +74,7 @@ public class GlobalProfilesController extends ProfileSelectController<GlobalProf
     }
 
     @Override
-    protected void onSelect(GlobalProfile profile) {
+    protected void onSelect(Profile profile) {
         super.onSelect(profile);
         showSelectedProfile();
     }
@@ -137,6 +131,6 @@ public class GlobalProfilesController extends ProfileSelectController<GlobalProf
         passwordTextField.setText("");
         errorText.setText("");
 
-        onSelect((GlobalProfile) credentials.getProfile());
+        onSelect(credentials.getProfile());
     }
 }

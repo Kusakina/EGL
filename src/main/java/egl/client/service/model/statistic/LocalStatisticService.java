@@ -1,10 +1,10 @@
 package egl.client.service.model.statistic;
 
-import egl.client.repository.statistic.LocalProfileStatisticRepository;
-import egl.core.model.profile.Profile;
-import egl.core.model.statistic.ProfileStatistic;
-import egl.core.model.statistic.TopicStatistic;
-import egl.core.model.topic.Topic;
+import egl.client.repository.local.statistic.LocalProfileStatisticRepository;
+import egl.client.model.core.profile.Profile;
+import egl.client.model.core.statistic.ProfileStatistic;
+import egl.client.model.core.statistic.TopicStatistic;
+import egl.client.model.core.topic.Topic;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

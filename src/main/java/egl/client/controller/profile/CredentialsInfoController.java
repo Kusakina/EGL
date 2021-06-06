@@ -6,7 +6,7 @@ import java.util.ResourceBundle;
 import egl.client.controller.info.AbstractEntityInfoController;
 import egl.client.controller.profile.info.CredentialsLoginPasswordView;
 import egl.client.controller.profile.info.CredentialsProfileInfoView;
-import egl.core.model.profile.Credentials;
+import egl.client.model.core.profile.Credentials;
 import javafx.fxml.FXML;
 
 public class CredentialsInfoController extends AbstractEntityInfoController<Credentials> {
