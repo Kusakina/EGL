@@ -6,11 +6,9 @@ import java.util.List;
 
 import egl.client.controller.task.LocalTaskController;
 import egl.client.model.local.topic.category.Category;
-import egl.client.model.local.topic.category.Translation;
 import egl.client.service.model.topic.CategoryService;
 import egl.client.service.model.topic.LocalTopicInfoService;
 import javafx.fxml.FXML;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,9 +24,8 @@ public class MatchIndexTaskController extends LocalTaskController<Category> {
     @Value("${task.match_index.max_tasks_count}")
     private int maxTasksCount;
 
-    private List<Translation> translations;
-    private List<InputIndexView> inputIndexViews;
-    private List<FixedIndexView> fixedIndexViews;
+    private List<InputIndexView> questionViews;
+    private List<FixedIndexView> answerViews;
 
     public MatchIndexTaskController(LocalTopicInfoService localTopicInfoService, CategoryService categoryService) {
         super(localTopicInfoService, categoryService);
@@ -37,38 +34,25 @@ public class MatchIndexTaskController extends LocalTaskController<Category> {
     private void prepareTasks() {
         Category category = specificLocalTopic;
 
-        this.translations = category.getTranslations();
-        Collections.shuffle(translations);
+        var translations = category.getTranslations();
 
         final int tasksCount = Math.min(maxTasksCount, translations.size());
 
-        this.inputIndexViews = new ArrayList<>();
-        this.fixedIndexViews = new ArrayList<>();
-
-        List<Integer> position = new ArrayList<>();
+        this.questionViews = new ArrayList<>();
+        Collections.shuffle(translations);
         for (int i = 0; i < tasksCount; ++i) {
-            position.add(i);
-        }
-        Collections.shuffle(position);
-
-        for (int i = 0; i < tasksCount; ++i) {
-            var questionView = createTestQuestion(i, tasksCount);
-            var answerView = createTestAnswer(position.get(i), i);
-            tasksGridPane.getColumnConstraints().add(new ColumnConstraints(550));
+            var questionView = new InputIndexView(translations.get(i), tasksCount);
             tasksGridPane.add(questionView, 0, i);
-            tasksGridPane.add(answerView, 1, i);
-            inputIndexViews.add(questionView);
-            fixedIndexViews.add(answerView);
+            questionViews.add(questionView);
         }
 
-    }
-
-    private InputIndexView createTestQuestion(int correctIndex, int tasksCount) {
-        return new InputIndexView(translations.get(correctIndex), tasksCount);
-    }
-
-    private FixedIndexView createTestAnswer(int index, int incorrectIndex) {
-        return new FixedIndexView(translations.get(index), incorrectIndex);
+        this.answerViews = new ArrayList<>();
+        Collections.shuffle(translations);
+        for (int i = 0; i < tasksCount; ++i) {
+            var answerView = new FixedIndexView(translations.get(i), i);
+            tasksGridPane.add(answerView, 1, i);
+            answerViews.add(answerView);
+        }
     }
 
     @Override
