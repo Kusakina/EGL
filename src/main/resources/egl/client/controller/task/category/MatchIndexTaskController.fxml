@@ -2,9 +2,15 @@
 
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
 <ScrollPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="egl.client.controller.task.category.MatchIndexTaskController">
     <GridPane>
-        <GridPane fx:id="tasksGridPane"/>
+        <GridPane fx:id="tasksGridPane">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="50"/>
+                <ColumnConstraints percentWidth="50"/>
+            </columnConstraints>
+        </GridPane>
     </GridPane>
 </ScrollPane>
