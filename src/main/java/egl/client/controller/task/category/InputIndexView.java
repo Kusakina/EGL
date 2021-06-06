@@ -58,7 +58,7 @@ public class InputIndexView extends GridPane implements Initializable {
 
     @Override
     public void setPrefSize(double parentWidth, double parentHeight) {
-
+        super.setPrefSize(parentWidth, parentHeight);
     }
 
     public int getIndex() {

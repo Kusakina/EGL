@@ -1,5 +1,8 @@
 package egl.client.controller.task.category;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import egl.client.model.local.topic.category.Translation;
 import egl.client.service.FxmlService;
 import javafx.fxml.FXML;
@@ -9,10 +12,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import lombok.Getter;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 public class FixedIndexView extends GridPane implements Initializable {
+
     @FXML
     private Text indexAnswer;
     @FXML
@@ -21,18 +22,18 @@ public class FixedIndexView extends GridPane implements Initializable {
     @Getter
     private final Translation translation;
 
-    private int Index;
+    private final int index;
 
-    FixedIndexView(Translation translation, int Index) {
+    FixedIndexView(Translation translation, int index) {
         this.translation = translation;
-        this.Index = Index;
+        this.index = index;
         FxmlService.loadView(this, FixedIndexView.class);
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         targetText.setText(translation.getTarget().getText());
-        indexAnswer.setText(String.valueOf(Index+1));
+        indexAnswer.setText(String.valueOf(index + 1));
         setMargin(targetText, new Insets(20));
         setColumnIndex(indexAnswer, 0);
         setColumnIndex(targetText, 1);
@@ -42,7 +43,6 @@ public class FixedIndexView extends GridPane implements Initializable {
 
     @Override
     public void setPrefSize(double parentWidth, double parentHeight) {
+        super.setPrefSize(parentWidth, parentHeight);
     }
-
-
 }
