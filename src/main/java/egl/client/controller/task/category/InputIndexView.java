@@ -18,13 +18,15 @@ import lombok.Getter;
 
 public class InputIndexView extends GridPane implements Initializable {
 
+    public static final int INCORRECT_INDEX = -1;
+
     @FXML private TextField inputIndexTextField;
     @FXML private Text sourceText;
 
     @Getter
     private final Translation translation;
 
-    private int tasksCount;
+    private final int tasksCount;
 
     InputIndexView(Translation translation, int tasksCount) {
         this.translation = translation;
@@ -59,12 +61,13 @@ public class InputIndexView extends GridPane implements Initializable {
 
     }
 
-
-    public boolean indexNotPresent() {
-        return inputIndexTextField.getText().isBlank();
-    }
-
     public int getIndex() {
-        return Integer.parseInt(inputIndexTextField.getText()) - 1;
+        var indexText = inputIndexTextField.getText();
+        if (indexText.isBlank()) return INCORRECT_INDEX;
+
+        int index = Integer.parseInt(indexText) - 1;
+        if (index < 0 || tasksCount <= index) return INCORRECT_INDEX;
+
+        return index;
     }
 }

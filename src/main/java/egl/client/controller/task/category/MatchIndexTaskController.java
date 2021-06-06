@@ -62,7 +62,18 @@ public class MatchIndexTaskController extends LocalTaskController<Category> {
 
     @Override
     protected void prepareToFinish() {
+        for (var questionView : questionViews) {
+            int answerIndex = questionView.getIndex();
+            if (InputIndexView.INCORRECT_INDEX == answerIndex) {
+                result.registerAnswer(false);
+            } else {
+                var answerView = answerViews.get(answerIndex);
 
+                var questionTranslation = questionView.getTranslation();
+                var answerTranslation = answerView.getTranslation();
+                result.registerAnswer(questionTranslation.equals(answerTranslation));
+            }
+        }
     }
 
     @Override
