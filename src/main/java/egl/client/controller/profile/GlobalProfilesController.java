@@ -1,5 +1,9 @@
 package egl.client.controller.profile;
 
+import java.net.URL;
+import java.util.Optional;
+import java.util.ResourceBundle;
+
 import egl.client.model.core.profile.Credentials;
 import egl.client.model.core.profile.Profile;
 import egl.client.service.FxmlService;
@@ -11,10 +15,6 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import org.springframework.stereotype.Component;
-
-import java.net.URL;
-import java.util.Optional;
-import java.util.ResourceBundle;
 
 @Component
 public class GlobalProfilesController extends ProfileSelectController {
@@ -46,26 +46,26 @@ public class GlobalProfilesController extends ProfileSelectController {
     }
 
     @Override
-    protected void onEdit(Profile globalProfile, boolean isCreated, String title) {
-        var globalCredentials = (isCreated
-                ? new Credentials(globalProfile)
-                : globalCredentialsService.findBy(globalProfile)
+    protected void onEdit(Profile profile, boolean isCreated, String title) {
+        var credentials = (isCreated
+                ? new Credentials(profile)
+                : globalCredentialsService.findBy(profile)
         );
 
         // TODO check errors
-        if (null == globalCredentials) {
+        if (null == credentials) {
             return;
         }
 
         var changed = fxmlService.showInfoDialog(
                 CredentialsInfoController.class,
-                globalCredentials,
+                credentials,
                 title, isCreated
         );
 
         if (changed) {
-            globalCredentialsService.save(globalCredentials);
-            onSelect(globalProfile);
+            globalCredentialsService.save(credentials);
+            onSelect(profile);
         }
     }
 
