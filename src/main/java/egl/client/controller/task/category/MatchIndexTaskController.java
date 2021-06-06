@@ -20,21 +20,21 @@ import org.springframework.stereotype.Component;
 @FxmlView
 public class MatchIndexTaskController extends LocalTaskController<Category> {
 
+    @FXML
+    private GridPane tasksGridPane;
+
     @Value("${task.match_index.max_tasks_count}")
     private int maxTasksCount;
 
     private List<Translation> translations;
-    List<InputIndexView> inputIndexViews;
-    List<FixedIndexView> fixedIndexViews;
-
-    @FXML
-    private GridPane tasksGridPane;
+    private List<InputIndexView> inputIndexViews;
+    private List<FixedIndexView> fixedIndexViews;
 
     public MatchIndexTaskController(LocalTopicInfoService localTopicInfoService, CategoryService categoryService) {
         super(localTopicInfoService, categoryService);
     }
 
-    private void prepareTasks(){
+    private void prepareTasks() {
         Category category = specificLocalTopic;
 
         this.translations = category.getTranslations();
@@ -44,9 +44,11 @@ public class MatchIndexTaskController extends LocalTaskController<Category> {
 
         this.inputIndexViews = new ArrayList<>();
         this.fixedIndexViews = new ArrayList<>();
+
         List<Integer> position = new ArrayList<>();
-        for (int i = 0; i<tasksCount; ++i)
+        for (int i = 0; i < tasksCount; ++i) {
             position.add(i);
+        }
         Collections.shuffle(position);
 
         for (int i = 0; i < tasksCount; ++i) {
@@ -54,20 +56,19 @@ public class MatchIndexTaskController extends LocalTaskController<Category> {
             var answerView = createTestAnswer(position.get(i), i);
             tasksGridPane.getColumnConstraints().add(new ColumnConstraints(550));
             tasksGridPane.add(questionView, 0, i);
-            tasksGridPane.add(answerView,  1, i);
+            tasksGridPane.add(answerView, 1, i);
             inputIndexViews.add(questionView);
             fixedIndexViews.add(answerView);
         }
 
     }
-    private InputIndexView createTestQuestion(int correctIndex, int taskCount)
-    {
-        return new InputIndexView(translations.get(correctIndex), taskCount);
+
+    private InputIndexView createTestQuestion(int correctIndex, int tasksCount) {
+        return new InputIndexView(translations.get(correctIndex), tasksCount);
     }
 
-    private FixedIndexView createTestAnswer(int Index, int IncorrectIndex)
-    {
-        return new FixedIndexView(translations.get(Index), IncorrectIndex);
+    private FixedIndexView createTestAnswer(int index, int incorrectIndex) {
+        return new FixedIndexView(translations.get(index), incorrectIndex);
     }
 
     @Override
