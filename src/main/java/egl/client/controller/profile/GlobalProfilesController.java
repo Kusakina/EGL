@@ -1,5 +1,9 @@
 package egl.client.controller.profile;
 
+import java.net.URL;
+import java.util.Optional;
+import java.util.ResourceBundle;
+
 import egl.client.model.core.profile.Credentials;
 import egl.client.model.core.profile.Profile;
 import egl.client.service.FxmlService;
@@ -12,11 +16,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import org.springframework.stereotype.Component;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 @Component
-public class GlobalProfileController extends ProfileSelectController {
+public class GlobalProfilesController extends ProfileSelectController {
 
     private final GlobalCredentialsService globalCredentialsService;
 
@@ -35,7 +36,7 @@ public class GlobalProfileController extends ProfileSelectController {
     @FXML
     private Text errorText;
 
-    public GlobalProfileController(
+    public GlobalProfilesController(
             FxmlService fxmlService,
             GlobalProfileService globalProfileService,
             GlobalCredentialsService globalCredentialsService
@@ -82,7 +83,7 @@ public class GlobalProfileController extends ProfileSelectController {
     private void showSelectedProfile() {
         var selectedProfile = profileService.getSelectedProfile();
 
-        boolean selected = (null != selectedProfile);
+        boolean selected = Optional.ofNullable(selectedProfile).isPresent();
         String profileText = (selected ? selectedProfile.getName() : "не выбран");
         loginInfoText.setText("Глобальный профиль: " + profileText);
 

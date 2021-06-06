@@ -1,7 +1,7 @@
-<?import egl.client.view.table.list.InfoSelectEditRemoveListView?>
 <?import egl.client.view.pane.CustomBorderPane?>
-<?import javafx.scene.control.Button?>
 <?import egl.client.view.table.column.ButtonColumn?>
+<?import egl.client.view.table.list.InfoSelectEditRemoveListView?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.layout.HBox?>
 <CustomBorderPane fx:controller="egl.client.controller.topic.LocalTopicsController"
@@ -21,7 +21,8 @@
     <center>
         <InfoSelectEditRemoveListView fx:id="categoriesListView" nameTitle="Название">
             <infoColumns>
-                <TableColumn fx:id="topicStatisticColumn" text="Статистика"/>
+                <TableColumn fx:id="topicLocalStatisticColumn" text="Локально"/>
+                <TableColumn fx:id="topicGlobalStatisticColumn" text="Глобально"/>
             </infoColumns>
             <buttonColumns>
                 <ButtonColumn fx:id="copyCategoryColumn" text="Скопировать"/>
