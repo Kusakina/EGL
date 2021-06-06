@@ -5,8 +5,9 @@
 <GridPane fx:controller="egl.client.controller.task.TestController"
           xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
 
-    <TabPane fx:id="tabPane" GridPane.columnIndex="0" GridPane.rowIndex="0">
-        <Tab fx:id="descriptionTab">
+    <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE"
+             GridPane.columnIndex="0" GridPane.rowIndex="0">
+        <Tab fx:id="descriptionTab" text="Информация о тесте">
             <TextArea fx:id="descriptionTextArea" editable="false"/>
         </Tab>
     </TabPane>
