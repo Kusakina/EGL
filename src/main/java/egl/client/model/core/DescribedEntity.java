@@ -1,15 +1,17 @@
 package egl.client.model.core;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @EqualsAndHashCode(callSuper = true)
 @MappedSuperclass
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public abstract class DescribedEntity extends DatabaseEntity {
 
@@ -22,5 +24,10 @@ public abstract class DescribedEntity extends DatabaseEntity {
     protected DescribedEntity(String name, String description) {
         this.name = name;
         this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }
