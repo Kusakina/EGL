@@ -2,7 +2,7 @@ package egl.client.view.table.list;
 
 import egl.client.service.FxmlService;
 import egl.client.service.model.EntityService;
-import egl.core.model.DescribedEntity;
+import egl.client.model.core.DescribedEntity;
 import lombok.Setter;
 
 public class InfoSelectEditRemoveListView<T extends DescribedEntity> extends InfoSelectListView<T> {

@@ -1,8 +1,11 @@
 package egl.client.controller.task.category;
 
-import egl.client.controller.task.AbstractTaskController;
+import egl.client.controller.task.LocalTaskController;
+import egl.client.model.local.topic.category.Category;
+import egl.client.model.local.topic.category.Translation;
 import egl.client.model.topic.category.Category;
-import egl.client.model.topic.category.Translation;
+import egl.client.service.model.topic.CategoryService;
+import egl.client.service.model.topic.LocalTopicInfoService;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.TextField;
@@ -12,16 +15,14 @@ import javafx.scene.text.Text;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
 
 @Component
 @FxmlView
-public class MatchIndexTaskController extends AbstractTaskController {
+public class MatchIndexTaskController extends LocalTaskController<Category> {
 
     private static final int MAX_TASKS_COUNT = 8;
     private List<Translation> translations;
@@ -31,12 +32,12 @@ public class MatchIndexTaskController extends AbstractTaskController {
     @FXML
     private GridPane tasksGridPane;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public MatchIndexTaskController(LocalTopicInfoService localTopicInfoService, CategoryService categoryService) {
+        super(localTopicInfoService, categoryService);
     }
 
     private void prepareTasks(){
-        Category category = (Category) controllerTopic;
+        Category category = specificLocalTopic;
 
         this.translations = category.getTranslations();
         Collections.shuffle(translations);

@@ -2,16 +2,14 @@ package egl.client.view.info;
 
 import egl.client.service.FxmlService;
 import egl.client.view.pane.CustomBorderPane;
-import egl.core.model.DescribedEntity;
+import egl.client.view.text.LabeledTextField;
+import egl.client.model.core.DescribedEntity;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 
 public class NameDescriptionInfoView<T extends DescribedEntity> extends CustomBorderPane implements EntityInfoView<T> {
 
-    @FXML private Label nameLabel;
-    @FXML private TextField nameTextField;
+    @FXML private LabeledTextField nameTextField;
     @FXML private TextArea descriptionTextArea;
 
     public NameDescriptionInfoView() {
@@ -19,11 +17,11 @@ public class NameDescriptionInfoView<T extends DescribedEntity> extends CustomBo
     }
 
     public void setNameTitle(String nameTitle) {
-        nameLabel.setText(nameTitle);
+        nameTextField.setLabel(nameTitle);
     }
 
     public String getNameTitle() {
-        return nameLabel.getText();
+        return nameTextField.getLabel();
     }
 
     @Override
@@ -38,7 +36,7 @@ public class NameDescriptionInfoView<T extends DescribedEntity> extends CustomBo
     @Override
     public void validateData() {
         if (nameTextField.getText().isBlank()) {
-            throw new IllegalArgumentException(String.format("%s не может быть пустым", nameLabel.getText()));
+            throw new IllegalArgumentException(String.format("%s не может быть пустым", getNameTitle()));
         }
     }
 
