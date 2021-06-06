@@ -1,6 +1,7 @@
 <?import egl.client.view.pane.CustomBorderPane?>
 <?import egl.client.view.text.LabeledTextField?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -34,7 +35,9 @@
             </Tab>
             <Tab fx:id="globalRatingsTab" text="Глобальные рейтинги">
                 <CustomBorderPane>
-                    
+                    <left>
+                        <ListView fx:id="topicsListView"/>
+                    </left>
                 </CustomBorderPane>
             </Tab>
         </TabPane>

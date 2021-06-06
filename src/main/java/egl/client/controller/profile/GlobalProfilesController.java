@@ -3,15 +3,20 @@ package egl.client.controller.profile;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 import egl.client.model.core.profile.Credentials;
 import egl.client.model.core.profile.Profile;
+import egl.client.model.core.topic.Topic;
+import egl.client.model.local.topic.LocalTopicInfo;
 import egl.client.service.FxmlService;
 import egl.client.service.model.profile.GlobalCredentialsService;
 import egl.client.service.model.profile.GlobalProfileService;
+import egl.client.service.model.topic.LocalTopicInfoService;
 import egl.client.view.text.LabeledTextField;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.GridPane;
@@ -22,15 +27,13 @@ import org.springframework.stereotype.Component;
 public class GlobalProfilesController extends ProfileSelectController {
 
     private final GlobalCredentialsService globalCredentialsService;
+    private final LocalTopicInfoService localTopicInfoService;
 
     @FXML
     private TabPane activitiesTabPane;
 
     @FXML
     private Tab globalProfileTab;
-
-    @FXML
-    private Tab globalRatingsTab;
 
     @FXML
     private GridPane loginGridPane;
@@ -47,13 +50,21 @@ public class GlobalProfilesController extends ProfileSelectController {
     @FXML
     private Text errorText;
 
+    @FXML
+    private Tab globalRatingsTab;
+
+    @FXML
+    private ListView<Topic> topicsListView;
+
     public GlobalProfilesController(
             FxmlService fxmlService,
             GlobalProfileService globalProfileService,
-            GlobalCredentialsService globalCredentialsService
+            GlobalCredentialsService globalCredentialsService,
+            LocalTopicInfoService localTopicInfoService
     ) {
         super(fxmlService, globalProfileService);
         this.globalCredentialsService = globalCredentialsService;
+        this.localTopicInfoService = localTopicInfoService;
     }
 
     @Override
@@ -105,9 +116,19 @@ public class GlobalProfilesController extends ProfileSelectController {
         globalRatingsTab.setDisable(!selected);
     }
 
+    private void showRatings() {
+        //LocalTopicInfo.NO_GLOBAL_ID != localTopicInfo.getRatingId()
+        var topics = localTopicInfoService.findAll()
+                .stream().map(LocalTopicInfo::getTopic)
+                .collect(Collectors.toUnmodifiableList());
+
+        topicsListView.getItems().setAll(topics);
+    }
+
     @Override
     public void prepareToShow() {
         showSelectedProfile();
+        showRatings();
     }
 
     @Override
