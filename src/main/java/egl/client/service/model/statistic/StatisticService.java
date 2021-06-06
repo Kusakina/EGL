@@ -8,6 +8,7 @@ import egl.client.model.core.statistic.TopicStatistic;
 import egl.client.model.core.topic.Topic;
 import egl.client.repository.core.statistic.ProfileStatisticRepository;
 import egl.client.service.model.profile.ProfileService;
+import javafx.beans.property.Property;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -24,6 +25,10 @@ public abstract class StatisticService {
         }
 
         return profileStatistic;
+    }
+
+    public Property<Profile> selectedProfileProperty() {
+        return profileService.selectedProfileProperty();
     }
 
     public Optional<ProfileStatistic> getSelectedProfileStatistic() {

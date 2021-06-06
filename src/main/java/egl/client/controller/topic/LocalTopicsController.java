@@ -17,10 +17,9 @@ import egl.client.model.local.topic.LocalTopicInfo;
 import egl.client.model.local.topic.category.Category;
 import egl.client.service.FxmlService;
 import egl.client.service.model.EntityService;
-import egl.client.service.model.profile.GlobalProfileService;
-import egl.client.service.model.profile.LocalProfileService;
-import egl.client.service.model.profile.ProfileService;
+import egl.client.service.model.statistic.GlobalStatisticService;
 import egl.client.service.model.statistic.LocalStatisticService;
+import egl.client.service.model.statistic.StatisticService;
 import egl.client.service.model.topic.CategoryService;
 import egl.client.service.model.topic.LocalTopicInfoService;
 import egl.client.service.model.topic.LocalTopicService;
@@ -42,11 +41,10 @@ public class LocalTopicsController implements Controller {
 
     private final FxmlService fxmlService;
     private final LocalTopicService localTopicService;
-    private final LocalProfileService localProfileService;
     private final LocalTopicInfoService localTopicInfoService;
     private final CategoryService categoryService;
     private final LocalStatisticService localStatisticService;
-    private final GlobalProfileService globalProfileService;
+    private final GlobalStatisticService globalStatisticService;
 
     @FXML private InfoSelectEditRemoveListView<Topic> categoriesListView;
     @FXML private ButtonColumn<Topic> copyCategoryColumn;
@@ -127,13 +125,13 @@ public class LocalTopicsController implements Controller {
     }
 
     private void initializeProfiles() {
-        initSelectProfileButton(selectLocalProfileButton, localProfileService, LocalProfilesController.class, "Локальный");
-        initSelectProfileButton(selectGlobalProfileButton, globalProfileService, GlobalProfilesController.class, "Глобальный");
+        initSelectProfileButton(selectLocalProfileButton, localStatisticService, LocalProfilesController.class, "Локальный");
+        initSelectProfileButton(selectGlobalProfileButton, globalStatisticService, GlobalProfilesController.class, "Глобальный");
     }
 
     private void initSelectProfileButton(
             Button selectProfileButton,
-            ProfileService profileService,
+            StatisticService statisticService,
             Class<? extends Controller> selectProfileControllerClass,
             String profileTypeName) {
         String profileText = String.format("%s профиль", profileTypeName);
@@ -144,7 +142,7 @@ public class LocalTopicsController implements Controller {
         });
 
         selectProfileButton.textProperty().bindBidirectional(
-                profileService.selectedProfileProperty(),
+                statisticService.selectedProfileProperty(),
                 new StringConverter<>() {
                     @Override
                     public String toString(Profile profile) {
@@ -159,7 +157,7 @@ public class LocalTopicsController implements Controller {
                 }
         );
 
-        profileService.selectedProfileProperty().addListener((observableValue, oldProfile, newProfile) -> categoriesListView.refresh());
+        statisticService.selectedProfileProperty().addListener((observableValue, oldProfile, newProfile) -> categoriesListView.refresh());
     }
 
     private void onTopicSelect(Topic topic) {
