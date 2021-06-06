@@ -1,5 +1,10 @@
 package egl.client.controller.task.category;
 
+import egl.client.controller.task.LocalTaskController;
+import egl.client.model.local.topic.category.Category;
+import egl.client.model.local.topic.category.Translation;
+import egl.client.service.model.topic.CategoryService;
+import egl.client.service.model.topic.LocalTopicInfoService;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -21,9 +26,13 @@ import javafx.scene.text.Text;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 @Component
 @FxmlView
-public class TrueFalseTaskController extends AbstractTaskController {
+public class TrueFalseTaskController extends LocalTaskController<Category> {
 
     private static final int MAX_QUESTIONS_COUNT = 8;
     private List<TrueFalseQuestionView> questionViews;
@@ -33,6 +42,10 @@ public class TrueFalseTaskController extends AbstractTaskController {
     @FXML
     private VBox tasksVBox;
 
+    public TrueFalseTaskController(LocalTopicInfoService localTopicInfoService, CategoryService categoryService) {
+        super(localTopicInfoService, categoryService);
+    }
+
     @Override
     public void setPrefSize(double parentWidth, double parentHeight) {
 
@@ -40,7 +53,7 @@ public class TrueFalseTaskController extends AbstractTaskController {
 
     @Override
     protected void prepareToStart() {
-        Category category = (Category) controllerTopic;
+        Category category = specificLocalTopic;
         this.translations = category.getTranslations();
         this.answers = category.getTranslations();
         Collections.shuffle(translations);

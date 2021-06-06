@@ -1,81 +1,59 @@
 package egl.client.controller.task.category;
 
-import egl.client.controller.task.AbstractTaskController;
-import egl.client.model.topic.category.Category;
-import egl.client.model.topic.category.Translation;
-import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
-import net.rgielen.fxweaver.core.FxmlView;
-import org.springframework.stereotype.Component;
-
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.ResourceBundle;
-import java.util.function.UnaryOperator;
+
+import egl.client.controller.task.LocalTaskController;
+import egl.client.model.local.topic.category.Category;
+import egl.client.service.model.topic.CategoryService;
+import egl.client.service.model.topic.LocalTopicInfoService;
+import javafx.fxml.FXML;
+import javafx.scene.layout.GridPane;
+import net.rgielen.fxweaver.core.FxmlView;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 @Component
 @FxmlView
-public class MatchIndexTaskController extends AbstractTaskController {
+public class MatchIndexTaskController extends LocalTaskController<Category> {
 
     @FXML
-    private VBox tasksVBoxes;
+    private GridPane tasksGridPane;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    @Value("${task.match_index.max_tasks_count}")
+    private int maxTasksCount;
+
+    private List<InputIndexView> questionViews;
+    private List<FixedIndexView> answerViews;
+
+    public MatchIndexTaskController(LocalTopicInfoService localTopicInfoService, CategoryService categoryService) {
+        super(localTopicInfoService, categoryService);
     }
 
-    private void prepareTasks(){
-        int taskCount = 7;
-        Category category = (Category) controllerTopic;
-        List<Translation> task = category.getTranslations();
-        List<Integer> position = new ArrayList<>();
-        int[] trueAnswersSecondTask = new int[taskCount];//запоминаем правильные ответы
-        for (int i = 0; i<taskCount; ++i)
-            position.add(i);
-        Collections.shuffle(task);
-        Collections.shuffle(position);
-        for (int i = 0; i<taskCount; ++i) {
-            trueAnswersSecondTask[i] = position.get(i) + 1;
-            //trueAnswersFirstTask[i] = position.get(0);
-            //addTestQuestion(task, translations, position, i);
-            var vBoxChildren = tasksVBoxes.getChildren();
-            GridPane questionPane = new GridPane();
-            questionPane.setStyle("-fx-font: 22 arial;");
-            TextField questionField = new TextField();
-            questionField.setStyle("-fx-font: 22 arial;");
-            questionPane.getColumnConstraints().add(new ColumnConstraints(40));
+    private void prepareTasks() {
+        Category category = specificLocalTopic;
 
-            UnaryOperator<TextFormatter.Change> integerFilter = change -> {
-                String input = change.getText();
-                if (input.matches("[0-9]*") && ((taskCount < 10 && change.getControlNewText().length()<2) ||
-                        (taskCount >= 10 && change.getControlNewText().length()<=2))) {
-                    return change;
-                }
-                return null;
-            };
-            questionField.setTextFormatter(new TextFormatter<String>(integerFilter));
+        var translations = category.getTranslations();
 
-            questionPane.add(questionField, 0, 0, 1, 1);
-            Text questionText = new Text(" " + task.get(position.get(i)).getSource().getText());
-            questionPane.getColumnConstraints().add(new ColumnConstraints(500));
-            questionPane.getRowConstraints().add(new RowConstraints(70));
-            questionPane.add(questionText, 1, 0, 3, 1);
-            Text questionAnswer = new Text(i+1 + ". " + task.get(i).getTarget().getText());
-            questionPane.add(questionAnswer, 5, 0, 3, 1);
+        final int tasksCount = Math.min(maxTasksCount, translations.size());
 
-            vBoxChildren.add(questionPane);
+        this.questionViews = new ArrayList<>();
+        Collections.shuffle(translations);
+        for (int i = 0; i < tasksCount; ++i) {
+            var questionView = new InputIndexView(translations.get(i), tasksCount);
+            tasksGridPane.add(questionView, 0, i);
+            questionViews.add(questionView);
         }
 
+        this.answerViews = new ArrayList<>();
+        Collections.shuffle(translations);
+        for (int i = 0; i < tasksCount; ++i) {
+            var answerView = new FixedIndexView(translations.get(i), i);
+            tasksGridPane.add(answerView, 1, i);
+            answerViews.add(answerView);
+        }
     }
-
 
     @Override
     protected void prepareToStart() {
@@ -84,11 +62,22 @@ public class MatchIndexTaskController extends AbstractTaskController {
 
     @Override
     protected void prepareToFinish() {
+        for (var questionView : questionViews) {
+            int answerIndex = questionView.getIndex();
+            if (InputIndexView.INCORRECT_INDEX == answerIndex) {
+                result.registerAnswer(false);
+            } else {
+                var answerView = answerViews.get(answerIndex);
 
+                var questionTranslation = questionView.getTranslation();
+                var answerTranslation = answerView.getTranslation();
+                result.registerAnswer(questionTranslation.equals(answerTranslation));
+            }
+        }
     }
 
     @Override
     public void setPrefSize(double parentWidth, double parentHeight) {
-
+        tasksGridPane.setPrefSize(parentWidth, parentHeight);
     }
 }

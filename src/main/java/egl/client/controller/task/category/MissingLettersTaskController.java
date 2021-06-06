@@ -1,15 +1,10 @@
 package egl.client.controller.task.category;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-import java.util.ResourceBundle;
-
-import egl.client.controller.task.AbstractTaskController;
-import egl.client.model.topic.category.Category;
-import egl.client.model.topic.category.Translation;
+import egl.client.controller.task.LocalTaskController;
+import egl.client.model.local.topic.category.Category;
+import egl.client.model.local.topic.category.Translation;
+import egl.client.service.model.topic.CategoryService;
+import egl.client.service.model.topic.LocalTopicInfoService;
 import egl.client.view.pane.CustomBorderPane;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -22,9 +17,12 @@ import javafx.scene.text.Text;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
 
+import java.net.URL;
+import java.util.*;
+
 @Component
 @FxmlView
-public class MissingLettersTaskController extends AbstractTaskController {
+public class MissingLettersTaskController extends LocalTaskController<Category> {
 
     private static final int DEFAULT_ADDITIONAL_LETTERS_COUNT = 3;
 
@@ -51,7 +49,8 @@ public class MissingLettersTaskController extends AbstractTaskController {
 
     private final Random random;
 
-    public MissingLettersTaskController() {
+    public MissingLettersTaskController(LocalTopicInfoService localTopicInfoService, CategoryService categoryService) {
+        super(localTopicInfoService, categoryService);
         this.random = new Random();
     }
 
@@ -231,7 +230,7 @@ public class MissingLettersTaskController extends AbstractTaskController {
     }
 
     private void initializeTranslations() {
-        Category category = (Category) controllerTopic;
+        Category category = specificLocalTopic;
 
         this.translations = category.getTranslations();
         Collections.shuffle(translations);
