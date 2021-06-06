@@ -30,6 +30,9 @@ public class GlobalProfilesController extends ProfileSelectController {
     private Tab globalProfileTab;
 
     @FXML
+    private Tab globalRatingsTab;
+
+    @FXML
     private GridPane loginGridPane;
     @FXML
     private Text loginInfoText;
@@ -98,6 +101,8 @@ public class GlobalProfilesController extends ProfileSelectController {
         loginInfoText.setText("Глобальный профиль: " + profileText);
 
         editProfileButton.setVisible(selected);
+
+        globalRatingsTab.setDisable(!selected);
     }
 
     @Override

@@ -32,6 +32,11 @@
                     <Text fx:id="errorText" GridPane.rowIndex="3" GridPane.columnSpan="2" textAlignment="CENTER" textOrigin="CENTER"/>
                 </GridPane>
             </Tab>
+            <Tab fx:id="globalRatingsTab" text="Глобальные рейтинги">
+                <CustomBorderPane>
+                    
+                </CustomBorderPane>
+            </Tab>
         </TabPane>
     </center>
     <bottom>
