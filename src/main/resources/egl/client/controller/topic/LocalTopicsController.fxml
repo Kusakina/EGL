@@ -21,8 +21,8 @@
     <center>
         <InfoSelectEditRemoveListView fx:id="categoriesListView" nameTitle="Название">
             <infoColumns>
-                <TableColumn fx:id="localTopicStatisticColumn" text="Локально"/>
-                <TableColumn fx:id="globalTopicStatisticColumn" text="Глобально"/>
+                <TableColumn fx:id="topicLocalStatisticColumn" text="Локально"/>
+                <TableColumn fx:id="topicGlobalStatisticColumn" text="Глобально"/>
             </infoColumns>
             <buttonColumns>
                 <ButtonColumn fx:id="copyCategoryColumn" text="Скопировать"/>

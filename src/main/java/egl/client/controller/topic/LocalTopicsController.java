@@ -48,8 +48,8 @@ public class LocalTopicsController implements Controller {
 
     @FXML private InfoSelectEditRemoveListView<Topic> categoriesListView;
     @FXML private ButtonColumn<Topic> copyCategoryColumn;
-    @FXML private TableColumn<Topic, String> localTopicStatisticColumn;
-    @FXML private TableColumn<Topic, String> globalTopicStatisticColumn;
+    @FXML private TableColumn<Topic, String> topicLocalStatisticColumn;
+    @FXML private TableColumn<Topic, String> topicGlobalStatisticColumn;
 
     @FXML private Button selectLocalProfileButton;
     @FXML private Button selectGlobalProfileButton;
@@ -107,8 +107,8 @@ public class LocalTopicsController implements Controller {
         copyCategoryColumn.setOnAction(processCategory(this::onCategoryCopy));
         createCategoryButton.setOnAction(event -> onCategoryCreate());
 
-        initializeStatisticColumn(localTopicStatisticColumn, localStatisticService);
-        initializeStatisticColumn(globalTopicStatisticColumn, globalStatisticService);
+        initializeStatisticColumn(topicLocalStatisticColumn, localStatisticService);
+        initializeStatisticColumn(topicGlobalStatisticColumn, globalStatisticService);
     }
 
     private void initializeStatisticColumn(
@@ -130,7 +130,7 @@ public class LocalTopicsController implements Controller {
                     .count();
 
             return String.format("Пройдено заданий: %d", passedTasksCount);
-        }).orElse("Нет данных");
+        }).orElse(StatisticService.NO_DATA);
     }
 
     private void initializeProfiles() {

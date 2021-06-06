@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public abstract class StatisticService {
 
+    public static final String NO_DATA = "Нет данных";
+
     protected final ProfileService profileService;
     protected final ProfileStatisticRepository profileStatisticRepository;
 

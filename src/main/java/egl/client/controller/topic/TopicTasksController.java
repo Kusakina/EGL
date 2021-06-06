@@ -32,7 +32,8 @@ public class TopicTasksController implements Controller {
     private final GlobalStatisticService globalStatisticService;
 
     @FXML private InfoSelectListView<Task> tasksListView;
-    @FXML private TableColumn<Task, String> taskStatisticColumn;
+    @FXML private TableColumn<Task, String> taskLocalStatisticColumn;
+    @FXML private TableColumn<Task, String> taskGlobalStatisticColumn;
 
     private Topic controllerTopic;
 
@@ -48,20 +49,27 @@ public class TopicTasksController implements Controller {
     public void initializeTasks() {
         tasksListView.setOnSelect(this::onSelect);
 
+        initializeStatisticColumn(taskLocalStatisticColumn, localStatisticService);
+        initializeStatisticColumn(taskGlobalStatisticColumn, globalStatisticService);
+    }
+
+    private void initializeStatisticColumn(
+            TableColumn<Task, String> taskStatisticColumn,
+            StatisticService statisticService) {
         taskStatisticColumn.setCellValueFactory(param -> {
             var task = param.getValue();
-            var statisticString = getTaskStatistic(task);
+            var statisticString = getTaskStatistic(statisticService, task);
             return new SimpleStringProperty(statisticString);
         });
     }
 
-    private String getTaskStatistic(Task task) {
-        return localStatisticService.findBy(controllerTopic)
+    private String getTaskStatistic(StatisticService statisticService, Task task) {
+        return statisticService.findBy(controllerTopic)
             .map(topicStatistic -> topicStatistic.getTaskStatisticFor(task))
             .map(taskStatistic -> {
                 Result result = taskStatistic.getResult();
                 if (Result.NONE == result) {
-                    return "Результатов не зафиксировано";
+                    return StatisticService.NO_DATA;
                 }
 
                 return String.format(
@@ -70,7 +78,7 @@ public class TopicTasksController implements Controller {
                         result.getTotalAnswers()
                 );
             }
-        ).orElse("Нет данных");
+        ).orElse(StatisticService.NO_DATA);
     }
 
     private void onSelect(Task task) {
