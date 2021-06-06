@@ -9,7 +9,9 @@ import egl.client.model.core.statistic.Result;
 import egl.client.model.core.task.Task;
 import egl.client.model.core.topic.Topic;
 import egl.client.service.FxmlService;
+import egl.client.service.model.statistic.GlobalStatisticService;
 import egl.client.service.model.statistic.LocalStatisticService;
+import egl.client.service.model.statistic.StatisticService;
 import egl.client.service.model.topic.LocalTopicTasksService;
 import egl.client.view.table.list.InfoSelectListView;
 import javafx.beans.property.SimpleStringProperty;
@@ -27,6 +29,7 @@ public class TopicTasksController implements Controller {
     private final FxmlService fxmlService;
     private final LocalTopicTasksService localTopicTasksService;
     private final LocalStatisticService localStatisticService;
+    private final GlobalStatisticService globalStatisticService;
 
     @FXML private InfoSelectListView<Task> tasksListView;
     @FXML private TableColumn<Task, String> taskStatisticColumn;
@@ -86,9 +89,14 @@ public class TopicTasksController implements Controller {
          FIXME show dialog with question
          local/global profiles
          */
-        localStatisticService.findBy(controllerTopic).ifPresent(topicStatistic -> {
+        updateStatistic(localStatisticService, task, result);
+        updateStatistic(globalStatisticService, task, result);
+    }
+
+    private void updateStatistic(StatisticService statisticService, Task task, Result result) {
+        statisticService.findBy(controllerTopic).ifPresent(topicStatistic -> {
             if (topicStatistic.updateBy(task, result)) {
-                localStatisticService.save(topicStatistic);
+                statisticService.save(topicStatistic);
             }
         });
     }
