@@ -107,7 +107,7 @@ public class LocalTopicsController implements Controller {
 
         createCategoryButton.setOnAction(event -> onCategoryCreate());
         copyCategoryColumn.setOnAction(processCategory(this::onCategoryCopy));
-        registerCategoryColumn.setOnAction(processCategory(this::onCategoryRegister));
+        registerCategoryColumn.setOnAction(processLocalTopic(this::onCategoryRegister));
 
         initializeStatisticColumn(topicLocalStatisticColumn, localStatisticService);
         initializeStatisticColumn(topicGlobalStatisticColumn, globalStatisticService);
@@ -207,20 +207,12 @@ public class LocalTopicsController implements Controller {
         }
     }
 
-    private void onCategoryRegister(Category category) {
-        var localTopicInfo = category.getLocalTopicInfo();
+    private void onCategoryRegister(LocalTopicInfo localTopicInfo) {
         if (LocalTopicInfo.NO_GLOBAL_ID != localTopicInfo.getGlobalId()) {
             return;
         }
 
-        var globalTopicId = globalStatisticService.registerTopic(
-                localTopicInfo.getTopic(), category.hashCode()
-        );
-
-        if (LocalTopicInfo.NO_GLOBAL_ID != globalTopicId) {
-            localTopicInfo.setGlobalId(globalTopicId);
-            localTopicInfoService.save(localTopicInfo);
-        }
+        globalStatisticService.registerTopic(localTopicInfo);
     }
 
     @Override
