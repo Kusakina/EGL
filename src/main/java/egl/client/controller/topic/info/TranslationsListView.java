@@ -1,16 +1,15 @@
 package egl.client.controller.topic.info;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+import java.util.stream.Stream;
+
 import egl.client.model.local.topic.category.Category;
 import egl.client.model.local.topic.category.Translation;
 import egl.client.service.FxmlService;
 import egl.client.view.info.EntityInfoView;
 import egl.client.view.table.list.CustomListView;
 import javafx.fxml.FXML;
-
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
-import java.util.stream.Stream;
 
 public class TranslationsListView extends CustomListView<Translation> implements EntityInfoView<Category>  {
 
@@ -49,7 +48,10 @@ public class TranslationsListView extends CustomListView<Translation> implements
 
     @Override
     public void fillData(Category category) {
-        var translations = new ArrayList<>(getItems());
-        category.setTranslations(translations);
+        var translations = getItems();
+
+        var categoryTranslations = category.getTranslations();
+        categoryTranslations.clear();
+        categoryTranslations.addAll(translations);
     }
 }
