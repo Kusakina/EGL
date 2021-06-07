@@ -16,6 +16,7 @@ import egl.client.view.text.LabeledTextField;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.GridPane;
@@ -121,6 +122,24 @@ public class GlobalProfilesController extends ProfileSelectController {
     private void showRatings() {
         var topics = localTopicService.findAll();
         topicsListView.getItems().setAll(topics);
+
+        topicsListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
+        topicsListView.getSelectionModel().selectedItemProperty().addListener(
+            (observableValue, oldTopic, newTopic) -> showRatingsFor(newTopic)
+        );
+    }
+
+    private void showRatingsFor(Topic topic) {
+        globalStatisticService.findBy(topic)
+        .ifPresentOrElse(
+            topicStatistic -> {
+
+            },
+            () -> {
+
+            }
+        );
     }
 
     @Override
