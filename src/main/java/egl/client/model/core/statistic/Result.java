@@ -40,4 +40,9 @@ public class Result implements Comparable<Result> {
         if (0 == this.totalAnswers || 0 == other.totalAnswers) return 0;
         return Integer.compare(this.correctAnswers * other.totalAnswers, other.correctAnswers * this.totalAnswers);
     }
+
+    @Override
+    public String toString() {
+        return correctAnswers + " из " + totalAnswers;
+    }
 }

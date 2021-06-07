@@ -73,9 +73,8 @@ public class TopicTasksController implements Controller {
                 }
 
                 return String.format(
-                        "Лучший результат %d из %d",
-                        result.getCorrectAnswers(),
-                        result.getTotalAnswers()
+                        "Лучший результат %s",
+                        result.toString()
                 );
             }
         ).orElse(StatisticService.NO_DATA);
