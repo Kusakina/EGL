@@ -107,6 +107,8 @@ public class TopicTasksController implements Controller {
                 statisticService.save(topicStatistic);
             }
         });
+
+        tasksListView.refresh();
     }
 
     @Override
