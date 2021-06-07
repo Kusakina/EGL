@@ -58,5 +58,6 @@ public class GlobalTopicService extends AbstractEntityService<Topic, GlobalTopic
 
         var globalTopic = globalTopicInfoService.save(globalTopicInfo).getTopic();
         localTopicInfo.setGlobalId(globalTopic.getId());
+        localTopicInfoService.save(localTopicInfo);
     }
 }
