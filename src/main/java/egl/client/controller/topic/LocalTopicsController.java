@@ -213,7 +213,7 @@ public class LocalTopicsController implements Controller {
         }
 
         globalStatisticService.registerTopic(localTopicInfo);
-        categoriesListView.refresh();
+        categoriesListView.showItems();
     }
 
     @Override
