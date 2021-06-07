@@ -1,5 +1,8 @@
 package egl.client.controller.topic;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import egl.client.controller.info.AbstractEntityInfoController;
 import egl.client.controller.topic.info.TheoryTextArea;
 import egl.client.controller.topic.info.TranslationsEditableListView;
@@ -11,9 +14,6 @@ import egl.client.view.info.NameDescriptionInfoView;
 import egl.client.view.pane.CustomBorderPane;
 import javafx.fxml.FXML;
 import lombok.RequiredArgsConstructor;
-
-import java.net.URL;
-import java.util.ResourceBundle;
 
 @RequiredArgsConstructor
 public class CategoryInfoController extends AbstractEntityInfoController<Category> {
@@ -51,5 +51,14 @@ public class CategoryInfoController extends AbstractEntityInfoController<Categor
 
     public void onAddTranslation() {
         translationsListView.getItems().add(new Translation());
+    }
+
+    @Override
+    public void fillData() {
+        super.fillData();
+
+        entity.getLocalTopicInfo().setGlobalHashCode(
+                entity.getTranslations().hashCode()
+        );
     }
 }
