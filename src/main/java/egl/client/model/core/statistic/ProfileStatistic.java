@@ -1,23 +1,26 @@
 package egl.client.model.core.statistic;
 
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
 import egl.client.model.core.DatabaseEntity;
 import egl.client.model.core.profile.Profile;
 import egl.client.model.core.topic.Topic;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-
-import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
-@NoArgsConstructor
 public class ProfileStatistic extends DatabaseEntity {
 
     @ManyToOne
@@ -27,9 +30,13 @@ public class ProfileStatistic extends DatabaseEntity {
     @Fetch(value = FetchMode.SUBSELECT)
     private Set<TopicStatistic> topicStatistics;
 
-    public ProfileStatistic(Profile profile) {
-        this.profile = profile;
+    public ProfileStatistic() {
         this.topicStatistics = new HashSet<>();
+    }
+
+    public ProfileStatistic(Profile profile) {
+        this();
+        this.profile = profile;
     }
 
     public Optional<TopicStatistic> getTopicStatisticFor(Topic topic) {

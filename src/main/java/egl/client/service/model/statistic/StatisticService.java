@@ -35,12 +35,14 @@ public abstract class StatisticService {
         memorized.setId(global.getId());
         memorized.setTopic(global.getTopic());
         memorized.getTaskStatistics().addAll(
-            global.getTaskStatistics()
+                global.getTaskStatistics()
         );
         return memorized;
     }
 
     private ProfileStatistic memorize(ProfileStatistic global) {
+        if (global == null) return new ProfileStatistic();
+
         var memorized = new ProfileStatistic(global.getProfile());
         memorized.setId(global.getId());
         memorized.getTopicStatistics().addAll(
@@ -58,14 +60,7 @@ public abstract class StatisticService {
 
     private ProfileStatistic findBy(Profile profile) {
         var profileStatistic = profileStatisticRepository.findByProfile(profile);
-        if (null == profileStatistic) {
-            profileStatistic = new ProfileStatistic(profile);
-            save(profileStatistic);
-        } else {
-            profileStatistic = memorize(profileStatistic);
-        }
-
-        return profileStatistic;
+        return memorize(profileStatistic);
     }
 
     public Property<Profile> selectedProfileProperty() {
@@ -77,8 +72,14 @@ public abstract class StatisticService {
                 .map(profile -> profileToStatisticCache.computeIfAbsent(profile, this::findBy));
     }
 
-    public void save(ProfileStatistic profileStatistic) {
-        profileStatisticRepository.save(profileStatistic);
+    public ProfileStatistic save(ProfileStatistic profileStatistic) {
+        var saved = profileStatisticRepository.save(profileStatistic);
+        profileStatistic = memorize(saved);
+        profileToStatisticCache.put(
+                profileStatistic.getProfile(),
+                profileStatistic
+        );
+        return profileStatistic;
     }
 
     public Optional<TopicStatistic> findBy(Topic topic) {
@@ -91,8 +92,7 @@ public abstract class StatisticService {
     private TopicStatistic addStatisticFor(ProfileStatistic profileStatistic, Topic topic) {
         var topicStatistic = new TopicStatistic(profileStatistic, topic);
         profileStatistic.getTopicStatistics().add(topicStatistic);
-        save(profileStatistic);
-        return profileStatistic.getTopicStatisticFor(topic).orElseThrow();
+        return topicStatistic;
     }
 
     public void save(TopicStatistic topicStatistic) {
