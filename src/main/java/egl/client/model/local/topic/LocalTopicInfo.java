@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
-public class LocalTopicInfo extends DatabaseEntity {
+public class LocalTopicInfo extends DatabaseEntity implements GlobalHashCodeEntity {
 
     public static final long NO_GLOBAL_ID = -1;
 

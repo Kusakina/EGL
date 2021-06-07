@@ -14,6 +14,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 
 import egl.client.model.core.DatabaseEntity;
+import egl.client.model.local.topic.GlobalHashCodeEntity;
 import egl.client.model.local.topic.LocalTopicInfo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,7 +24,7 @@ import org.hibernate.annotations.FetchMode;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
-public class Category extends DatabaseEntity {
+public class Category extends DatabaseEntity implements GlobalHashCodeEntity {
 
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private LocalTopicInfo localTopicInfo;
@@ -52,7 +53,7 @@ public class Category extends DatabaseEntity {
         this(localTopicInfo);
         this.translations.addAll(translations);
         this.localTopicInfo.setGlobalHashCode(
-                this.translations.hashCode()
+                getGlobalHashCode()
         );
     }
 
@@ -60,5 +61,10 @@ public class Category extends DatabaseEntity {
         var translationsCopy = new ArrayList<Translation>();
         if (null != translations) translationsCopy.addAll(translations);
         return translationsCopy;
+    }
+
+    @Override
+    public int getGlobalHashCode() {
+        return translations.hashCode();
     }
 }
