@@ -1,11 +1,11 @@
 package egl.client.service.model;
 
+import java.util.List;
+
 import egl.client.model.core.DatabaseEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Transactional
 @RequiredArgsConstructor
@@ -21,8 +21,8 @@ public abstract class AbstractEntityService<
     }
 
     @Override
-    public void save(T entity) {
-        repository.save(entity);
+    public T save(T entity) {
+        return repository.save(entity);
     }
 
     @Override

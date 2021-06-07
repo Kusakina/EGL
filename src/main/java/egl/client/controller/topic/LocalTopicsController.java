@@ -47,9 +47,10 @@ public class LocalTopicsController implements Controller {
     private final GlobalStatisticService globalStatisticService;
 
     @FXML private InfoSelectEditRemoveListView<Topic> categoriesListView;
-    @FXML private ButtonColumn<Topic> copyCategoryColumn;
     @FXML private TableColumn<Topic, String> topicLocalStatisticColumn;
     @FXML private TableColumn<Topic, String> topicGlobalStatisticColumn;
+    @FXML private ButtonColumn<Topic> copyCategoryColumn;
+    @FXML private ButtonColumn<Topic> registerCategoryColumn;
 
     @FXML private Button selectLocalProfileButton;
     @FXML private Button selectGlobalProfileButton;
@@ -73,8 +74,8 @@ public class LocalTopicsController implements Controller {
         }
 
         @Override
-        public void save(Topic entity) {
-            localTopicService.save(entity);
+        public Topic save(Topic entity) {
+            return localTopicService.save(entity);
         }
 
         @Override
@@ -104,8 +105,9 @@ public class LocalTopicsController implements Controller {
         categoriesListView.setOnSelect(this::onTopicSelect);
         categoriesListView.setOnEdit(processCategory(this::onCategoryEdit));
 
-        copyCategoryColumn.setOnAction(processCategory(this::onCategoryCopy));
         createCategoryButton.setOnAction(event -> onCategoryCreate());
+        copyCategoryColumn.setOnAction(processCategory(this::onCategoryCopy));
+        registerCategoryColumn.setOnAction(processLocalTopic(this::onLocalTopicRegister));
 
         initializeStatisticColumn(topicLocalStatisticColumn, localStatisticService);
         initializeStatisticColumn(topicGlobalStatisticColumn, globalStatisticService);
@@ -203,6 +205,15 @@ public class LocalTopicsController implements Controller {
             categoryService.save(category);
             categoriesListView.showItems();
         }
+    }
+
+    private void onLocalTopicRegister(LocalTopicInfo localTopicInfo) {
+        if (LocalTopicInfo.NO_GLOBAL_ID != localTopicInfo.getGlobalId()) {
+            return;
+        }
+
+        globalStatisticService.registerTopic(localTopicInfo);
+        categoriesListView.showItems();
     }
 
     @Override

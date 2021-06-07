@@ -65,7 +65,7 @@ public class TopicTasksController implements Controller {
 
     private String getTaskStatistic(StatisticService statisticService, Task task) {
         return statisticService.findBy(controllerTopic)
-            .map(topicStatistic -> topicStatistic.getTaskStatisticFor(task))
+            .flatMap(topicStatistic -> topicStatistic.getTaskStatisticFor(task))
             .map(taskStatistic -> {
                 Result result = taskStatistic.getResult();
                 if (Result.NONE == result) {
@@ -102,11 +102,8 @@ public class TopicTasksController implements Controller {
     }
 
     private void updateStatistic(StatisticService statisticService, Task task, Result result) {
-        statisticService.findBy(controllerTopic).ifPresent(topicStatistic -> {
-            if (topicStatistic.updateBy(task, result)) {
-                statisticService.save(topicStatistic);
-            }
-        });
+        statisticService.update(controllerTopic, task, result);
+        tasksListView.refresh();
     }
 
     @Override

@@ -1,22 +1,26 @@
 package egl.client.model.core.statistic;
 
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
 import egl.client.model.core.DatabaseEntity;
 import egl.client.model.core.task.Task;
 import egl.client.model.core.topic.Topic;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-
-import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true, exclude = "profileStatistic")
 @Entity
 @Data
-@NoArgsConstructor
 public class TopicStatistic extends DatabaseEntity {
 
     @ManyToOne
@@ -29,25 +33,25 @@ public class TopicStatistic extends DatabaseEntity {
     @Fetch(value = FetchMode.SUBSELECT)
     private Set<TaskStatistic> taskStatistics;
 
-    public TopicStatistic(ProfileStatistic profileStatistic, Topic topic) {
-        this.profileStatistic = profileStatistic;
-        this.topic = topic;
+    public TopicStatistic() {
         this.taskStatistics = new HashSet<>();
     }
 
-    public TaskStatistic getTaskStatisticFor(Task task) {
-        return taskStatistics.stream()
-                .filter(taskStatistic -> taskStatistic.getTask().equals(task))
-                .findAny().orElse(new TaskStatistic(task, Result.NONE));
+    public TopicStatistic(ProfileStatistic profileStatistic, Topic topic) {
+        this();
+        this.profileStatistic = profileStatistic;
+        this.topic = topic;
     }
 
-    public boolean updateBy(Task task, Result result) {
-        var taskStatistic = getTaskStatisticFor(task);
+    private boolean compareStatisticTask(TaskStatistic taskStatistic, Task task) {
+        // scene name is unique
+        return taskStatistic.getTask().getSceneName()
+                .equals(task.getSceneName());
+    }
 
-        boolean better = taskStatistic.updateBy(result);
-        if (better) {
-            taskStatistics.add(taskStatistic);
-        }
-        return better;
+    public Optional<TaskStatistic> getTaskStatisticFor(Task task) {
+        return taskStatistics.stream()
+                .filter(taskStatistic -> compareStatisticTask(taskStatistic, task))
+                .findAny();
     }
 }
