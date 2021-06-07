@@ -27,6 +27,9 @@ public class LocalTopicInfo extends DatabaseEntity {
     @Column
     private long globalId;
 
+    @Column
+    private int globalHashCode;
+
     public LocalTopicInfo() {
         this.topic = new Topic();
         this.theory = new Theory();
@@ -44,5 +47,6 @@ public class LocalTopicInfo extends DatabaseEntity {
         this.topic = topic;
         this.theory = theory;
         this.globalId = NO_GLOBAL_ID;
+        this.globalHashCode = 0;
     }
 }
