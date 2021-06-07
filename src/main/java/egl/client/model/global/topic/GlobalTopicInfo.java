@@ -25,6 +25,15 @@ public class GlobalTopicInfo extends DatabaseEntity {
     @Column
     private int localHashCode;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToOne
     private Profile author;
+
+    public GlobalTopicInfo(
+            Topic topic,
+            int localHashCode,
+            Profile author) {
+        this.topic = new Topic(topic);
+        this.localHashCode = localHashCode;
+        this.author = author;
+    }
 }
