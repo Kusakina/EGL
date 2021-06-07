@@ -1,29 +1,21 @@
 package egl.client.model.core.statistic;
 
-import egl.client.model.core.DatabaseEntity;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
-import javax.persistence.*;
-
-@EqualsAndHashCode(callSuper = true)
-@Entity
 @Data
-public class Result extends DatabaseEntity implements Comparable<Result> {
+public class Result implements Comparable<Result> {
 
     public static final Result NONE = new Result(-1, 1);
 
-    @Column
     private int correctAnswers;
 
-    @Column
     private int totalAnswers;
 
     public Result() {
         this(0, 0);
     }
 
-    private Result(int correctAnswers, int totalAnswers) {
+    public Result(int correctAnswers, int totalAnswers) {
         this.correctAnswers = correctAnswers;
         this.totalAnswers = totalAnswers;
     }
