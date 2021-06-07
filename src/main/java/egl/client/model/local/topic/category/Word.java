@@ -1,16 +1,21 @@
 package egl.client.model.local.topic.category;
 
+import java.util.Objects;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
 import egl.client.model.core.DatabaseEntity;
+import egl.client.model.local.topic.GlobalHashCodeEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import javax.persistence.*;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
-public class Word extends DatabaseEntity {
-
+public class Word extends DatabaseEntity implements GlobalHashCodeEntity {
 
     @Column
     private String text;
@@ -35,5 +40,10 @@ public class Word extends DatabaseEntity {
     @Override
     public String toString() {
         return text;
+    }
+
+    @Override
+    public int getGlobalHashCode() {
+        return Objects.hash(text, language);
     }
 }

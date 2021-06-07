@@ -26,6 +26,7 @@
             </infoColumns>
             <buttonColumns>
                 <ButtonColumn fx:id="copyCategoryColumn" text="Скопировать"/>
+                <ButtonColumn fx:id="registerCategoryColumn" text="Зарегистрировать"/>
             </buttonColumns>
         </InfoSelectEditRemoveListView>
     </center>
