@@ -25,7 +25,7 @@ public class TopicStatistic extends DatabaseEntity {
     @ManyToOne
     private ProfileStatistic profileStatistic;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToOne
     private Topic topic;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

@@ -6,6 +6,7 @@ import egl.client.model.core.statistic.TopicStatistic;
 import egl.client.model.core.topic.Topic;
 import egl.client.model.local.topic.LocalTopicInfo;
 import egl.client.repository.global.statistic.GlobalProfileStatisticRepository;
+import egl.client.repository.global.statistic.GlobalTopicStatisticRepository;
 import egl.client.service.model.profile.GlobalProfileService;
 import egl.client.service.model.topic.GlobalTopicService;
 import org.springframework.stereotype.Service;
@@ -19,8 +20,9 @@ public class GlobalStatisticService extends StatisticService {
 
     public GlobalStatisticService(GlobalProfileService profileService,
                                   GlobalProfileStatisticRepository profileStatisticRepository,
+                                  GlobalTopicStatisticRepository topicStatisticRepository,
                                   GlobalTopicService globalTopicService) {
-        super(profileService, profileStatisticRepository);
+        super(profileService, profileStatisticRepository, topicStatisticRepository);
         this.globalTopicService = globalTopicService;
     }
 

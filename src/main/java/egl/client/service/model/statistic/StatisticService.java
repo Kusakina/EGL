@@ -1,15 +1,16 @@
 package egl.client.service.model.statistic;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import egl.client.model.core.profile.Profile;
 import egl.client.model.core.statistic.ProfileStatistic;
 import egl.client.model.core.statistic.TopicStatistic;
 import egl.client.model.core.topic.Topic;
 import egl.client.repository.core.statistic.ProfileStatisticRepository;
+import egl.client.repository.core.statistic.TopicStatisticRepository;
 import egl.client.service.model.profile.ProfileService;
 import javafx.beans.property.Property;
 
@@ -19,48 +20,41 @@ public abstract class StatisticService {
 
     protected final ProfileService profileService;
     protected final ProfileStatisticRepository profileStatisticRepository;
+    protected final TopicStatisticRepository topicStatisticRepository;
 
     protected final Map<Profile, ProfileStatistic> profileToStatisticCache;
 
     public StatisticService(
             ProfileService profileService,
-            ProfileStatisticRepository profileStatisticRepository) {
+            ProfileStatisticRepository profileStatisticRepository,
+            TopicStatisticRepository topicStatisticRepository) {
         this.profileService = profileService;
         this.profileStatisticRepository = profileStatisticRepository;
+        this.topicStatisticRepository = topicStatisticRepository;
         this.profileToStatisticCache = new HashMap<>();
     }
 
-    private TopicStatistic memorize(TopicStatistic global) {
-        var memorized = new TopicStatistic();
-        memorized.setId(global.getId());
-        memorized.setTopic(global.getTopic());
-        memorized.getTaskStatistics().addAll(
-                global.getTaskStatistics()
-        );
-        return memorized;
+    private void memorize(TopicStatistic global) {
+        var memorizedTaskStatistics = new HashSet<>(global.getTaskStatistics());
+        global.setTaskStatistics(memorizedTaskStatistics);
     }
 
-    private ProfileStatistic memorize(ProfileStatistic global) {
-        if (global == null) return new ProfileStatistic();
+    private void memorize(ProfileStatistic global) {
+        var memorizedTopicStatistics = new HashSet<>(global.getTopicStatistics());
+        global.setTopicStatistics(memorizedTopicStatistics);
 
-        var memorized = new ProfileStatistic(global.getProfile());
-        memorized.setId(global.getId());
-        memorized.getTopicStatistics().addAll(
-                global.getTopicStatistics().stream()
-                        .map(this::memorize)
-                        .collect(Collectors.toSet())
-        );
-
-        memorized.getTopicStatistics().forEach(
-                topicStatistic -> topicStatistic.setProfileStatistic(memorized)
-        );
-
-        return memorized;
+        memorizedTopicStatistics.forEach(this::memorize);
     }
 
     private ProfileStatistic findBy(Profile profile) {
         var profileStatistic = profileStatisticRepository.findByProfile(profile);
-        return memorize(profileStatistic);
+        if (null == profileStatistic) {
+            profileStatistic = save(new ProfileStatistic(profile));
+        }
+
+        memorize(profileStatistic);
+
+        return profileStatistic;
     }
 
     public Property<Profile> selectedProfileProperty() {
@@ -73,13 +67,7 @@ public abstract class StatisticService {
     }
 
     public ProfileStatistic save(ProfileStatistic profileStatistic) {
-        var saved = profileStatisticRepository.save(profileStatistic);
-        profileStatistic = memorize(saved);
-        profileToStatisticCache.put(
-                profileStatistic.getProfile(),
-                profileStatistic
-        );
-        return profileStatistic;
+        return profileStatisticRepository.save(profileStatistic);
     }
 
     public Optional<TopicStatistic> findBy(Topic topic) {
@@ -91,11 +79,12 @@ public abstract class StatisticService {
 
     private TopicStatistic addStatisticFor(ProfileStatistic profileStatistic, Topic topic) {
         var topicStatistic = new TopicStatistic(profileStatistic, topic);
+        topicStatistic = topicStatisticRepository.save(topicStatistic);
         profileStatistic.getTopicStatistics().add(topicStatistic);
-        return save(profileStatistic).getTopicStatisticFor(topic).orElseThrow();
+        return topicStatistic;
     }
 
     public void save(TopicStatistic topicStatistic) {
-        save(topicStatistic.getProfileStatistic());
+        topicStatisticRepository.save(topicStatistic);
     }
 }

@@ -39,13 +39,9 @@ public class ProfileStatistic extends DatabaseEntity {
         this.profile = profile;
     }
 
-    private boolean compareStatisticTopic(TopicStatistic topicStatistic, Topic topic) {
-        return topicStatistic.getTopic().getName().equals(topic.getName());
-    }
-
     public Optional<TopicStatistic> getTopicStatisticFor(Topic topic) {
         return topicStatistics.stream()
-                .filter(topicStatistic -> compareStatisticTopic(topicStatistic, topic))
+                .filter(topicStatistic -> topicStatistic.getTopic().equals(topic))
                 .findAny();
     }
 }
