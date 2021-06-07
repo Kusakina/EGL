@@ -1,13 +1,17 @@
 package egl.client.model.core.statistic;
 
+import java.util.Optional;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+
 import egl.client.model.core.DatabaseEntity;
 import egl.client.model.core.task.Task;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-import java.util.Optional;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -15,14 +19,14 @@ import java.util.Optional;
 @NoArgsConstructor
 public class TaskStatistic extends DatabaseEntity {
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private Task task;
 
     @OneToOne(cascade = CascadeType.ALL)
     private Result result;
 
     public TaskStatistic(Task task, Result result) {
-        this.task = task;
+        this.task = new Task(task);
         this.result = result;
     }
 

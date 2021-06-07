@@ -1,5 +1,14 @@
 package egl.client.model.core.statistic;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
 import egl.client.model.core.DatabaseEntity;
 import egl.client.model.core.task.Task;
 import egl.client.model.core.topic.Topic;
@@ -8,10 +17,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-
-import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true, exclude = "profileStatistic")
 @Entity
@@ -22,7 +27,7 @@ public class TopicStatistic extends DatabaseEntity {
     @ManyToOne
     private ProfileStatistic profileStatistic;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private Topic topic;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -35,9 +40,15 @@ public class TopicStatistic extends DatabaseEntity {
         this.taskStatistics = new HashSet<>();
     }
 
+    private boolean compareStatisticTask(TaskStatistic taskStatistic, Task task) {
+        // scene name is unique
+        return taskStatistic.getTask().getSceneName()
+                .equals(task.getSceneName());
+    }
+
     public TaskStatistic getTaskStatisticFor(Task task) {
         return taskStatistics.stream()
-                .filter(taskStatistic -> taskStatistic.getTask().equals(task))
+                .filter(taskStatistic -> compareStatisticTask(taskStatistic, task))
                 .findAny().orElse(new TaskStatistic(task, Result.NONE));
     }
 
