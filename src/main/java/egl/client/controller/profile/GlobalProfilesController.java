@@ -3,16 +3,15 @@ package egl.client.controller.profile;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 import egl.client.model.core.profile.Credentials;
 import egl.client.model.core.profile.Profile;
 import egl.client.model.core.topic.Topic;
-import egl.client.model.local.topic.LocalTopicInfo;
 import egl.client.service.FxmlService;
 import egl.client.service.model.profile.GlobalCredentialsService;
 import egl.client.service.model.profile.GlobalProfileService;
-import egl.client.service.model.topic.LocalTopicInfoService;
+import egl.client.service.model.statistic.GlobalStatisticService;
+import egl.client.service.model.topic.LocalTopicService;
 import egl.client.view.text.LabeledTextField;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -27,7 +26,8 @@ import org.springframework.stereotype.Component;
 public class GlobalProfilesController extends ProfileSelectController {
 
     private final GlobalCredentialsService globalCredentialsService;
-    private final LocalTopicInfoService localTopicInfoService;
+    private final GlobalStatisticService globalStatisticService;
+    private final LocalTopicService localTopicService;
 
     @FXML
     private TabPane activitiesTabPane;
@@ -60,11 +60,13 @@ public class GlobalProfilesController extends ProfileSelectController {
             FxmlService fxmlService,
             GlobalProfileService globalProfileService,
             GlobalCredentialsService globalCredentialsService,
-            LocalTopicInfoService localTopicInfoService
+            GlobalStatisticService globalStatisticService,
+            LocalTopicService localTopicService
     ) {
         super(fxmlService, globalProfileService);
         this.globalCredentialsService = globalCredentialsService;
-        this.localTopicInfoService = localTopicInfoService;
+        this.globalStatisticService = globalStatisticService;
+        this.localTopicService = localTopicService;
     }
 
     @Override
@@ -117,11 +119,7 @@ public class GlobalProfilesController extends ProfileSelectController {
     }
 
     private void showRatings() {
-        //LocalTopicInfo.NO_GLOBAL_ID != localTopicInfo.getRatingId()
-        var topics = localTopicInfoService.findAll()
-                .stream().map(LocalTopicInfo::getTopic)
-                .collect(Collectors.toUnmodifiableList());
-
+        var topics = localTopicService.findAll();
         topicsListView.getItems().setAll(topics);
     }
 
