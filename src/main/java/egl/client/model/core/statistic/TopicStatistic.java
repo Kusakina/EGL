@@ -14,14 +14,12 @@ import egl.client.model.core.task.Task;
 import egl.client.model.core.topic.Topic;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 @EqualsAndHashCode(callSuper = true, exclude = "profileStatistic")
 @Entity
 @Data
-@NoArgsConstructor
 public class TopicStatistic extends DatabaseEntity {
 
     @ManyToOne
@@ -34,10 +32,14 @@ public class TopicStatistic extends DatabaseEntity {
     @Fetch(value = FetchMode.SUBSELECT)
     private Set<TaskStatistic> taskStatistics;
 
+    public TopicStatistic() {
+        this.taskStatistics = new HashSet<>();
+    }
+
     public TopicStatistic(ProfileStatistic profileStatistic, Topic topic) {
+        this();
         this.profileStatistic = profileStatistic;
         this.topic = topic;
-        this.taskStatistics = new HashSet<>();
     }
 
     private boolean compareStatisticTask(TaskStatistic taskStatistic, Task task) {

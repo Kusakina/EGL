@@ -92,7 +92,7 @@ public abstract class StatisticService {
     private TopicStatistic addStatisticFor(ProfileStatistic profileStatistic, Topic topic) {
         var topicStatistic = new TopicStatistic(profileStatistic, topic);
         profileStatistic.getTopicStatistics().add(topicStatistic);
-        return topicStatistic;
+        return save(profileStatistic).getTopicStatisticFor(topic).orElseThrow();
     }
 
     public void save(TopicStatistic topicStatistic) {
