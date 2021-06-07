@@ -73,8 +73,8 @@ public class LocalTopicsController implements Controller {
         }
 
         @Override
-        public void save(Topic entity) {
-            localTopicService.save(entity);
+        public Topic save(Topic entity) {
+            return localTopicService.save(entity);
         }
 
         @Override
