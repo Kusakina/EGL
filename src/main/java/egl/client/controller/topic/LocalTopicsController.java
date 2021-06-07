@@ -47,9 +47,10 @@ public class LocalTopicsController implements Controller {
     private final GlobalStatisticService globalStatisticService;
 
     @FXML private InfoSelectEditRemoveListView<Topic> categoriesListView;
-    @FXML private ButtonColumn<Topic> copyCategoryColumn;
     @FXML private TableColumn<Topic, String> topicLocalStatisticColumn;
     @FXML private TableColumn<Topic, String> topicGlobalStatisticColumn;
+    @FXML private ButtonColumn<Topic> copyCategoryColumn;
+    @FXML private ButtonColumn<Topic> registerCategoryColumn;
 
     @FXML private Button selectLocalProfileButton;
     @FXML private Button selectGlobalProfileButton;
@@ -104,8 +105,9 @@ public class LocalTopicsController implements Controller {
         categoriesListView.setOnSelect(this::onTopicSelect);
         categoriesListView.setOnEdit(processCategory(this::onCategoryEdit));
 
-        copyCategoryColumn.setOnAction(processCategory(this::onCategoryCopy));
         createCategoryButton.setOnAction(event -> onCategoryCreate());
+        copyCategoryColumn.setOnAction(processCategory(this::onCategoryCopy));
+        registerCategoryColumn.setOnAction(processCategory(this::onCategoryRegister));
 
         initializeStatisticColumn(topicLocalStatisticColumn, localStatisticService);
         initializeStatisticColumn(topicGlobalStatisticColumn, globalStatisticService);
@@ -202,6 +204,22 @@ public class LocalTopicsController implements Controller {
         if (changed) {
             categoryService.save(category);
             categoriesListView.showItems();
+        }
+    }
+
+    private void onCategoryRegister(Category category) {
+        var localTopicInfo = category.getLocalTopicInfo();
+        if (LocalTopicInfo.NO_GLOBAL_ID != localTopicInfo.getGlobalId()) {
+            return;
+        }
+
+        var globalTopicId = globalStatisticService.registerTopic(
+                localTopicInfo.getTopic(), category.hashCode()
+        );
+
+        if (LocalTopicInfo.NO_GLOBAL_ID != globalTopicId) {
+            localTopicInfo.setGlobalId(globalTopicId);
+            localTopicInfoService.save(localTopicInfo);
         }
     }
 
