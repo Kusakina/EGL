@@ -58,7 +58,7 @@ public class CategoryInfoController extends AbstractEntityInfoController<Categor
         super.fillData();
 
         entity.getLocalTopicInfo().setGlobalHashCode(
-                entity.getTranslations().hashCode()
+                entity.getGlobalHashCode()
         );
     }
 }

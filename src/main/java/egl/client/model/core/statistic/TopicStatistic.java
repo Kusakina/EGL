@@ -1,6 +1,7 @@
 package egl.client.model.core.statistic;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -48,19 +49,9 @@ public class TopicStatistic extends DatabaseEntity {
                 .equals(task.getSceneName());
     }
 
-    public TaskStatistic getTaskStatisticFor(Task task) {
+    public Optional<TaskStatistic> getTaskStatisticFor(Task task) {
         return taskStatistics.stream()
                 .filter(taskStatistic -> compareStatisticTask(taskStatistic, task))
-                .findAny().orElse(new TaskStatistic(task, Result.NONE));
-    }
-
-    public boolean updateBy(Task task, Result result) {
-        var taskStatistic = getTaskStatisticFor(task);
-
-        boolean better = taskStatistic.updateBy(result);
-        if (better) {
-            taskStatistics.add(taskStatistic);
-        }
-        return better;
+                .findAny();
     }
 }
