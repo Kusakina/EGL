@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface GlobalTopicInfoRepository extends EntityRepository<GlobalTopicInfo> {
 
-    GlobalTopicInfo findByTopicAndLocalHashCode(Topic topic, int localHashCode);
+    GlobalTopicInfo findByTopic(Topic topic);
 }
