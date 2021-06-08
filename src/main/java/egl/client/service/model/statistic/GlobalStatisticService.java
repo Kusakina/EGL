@@ -2,7 +2,9 @@ package egl.client.service.model.statistic;
 
 import java.util.Optional;
 
+import egl.client.model.core.statistic.TaskStatistic;
 import egl.client.model.core.statistic.TopicStatistic;
+import egl.client.model.core.task.Task;
 import egl.client.model.core.topic.Topic;
 import egl.client.model.local.topic.LocalTopicInfo;
 import egl.client.repository.global.statistic.GlobalProfileStatisticRepository;
@@ -35,6 +37,12 @@ public class GlobalStatisticService extends StatisticService {
     public Optional<TopicStatistic> findBy(Topic localTopic) {
         return globalTopicService.findByLocal(localTopic)
                 .flatMap(super::findBy);
+    }
+
+    @Override
+    public Optional<TaskStatistic> findBy(Topic localTopic, Task task) {
+        return globalTopicService.findByLocal(localTopic)
+                .flatMap(globalTopic -> super.findBy(globalTopic, task));
     }
 
     public void registerTopic(LocalTopicInfo localTopicInfo) {
