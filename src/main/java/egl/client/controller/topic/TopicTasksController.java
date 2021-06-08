@@ -64,11 +64,10 @@ public class TopicTasksController implements Controller {
     }
 
     private String getTaskStatistic(StatisticService statisticService, Task task) {
-        return statisticService.findBy(controllerTopic)
-            .flatMap(topicStatistic -> topicStatistic.getTaskStatisticFor(task))
+        return statisticService.findBy(controllerTopic, task)
             .map(taskStatistic -> {
                 Result result = taskStatistic.getResult();
-                if (Result.NONE == result) {
+                if (Result.NONE.equals(result)) {
                     return StatisticService.NO_DATA;
                 }
 

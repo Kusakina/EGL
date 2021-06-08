@@ -146,18 +146,20 @@ public class GlobalProfilesController extends ProfileSelectController {
         topicsListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
         topicsListView.getSelectionModel().selectedItemProperty().addListener(
-            (observableValue, oldTopic, newTopic) -> showRatingsFor(newTopic)
+                (observableValue, oldTopic, newTopic) -> showRatingsFor(newTopic)
         );
     }
 
     private void showRatingsFor(Topic topic) {
-        if (null == topic) return;
+        if (null == topic) {
+            return;
+        }
 
         globalStatisticService.findBy(topic)
-        .ifPresentOrElse(
-            this::showRegisteredTopic,
-            this::showNotRegisteredTopic
-        );
+                .ifPresentOrElse(
+                        this::showRegisteredTopic,
+                        this::showNotRegisteredTopic
+                );
     }
 
     private void showRegisteredTopic(TopicStatistic topicStatistic) {
@@ -175,6 +177,26 @@ public class GlobalProfilesController extends ProfileSelectController {
 
         taskRatingsTabPane.setDisable(false);
         taskRatingsTabPane.getTabs().setAll(tabs);
+
+        taskRatingsTabPane.getSelectionModel().selectedIndexProperty().addListener(
+                (observableValue, oldIndex, newIndexNumber) -> {
+                    int newIndex = newIndexNumber.intValue();
+                    if (newIndex < 0) {
+                        return;
+                    }
+
+                    var task = tasks.get(newIndex);
+
+                    var result = globalStatisticService
+                            .findBy(topicStatistic.getTopic(), task)
+                            .map(TaskStatistic::getResult)
+                            .orElse(Result.NONE);
+
+                    var selfProfile =
+                            globalStatisticService.selectedProfileProperty().getValue();
+
+                    selectedTopicInfoText.setText(String.format("%s (%s)", selfProfile.getName(), result));
+                });
     }
 
     private Tab createRatingTab(TopicStatistic topicStatistic, Task task, TabPane tabPane) {
@@ -187,13 +209,19 @@ public class GlobalProfilesController extends ProfileSelectController {
 
         var profileStatistics = globalStatisticService.findAll();
         for (ProfileStatistic profileStatistic : profileStatistics) {
-            profileStatistic
-                .getTopicStatisticFor(topicStatistic.getTopic())
-                .flatMap(ts -> ts.getTaskStatisticFor(task))
-                .map(ts -> new RatingInfo(
-                    profileStatistic.getProfile().getName(),
-                    ts.getResult()
-                )).ifPresent(ratingInfos::add);
+            var taskStatistic = globalStatisticService
+                    .findBy(profileStatistic, topicStatistic.getTopic(), task);
+
+            var result = taskStatistic.getResult();
+
+            if (!Result.NONE.equals(result)) {
+                ratingInfos.add(
+                        new RatingInfo(
+                                profileStatistic.getProfile().getName(),
+                                result
+                        )
+                );
+            }
         }
 
         Collections.sort(ratingInfos);
@@ -204,16 +232,6 @@ public class GlobalProfilesController extends ProfileSelectController {
         }
 
         ratingListView.setItems(ratingInfos);
-
-        var result = topicStatistic.getTaskStatisticFor(task)
-                .map(TaskStatistic::getResult)
-                .orElse(Result.NONE);
-
-        var selfProfile =
-                globalStatisticService.selectedProfileProperty().getValue();
-
-        ratingListView.getItems()
-                .add(0, new RatingInfo(selfProfile.getName(), result));
 
         ratingListView.setPrefSize(
                 tabPane.getTabMaxWidth(),
