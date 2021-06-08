@@ -57,6 +57,7 @@ public class FileService {
             while (true) {
                 var line = in.readLine();
                 if (null == line) break;
+                if (line.isBlank()) continue;
 
                 String[] sourceTarget = line.split("\t");
                 var source = new Word(sourceTarget[0], Language.RUSSIAN);
