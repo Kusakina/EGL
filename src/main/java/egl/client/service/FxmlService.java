@@ -43,7 +43,7 @@ public class FxmlService {
         return fxWeaver.load(controllerClass);
     }
 
-    public void showWindow() {
+    public WindowController showWindow() {
         try {
             var fxmlLoader = createFxmlLoader(WindowController.class);
 
@@ -59,6 +59,7 @@ public class FxmlService {
             mainWindow.setStage(stage);
 
             stage.show();
+            return mainWindow;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

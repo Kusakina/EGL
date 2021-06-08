@@ -15,6 +15,7 @@ import egl.client.model.core.topic.Topic;
 import egl.client.model.core.topic.TopicType;
 import egl.client.model.local.topic.LocalTopicInfo;
 import egl.client.model.local.topic.category.Category;
+import egl.client.service.FileService;
 import egl.client.service.FxmlService;
 import egl.client.service.model.EntityService;
 import egl.client.service.model.statistic.GlobalStatisticService;
@@ -29,6 +30,8 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxmlView;
@@ -45,23 +48,30 @@ public class LocalTopicsController implements Controller {
     private final CategoryService categoryService;
     private final LocalStatisticService localStatisticService;
     private final GlobalStatisticService globalStatisticService;
+    private final FileService fileService;
 
     @FXML private InfoSelectEditRemoveListView<Topic> categoriesListView;
     @FXML private TableColumn<Topic, String> topicLocalStatisticColumn;
     @FXML private TableColumn<Topic, String> topicGlobalStatisticColumn;
     @FXML private ButtonColumn<Topic> copyCategoryColumn;
     @FXML private ButtonColumn<Topic> registerCategoryColumn;
+    @FXML private ButtonColumn<Topic> saveCategoryColumn;
 
     @FXML private Button selectLocalProfileButton;
     @FXML private Button selectGlobalProfileButton;
     @FXML private Button createCategoryButton;
+
+    private Stage stage;
+
+    public void setContext(Stage stage) {
+        this.stage = stage;
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initializeCategories();
         initializeProfiles();
     }
-
 
     @RequiredArgsConstructor
     private class TypedTopicService implements EntityService<Topic> {
@@ -108,6 +118,7 @@ public class LocalTopicsController implements Controller {
         createCategoryButton.setOnAction(event -> onCategoryCreate());
         copyCategoryColumn.setOnAction(processCategory(this::onCategoryCopy));
         registerCategoryColumn.setOnAction(processLocalTopic(this::onLocalTopicRegister));
+        saveCategoryColumn.setOnAction(processCategory(this::onCategorySave));
 
         initializeStatisticColumn(topicLocalStatisticColumn, localStatisticService);
         initializeStatisticColumn(topicGlobalStatisticColumn, globalStatisticService);
@@ -215,7 +226,16 @@ public class LocalTopicsController implements Controller {
         }
 
         globalStatisticService.registerTopic(localTopicInfo);
-        categoriesListView.showItems();
+        refresh();
+    }
+
+    private void onCategorySave(Category category) {
+        var fileChooser = new FileChooser();
+        fileChooser.setTitle("Сохранить категорию");
+        var file = fileChooser.showSaveDialog(stage);
+        if (null != file) {
+            FileService.save(category, file);
+        }
     }
 
     @Override
