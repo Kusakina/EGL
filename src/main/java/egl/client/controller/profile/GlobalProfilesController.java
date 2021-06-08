@@ -76,8 +76,6 @@ public class GlobalProfilesController extends ProfileSelectController {
     @FXML
     private TabPane taskRatingsTabPane;
 
-    private List<ProfileStatistic> profileStatistics;
-
     public GlobalProfilesController(
             FxmlService fxmlService,
             GlobalProfileService globalProfileService,
@@ -125,7 +123,7 @@ public class GlobalProfilesController extends ProfileSelectController {
     @Override
     protected void onSelect(Profile profile) {
         super.onSelect(profile);
-        showSelectedProfile();
+        prepareToShow();
     }
 
     private void showSelectedProfile() {
@@ -138,7 +136,6 @@ public class GlobalProfilesController extends ProfileSelectController {
         loginInfoText.setText("Глобальный профиль: " + profileText);
 
         editProfileButton.setVisible(selected);
-
         globalRatingsTab.setDisable(!selected);
     }
 
@@ -154,6 +151,8 @@ public class GlobalProfilesController extends ProfileSelectController {
     }
 
     private void showRatingsFor(Topic topic) {
+        if (null == topic) return;
+
         globalStatisticService.findBy(topic)
         .ifPresentOrElse(
             this::showRegisteredTopic,
@@ -185,6 +184,8 @@ public class GlobalProfilesController extends ProfileSelectController {
         tab.setContent(ratingListView);
 
         List<RatingInfo> ratingInfos = new ArrayList<>();
+
+        var profileStatistics = globalStatisticService.findAll();
         for (ProfileStatistic profileStatistic : profileStatistics) {
             profileStatistic
                 .getTopicStatisticFor(topicStatistic.getTopic())
@@ -231,8 +232,6 @@ public class GlobalProfilesController extends ProfileSelectController {
 
     @Override
     public void prepareToShow() {
-        this.profileStatistics = globalStatisticService.findAll();
-
         showSelectedProfile();
         showRatings();
     }
