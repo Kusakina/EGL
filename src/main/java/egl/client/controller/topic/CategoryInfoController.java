@@ -7,6 +7,7 @@ import egl.client.controller.info.AbstractEntityInfoController;
 import egl.client.controller.topic.info.TheoryTextArea;
 import egl.client.controller.topic.info.TranslationsEditableListView;
 import egl.client.model.core.topic.Topic;
+import egl.client.model.core.topic.TopicType;
 import egl.client.model.local.topic.category.Category;
 import egl.client.model.local.topic.category.Translation;
 import egl.client.view.info.FieldInfoView;
@@ -57,8 +58,12 @@ public class CategoryInfoController extends AbstractEntityInfoController<Categor
     public void fillData() {
         super.fillData();
 
-        entity.getLocalTopicInfo().setGlobalHashCode(
-                entity.getGlobalHashCode()
-        );
+        if (isCreated) {
+            entity.getLocalTopicInfo().setGlobalHashCode(
+                    entity.getGlobalHashCode()
+            );
+
+            entity.getLocalTopicInfo().getTopic().setTopicType(TopicType.CATEGORY);
+        }
     }
 }
