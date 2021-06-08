@@ -14,7 +14,6 @@ import egl.client.model.core.profile.Profile;
 import egl.client.model.core.statistic.ProfileStatistic;
 import egl.client.model.core.statistic.RatingInfo;
 import egl.client.model.core.statistic.Result;
-import egl.client.model.core.statistic.TaskStatistic;
 import egl.client.model.core.statistic.TopicStatistic;
 import egl.client.model.core.task.Task;
 import egl.client.model.core.topic.Topic;
@@ -187,15 +186,18 @@ public class GlobalProfilesController extends ProfileSelectController {
 
                     var task = tasks.get(newIndex);
 
-                    var result = globalStatisticService
-                            .findBy(topicStatistic.getTopic(), task)
-                            .map(TaskStatistic::getResult)
-                            .orElse(Result.NONE);
-
-                    var selfProfile =
-                            globalStatisticService.selectedProfileProperty().getValue();
-
-                    selectedTopicInfoText.setText(String.format("%s (%s)", selfProfile.getName(), result));
+                    // FIXME
+                    // пытается искать по локальному, но он уже глобальный
+                    // сейчас этот кусок не актуален, так как таблицы маленькие
+//                    var result = globalStatisticService
+//                            .findBy(topicStatistic.getTopic(), task)
+//                            .map(TaskStatistic::getResult)
+//                            .orElse(Result.NONE);
+//
+//                    var selfProfile =
+//                            globalStatisticService.selectedProfileProperty().getValue();
+//
+//                    selectedTopicInfoText.setText(String.format("%s (%s)", selfProfile.getName(), result));
                 });
     }
 

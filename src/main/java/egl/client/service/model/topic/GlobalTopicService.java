@@ -40,6 +40,8 @@ public class GlobalTopicService extends AbstractEntityService<Topic, GlobalTopic
 
     public Optional<Topic> findByLocal(Topic localTopic) {
         var localTopicInfo = localTopicInfoService.findBy(localTopic);
+        //FIXME
+        if (null == localTopicInfo) return Optional.empty();
 
         var globalTopicId = localTopicInfo.getGlobalId();
         if (LocalTopicInfo.NO_GLOBAL_ID == globalTopicId) {
