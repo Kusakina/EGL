@@ -13,6 +13,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import net.rgielen.fxweaver.core.FxControllerAndView;
 
 @RequiredArgsConstructor
@@ -24,37 +25,46 @@ public class WindowController implements Controller {
     @FXML private BorderPane windowBorderPane;
     @FXML private Button closeButton;
 
+    @Setter
     private Stage stage;
-    private final Deque<Controller> innerControllers = new ArrayDeque<>();
+
+    private final Deque<FxControllerAndView<? extends Controller, Parent>> innerRoots = new ArrayDeque<>();
+    private final Deque<String> closeButtonTexts = new ArrayDeque<>();
+    private final Deque<String> stageTitles = new ArrayDeque<>();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.closeButton.setOnAction(this::processClose);
     }
 
-    public void setContext(Stage stage,
+    public void setContext(
                            String closeButtonText) {
-        this.stage = stage;
         this.closeButton.setText(closeButtonText);
     }
 
-    public void open(FxControllerAndView<? extends Controller, Parent> innerRoot) {
-        this.windowBorderPane.centerProperty().setValue(innerRoot.getView().orElseThrow());
-
-        var innerController = innerRoot.getController();
-        innerControllers.push(innerController);
-
+    public void open(FxControllerAndView<? extends Controller, Parent> innerRoot,
+                     String stageTitle,
+                     String closeButtonText) {
+        innerRoots.push(innerRoot);
+        closeButtonTexts.push(closeButtonText);
+        stageTitles.push(stageTitle);
         show();
     }
 
     public void show() {
+        stage.setTitle(stageTitles.peek());
+        closeButton.setText(closeButtonTexts.peek());
+        windowBorderPane.centerProperty().setValue(getTopRoot().getView().orElseThrow());
         prepareToShow();
-        if (!stage.isShowing()) stage.show();
         resize();
     }
 
+    private FxControllerAndView<? extends Controller, Parent> getTopRoot() {
+        return innerRoots.peek();
+    }
+
     private Controller getTopController() {
-        return innerControllers.peek();
+        return getTopRoot().getController();
     }
 
     @Override
@@ -77,13 +87,15 @@ public class WindowController implements Controller {
     @Override
     public void prepareToClose() {
         getTopController().prepareToClose();
-        innerControllers.pop();
+        innerRoots.pop();
+        closeButtonTexts.pop();
+        stageTitles.pop();
     }
 
     public void processClose(ActionEvent event) {
         prepareToClose();
 
-        if (!innerControllers.isEmpty()) {
+        if (!innerRoots.isEmpty()) {
             show();
         } else {
             stage.close();

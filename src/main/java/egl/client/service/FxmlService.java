@@ -24,6 +24,8 @@ public class FxmlService {
 
     private final FxWeaver fxWeaver;
 
+    private WindowController mainWindow;
+
     public static Class<? extends Controller> controllerClassWith(String controllerClassName) {
         try {
             String fullControllerClassName = "egl.client.controller." + controllerClassName;
@@ -41,16 +43,7 @@ public class FxmlService {
         return fxWeaver.load(controllerClass);
     }
 
-    public <T extends Controller> void showStage(
-            FxControllerAndView<T, Parent> innerRoot,
-            String title, String closeButtonText) {
-        showStage(innerRoot, title, closeButtonText, new Stage());
-    }
-
-    public <T extends Controller> void showStage(
-            FxControllerAndView<T, Parent> innerRoot,
-            String title, String closeButtonText,
-            Stage stage) {
+    public void showWindow() {
         try {
             var fxmlLoader = createFxmlLoader(WindowController.class);
 
@@ -59,16 +52,22 @@ public class FxmlService {
             var windowSize = getWindowSize();
             Scene scene = new Scene(windowRoot, windowSize.getWidth(), windowSize.getHeight());
 
+            Stage stage = new Stage();
             stage.setScene(scene);
-            stage.setTitle(title);
 
-            var windowController = fxmlLoader.<WindowController>getController();
+            this.mainWindow = fxmlLoader.getController();
+            mainWindow.setStage(stage);
 
-            windowController.setContext(stage, closeButtonText);
-            windowController.open(innerRoot);
+            stage.show();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public <T extends Controller> void showController(
+            FxControllerAndView<T, Parent> root,
+            String title, String closeButtonText) {
+        mainWindow.open(root, title, closeButtonText);
     }
 
     private Rectangle2D getWindowSize() {

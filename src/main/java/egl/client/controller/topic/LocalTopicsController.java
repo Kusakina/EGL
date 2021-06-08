@@ -151,7 +151,7 @@ public class LocalTopicsController implements Controller {
 
         selectProfileButton.setOnAction(event -> {
             var selectProfileRoot = fxmlService.load(selectProfileControllerClass);
-            fxmlService.showStage(selectProfileRoot, profileText, WindowController.CLOSE);
+            fxmlService.showController(selectProfileRoot, profileText, WindowController.CLOSE);
         });
 
         selectProfileButton.textProperty().bindBidirectional(
@@ -179,7 +179,7 @@ public class LocalTopicsController implements Controller {
         var topicController = localTopicRoot.getController();
         topicController.setContext(topic);
 
-        fxmlService.showStage(
+        fxmlService.showController(
                 localTopicRoot, topic.getName(), WindowController.CLOSE
         );
     }
