@@ -48,7 +48,6 @@ public class LocalTopicsController implements Controller {
     private final CategoryService categoryService;
     private final LocalStatisticService localStatisticService;
     private final GlobalStatisticService globalStatisticService;
-    private final FileService fileService;
 
     @FXML private InfoSelectEditRemoveListView<Topic> categoriesListView;
     @FXML private TableColumn<Topic, String> topicLocalStatisticColumn;
@@ -60,6 +59,7 @@ public class LocalTopicsController implements Controller {
     @FXML private Button selectLocalProfileButton;
     @FXML private Button selectGlobalProfileButton;
     @FXML private Button createCategoryButton;
+    @FXML private Button loadCategoriesButton;
 
     private Stage stage;
 
@@ -118,7 +118,9 @@ public class LocalTopicsController implements Controller {
         createCategoryButton.setOnAction(event -> onCategoryCreate());
         copyCategoryColumn.setOnAction(processCategory(this::onCategoryCopy));
         registerCategoryColumn.setOnAction(processLocalTopic(this::onLocalTopicRegister));
+
         saveCategoryColumn.setOnAction(processCategory(this::onCategorySave));
+        loadCategoriesButton.setOnAction(event -> onCategoriesLoad());
 
         initializeStatisticColumn(topicLocalStatisticColumn, localStatisticService);
         initializeStatisticColumn(topicGlobalStatisticColumn, globalStatisticService);
@@ -236,6 +238,21 @@ public class LocalTopicsController implements Controller {
         if (null != file) {
             FileService.save(category, file);
         }
+    }
+
+    private void onCategoriesLoad() {
+        var fileChooser = new FileChooser();
+        fileChooser.setTitle("Загрузить категории");
+        var files = fileChooser.showOpenMultipleDialog(stage);
+        files.forEach(file -> {
+            try {
+                var category = FileService.loadCategory(file);
+                categoryService.save(category);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        categoriesListView.showItems();
     }
 
     @Override

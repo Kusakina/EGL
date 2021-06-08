@@ -9,6 +9,9 @@
 
     <top>
         <CustomBorderPane>
+            <left>
+                <Button fx:id="loadCategoriesButton" text="Загрузить категории"/>
+            </left>
             <right>
                 <HBox spacing="10">
                     <Button fx:id="selectLocalProfileButton"/>
@@ -25,8 +28,8 @@
                 <TableColumn fx:id="topicGlobalStatisticColumn" text="Глобально"/>
             </infoColumns>
             <buttonColumns>
-                <ButtonColumn fx:id="copyCategoryColumn" text="Скопировать"/>
-                <ButtonColumn fx:id="registerCategoryColumn" text="Зарегистрировать"/>
+                <ButtonColumn fx:id="copyCategoryColumn" text="Копия"/>
+                <ButtonColumn fx:id="registerCategoryColumn" text="Регистрация"/>
                 <ButtonColumn fx:id="saveCategoryColumn" text="Сохранить"/>
             </buttonColumns>
         </InfoSelectEditRemoveListView>
