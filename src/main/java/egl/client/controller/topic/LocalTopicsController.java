@@ -244,6 +244,8 @@ public class LocalTopicsController implements Controller {
         var fileChooser = new FileChooser();
         fileChooser.setTitle("Загрузить категории");
         var files = fileChooser.showOpenMultipleDialog(stage);
+        if (null == files) return;
+
         files.forEach(file -> {
             try {
                 var category = FileService.loadCategory(file);
