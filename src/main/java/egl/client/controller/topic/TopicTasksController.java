@@ -124,4 +124,9 @@ public class TopicTasksController implements Controller {
     public void prepareToClose() {
 
     }
+
+    @Override
+    public void refresh() {
+        tasksListView.refresh();
+    }
 }

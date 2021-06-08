@@ -236,4 +236,9 @@ public class LocalTopicsController implements Controller {
     public void prepareToClose() {
 
     }
+
+    @Override
+    public void refresh() {
+        categoriesListView.refresh();
+    }
 }

@@ -96,7 +96,7 @@ public class WindowController implements Controller {
         prepareToClose();
 
         if (!innerRoots.isEmpty()) {
-            show();
+            getTopController().refresh();
         } else {
             stage.close();
         }
