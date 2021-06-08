@@ -60,8 +60,8 @@ public class FileService {
                 if (line.isBlank()) continue;
 
                 String[] sourceTarget = line.split("\t");
-                var source = new Word(sourceTarget[0], Language.RUSSIAN);
-                var target = new Word(sourceTarget[1], Language.ENGLISH);
+                var source = new Word(sourceTarget[0], Language.of(sourceTarget[0]));
+                var target = new Word(sourceTarget[1], Language.of(sourceTarget[1]));
 
                 translations.add(new Translation(source, target));
             }

@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 
 import egl.client.controller.task.LocalTaskController;
 import egl.client.model.local.topic.category.Category;
+import egl.client.model.local.topic.category.Language;
 import egl.client.model.local.topic.category.Translation;
 import egl.client.service.model.topic.CategoryService;
 import egl.client.service.model.topic.LocalTopicInfoService;
@@ -110,6 +111,8 @@ public class MissingLettersTaskController extends LocalTaskController<Category> 
         String curTarget = translations.get(curIndex).getTarget().toString();
         sourceWordText.setText(curSource);
 
+        Language targetLanguage = translations.get(curIndex).getTarget().getLanguage();
+
         // запись слова по буквам в список
         List<Integer> removedPositions = new ArrayList<>();
         for (int index = 0; index < curTarget.length(); ++index) {
@@ -143,9 +146,13 @@ public class MissingLettersTaskController extends LocalTaskController<Category> 
             buttonLetters.add(curTarget.charAt(index));
         }
 
-        for (int j = 0; j < DEFAULT_ADDITIONAL_LETTERS_COUNT; ++j) {
-            int letterIndex = random.nextInt(26);
-            char letter = (char) ('a' + letterIndex);
+        int additionalLettersCount = Math.min(
+                DEFAULT_ADDITIONAL_LETTERS_COUNT, removedPositions.size()
+        );
+
+        for (int j = 0; j < additionalLettersCount; ++j) {
+            int letterIndex = random.nextInt(targetLanguage.getLettersCount());
+            char letter = (char) (targetLanguage.getStartLetter() + letterIndex);
             if (!buttonLetters.contains(letter)) {
                 buttonLetters.add(letter);
             } else {
