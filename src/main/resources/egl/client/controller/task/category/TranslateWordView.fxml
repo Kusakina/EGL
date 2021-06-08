@@ -20,7 +20,7 @@
             -fx-font: 25 arial;
         </style>
     </Text>
-    <Text fx:id="sourceText">
+    <Text fx:id="translationText">
         <style>
             -fx-font: 25 arial;
         </style>

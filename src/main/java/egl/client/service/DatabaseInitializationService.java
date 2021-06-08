@@ -61,10 +61,10 @@ public class DatabaseInitializationService {
                     "Чтобы задание зачли - необходимо нажать кнопку \"Завершить\" внутри вкладки с заданием.\n";
 
             Task categoryTestTask = new Task("Итоговый тест по категории", testDescription, testSceneName);
-            List<Task> categoryTestInnerTasks = Arrays.asList(oneOfFourTask, matchIndexTask, trueFalseTask);
+            List<Task> categoryTestInnerTasks = Arrays.asList(oneOfFourTask, matchIndexTask, trueFalseTask, sourceOrTargetTask);
             Test categoryTest = new Test(categoryTestTask, categoryTestInnerTasks);
 
-            List<Task> categoryTasks = Arrays.asList(missingLettersTask, oneOfFourTask);
+            List<Task> categoryTasks = Arrays.asList(missingLettersTask, oneOfFourTask, sourceOrTargetTask);
             TopicTasks categoryTopicTasks = new TopicTasks(
                     "Категория", "Набор переводов, объединенных общей темой",
                     TopicType.CATEGORY, categoryTheoryTask, categoryTasks, categoryTest
