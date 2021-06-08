@@ -1,5 +1,7 @@
 package egl.client.service;
 
+import java.io.IOException;
+
 import egl.client.controller.Controller;
 import egl.client.controller.WindowController;
 import egl.client.controller.info.EntityInfoController;
@@ -15,8 +17,6 @@ import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxWeaver;
 import org.springframework.stereotype.Service;
-
-import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
@@ -63,8 +63,9 @@ public class FxmlService {
             stage.setTitle(title);
 
             var windowController = fxmlLoader.<WindowController>getController();
-            windowController.setContext(stage, innerRoot, closeButtonText);
-            windowController.show();
+
+            windowController.setContext(stage, closeButtonText);
+            windowController.open(innerRoot);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

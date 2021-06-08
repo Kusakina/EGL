@@ -1,6 +1,8 @@
 package egl.client.controller;
 
 import java.net.URL;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
@@ -23,7 +25,7 @@ public class WindowController implements Controller {
     @FXML private Button closeButton;
 
     private Stage stage;
-    private Controller innerController;
+    private final Deque<Controller> innerControllers = new ArrayDeque<>();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -31,28 +33,42 @@ public class WindowController implements Controller {
     }
 
     public void setContext(Stage stage,
-                           FxControllerAndView<? extends Controller, Parent> innerRoot,
                            String closeButtonText) {
         this.stage = stage;
-        this.innerController = innerRoot.getController();
-        this.windowBorderPane.centerProperty().setValue(innerRoot.getView().orElseThrow());
         this.closeButton.setText(closeButtonText);
+    }
+
+    public void open(FxControllerAndView<? extends Controller, Parent> innerRoot) {
+        this.windowBorderPane.centerProperty().setValue(innerRoot.getView().orElseThrow());
+
+        var innerController = innerRoot.getController();
+        innerControllers.push(innerController);
+
+        show();
     }
 
     public void show() {
         prepareToShow();
-        stage.show();
-        setPrefSize(stage.getWidth(), stage.getHeight());
+        if (!stage.isShowing()) stage.show();
+        resize();
+    }
+
+    private Controller getTopController() {
+        return innerControllers.peek();
     }
 
     @Override
     public void prepareToShow() {
-        innerController.prepareToShow();
+        getTopController().prepareToShow();
+    }
+
+    private void resize() {
+        setPrefSize(stage.getWidth(), stage.getHeight());
     }
 
     @Override
     public void setPrefSize(double parentWidth, double parentHeight) {
-        innerController.setPrefSize(
+        getTopController().setPrefSize(
                 windowBorderPane.getWidth() * 0.95,
                 windowBorderPane.getHeight() * 0.9
         );
@@ -60,11 +76,17 @@ public class WindowController implements Controller {
 
     @Override
     public void prepareToClose() {
-        innerController.prepareToClose();
+        getTopController().prepareToClose();
+        innerControllers.pop();
     }
 
     public void processClose(ActionEvent event) {
         prepareToClose();
-        stage.close();
+
+        if (!innerControllers.isEmpty()) {
+            show();
+        } else {
+            stage.close();
+        }
     }
 }
