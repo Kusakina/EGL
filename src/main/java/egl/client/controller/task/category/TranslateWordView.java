@@ -36,6 +36,8 @@ public class TranslateWordView extends GridPane implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        setPadding(new Insets(20));
+
         setGridLinesVisible(true);
         numberText.setText(" " + (index + 1) + ".");
         this.answerTextField = new TextField();
