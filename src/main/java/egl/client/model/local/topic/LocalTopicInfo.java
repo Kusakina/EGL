@@ -3,7 +3,6 @@ package egl.client.model.local.topic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import egl.client.model.core.DatabaseEntity;
@@ -18,10 +17,10 @@ public class LocalTopicInfo extends DatabaseEntity implements GlobalHashCodeEnti
 
     public static final long NO_GLOBAL_ID = -1;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @OneToOne(cascade = CascadeType.ALL)
     private Topic topic;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @OneToOne(cascade = CascadeType.ALL)
     private Theory theory;
 
     @Column

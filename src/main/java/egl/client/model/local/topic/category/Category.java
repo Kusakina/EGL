@@ -26,10 +26,10 @@ import org.hibernate.annotations.FetchMode;
 @Data
 public class Category extends DatabaseEntity implements GlobalHashCodeEntity {
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @OneToOne(cascade = CascadeType.ALL)
     private LocalTopicInfo localTopicInfo;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @Fetch(value = FetchMode.SUBSELECT)
     private Set<Translation> translations;
 

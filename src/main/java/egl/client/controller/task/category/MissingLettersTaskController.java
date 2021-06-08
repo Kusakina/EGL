@@ -145,12 +145,8 @@ public class MissingLettersTaskController extends LocalTaskController<Category> 
         for (int index : removedPositions) {
             buttonLetters.add(curTarget.charAt(index));
         }
-
-        int additionalLettersCount = Math.min(
-                DEFAULT_ADDITIONAL_LETTERS_COUNT, removedPositions.size()
-        );
-
-        for (int j = 0; j < additionalLettersCount; ++j) {
+        
+        for (int j = 0; j < DEFAULT_ADDITIONAL_LETTERS_COUNT; ++j) {
             int letterIndex = random.nextInt(targetLanguage.getLettersCount());
             char letter = (char) (targetLanguage.getStartLetter() + letterIndex);
             if (!buttonLetters.contains(letter)) {

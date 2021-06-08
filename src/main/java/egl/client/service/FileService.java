@@ -60,6 +60,9 @@ public class FileService {
                 if (line.isBlank()) continue;
 
                 String[] sourceTarget = line.split("\t");
+                for (int i = 0; i < 2; ++i) {
+                    sourceTarget[i] = sourceTarget[i].strip();
+                }
                 var source = new Word(sourceTarget[0], Language.of(sourceTarget[0]));
                 var target = new Word(sourceTarget[1], Language.of(sourceTarget[1]));
 
