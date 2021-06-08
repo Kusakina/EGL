@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.Text?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.text.Text?>
 <fx:root type="javafx.scene.layout.GridPane" xmlns="http://javafx.com/javafx"
          xmlns:fx="http://javafx.com/fxml">
 
@@ -10,21 +10,17 @@
         -fx-font: 24 arial;
     </style>
 
-    <rowConstraints>
-        <RowConstraints/>
-        <RowConstraints/>
-    </rowConstraints>
     <columnConstraints>
         <ColumnConstraints percentWidth="50" />
         <ColumnConstraints percentWidth="300" halignment="CENTER"/>
         <ColumnConstraints percentWidth="300" halignment="CENTER"/>
     </columnConstraints>
-    <Text fx:id="number">
+    <Text fx:id="numberText">
         <style>
             -fx-font: 25 arial;
         </style>
     </Text>
-    <Text fx:id="translationText">
+    <Text fx:id="sourceText">
         <style>
             -fx-font: 25 arial;
         </style>

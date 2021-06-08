@@ -1,31 +1,34 @@
 package egl.client.controller.task.category;
 
-import egl.client.model.topic.category.Translation;
+import java.net.URL;
+import java.util.ResourceBundle;
+
+import egl.client.model.local.topic.category.Translation;
 import egl.client.service.FxmlService;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 public class TranslateWordView extends GridPane implements Initializable {
+
     @FXML
     private Text translationText;
     @FXML
-    private Text number;
+    private Text numberText;
+    @FXML
+    private TextField answerTextField;
+
     private final Translation translation;
-    private int SourceOrTarget;
+    private final int sourceOrTarget;
     private final int index;
+    private String expectedText;
+
     TranslateWordView(Translation translation, int SourceOrTarget, int index) {
         this.translation = translation;
-        this.SourceOrTarget = SourceOrTarget;
+        this.sourceOrTarget = SourceOrTarget;
         this.index = index;
 
         FxmlService.loadView(this, TranslateWordView.class);
@@ -34,16 +37,22 @@ public class TranslateWordView extends GridPane implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setGridLinesVisible(true);
-        number.setText(" " + Integer.toString(index + 1) + ".");
-        TextField answer = new TextField();
-        if (SourceOrTarget == 0) {
+        numberText.setText(" " + (index + 1) + ".");
+        this.answerTextField = new TextField();
+        if (sourceOrTarget == 0) {
             translationText.setText(translation.getSource().getText());
+            this.expectedText = translation.getTarget().getText();
         }
         else {
             translationText.setText(translation.getTarget().getText());
+            this.expectedText = translation.getSource().getText();
         }
-        setColumnIndex(translationText, SourceOrTarget + 1);
-        this.add(answer, 2 - SourceOrTarget, 0, 1, 1);
+        setColumnIndex(translationText, sourceOrTarget + 1);
+        this.add(answerTextField, 2 - sourceOrTarget, 0, 1, 1);
         setMargin(translationText, new Insets(9));
+    }
+
+    public boolean isCorrect() {
+        return answerTextField.getText().equals(expectedText);
     }
 }
