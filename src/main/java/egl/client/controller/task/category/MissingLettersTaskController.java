@@ -1,5 +1,12 @@
 package egl.client.controller.task.category;
 
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+import java.util.ResourceBundle;
+
 import egl.client.controller.task.LocalTaskController;
 import egl.client.model.local.topic.category.Category;
 import egl.client.model.local.topic.category.Translation;
@@ -16,9 +23,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
-
-import java.net.URL;
-import java.util.*;
 
 @Component
 @FxmlView
@@ -91,8 +95,9 @@ public class MissingLettersTaskController extends LocalTaskController<Category> 
 
     private List<Translation> translations;
     private int curMissingLetterIndex;
+    private int curIndex;
 
-    void initializeCurrentWord(int curIndex) {
+    void initializeCurrentWord() {
         if (translations.size() == curIndex) {
             taskText.setText("Все слова закончились. Можете завершать игру");
             sourceWordText.setVisible(false);
@@ -192,7 +197,8 @@ public class MissingLettersTaskController extends LocalTaskController<Category> 
             result.registerAnswer(isCorrect);
 
             if (isCorrect) {
-                initializeCurrentWord(curIndex + 1);
+                ++curIndex;
+                initializeCurrentWord();
             } else {
                 curMissingLetterIndex = 0;
                 for (int index : finalRemovedPositions) {
@@ -220,7 +226,8 @@ public class MissingLettersTaskController extends LocalTaskController<Category> 
         taskText.setFont(Font.font(fontSize));
         sourceWordText.setFont(Font.font(fontSize * 1.2));
 
-        initializeCurrentWord(0);
+        this.curIndex = 0;
+        initializeCurrentWord();
     }
 
     @Override
@@ -242,7 +249,10 @@ public class MissingLettersTaskController extends LocalTaskController<Category> 
 
     @Override
     protected void prepareToFinish() {
-
+        while (curIndex < translations.size()) {
+            result.registerAnswer(false);
+            ++curIndex;
+        }
     }
 }
 

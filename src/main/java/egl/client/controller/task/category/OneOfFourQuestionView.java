@@ -75,4 +75,14 @@ public class OneOfFourQuestionView extends GridPane implements Initializable {
             columnConstraints.setPercentWidth(100.0 / Math.max(1, incorrectAnswers.size()));
         }
     }
+
+    public boolean isCorrect() {
+        for (RadioButton radioButton : answerRadioButtons) {
+            if (radioButton.isSelected()) {
+                return radioButton.getText().equals(correctTranslation.getTarget().getText());
+            }
+        }
+
+        return false;
+    }
 }

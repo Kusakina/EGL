@@ -1,5 +1,10 @@
 package egl.client.controller.task.category;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import egl.client.controller.task.LocalTaskController;
 import egl.client.model.local.topic.category.Category;
 import egl.client.model.local.topic.category.Translation;
@@ -10,11 +15,6 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 @FxmlView
@@ -77,7 +77,9 @@ public class OneOfFourTaskController extends LocalTaskController<Category> {
 
     @Override
     protected void prepareToFinish() {
-
+        for (var questionView : questionViews) {
+            result.registerAnswer(questionView.isCorrect());
+        }
     }
 
     @Override
