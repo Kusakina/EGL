@@ -1,5 +1,7 @@
 package egl.client.service;
 
+import java.io.IOException;
+
 import egl.client.controller.Controller;
 import egl.client.controller.WindowController;
 import egl.client.controller.info.EntityInfoController;
@@ -16,13 +18,13 @@ import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxWeaver;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-
 @Service
 @RequiredArgsConstructor
 public class FxmlService {
 
     private final FxWeaver fxWeaver;
+
+    private WindowController mainWindow;
 
     public static Class<? extends Controller> controllerClassWith(String controllerClassName) {
         try {
@@ -41,16 +43,7 @@ public class FxmlService {
         return fxWeaver.load(controllerClass);
     }
 
-    public <T extends Controller> void showStage(
-            FxControllerAndView<T, Parent> innerRoot,
-            String title, String closeButtonText) {
-        showStage(innerRoot, title, closeButtonText, new Stage());
-    }
-
-    public <T extends Controller> void showStage(
-            FxControllerAndView<T, Parent> innerRoot,
-            String title, String closeButtonText,
-            Stage stage) {
+    public void showWindow() {
         try {
             var fxmlLoader = createFxmlLoader(WindowController.class);
 
@@ -59,15 +52,22 @@ public class FxmlService {
             var windowSize = getWindowSize();
             Scene scene = new Scene(windowRoot, windowSize.getWidth(), windowSize.getHeight());
 
+            Stage stage = new Stage();
             stage.setScene(scene);
-            stage.setTitle(title);
 
-            var windowController = fxmlLoader.<WindowController>getController();
-            windowController.setContext(stage, innerRoot, closeButtonText);
-            windowController.show();
+            this.mainWindow = fxmlLoader.getController();
+            mainWindow.setStage(stage);
+
+            stage.show();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public <T extends Controller> void showController(
+            FxControllerAndView<T, Parent> root,
+            String title, String closeButtonText) {
+        mainWindow.open(root, title, closeButtonText);
     }
 
     private Rectangle2D getWindowSize() {

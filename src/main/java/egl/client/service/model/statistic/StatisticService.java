@@ -63,10 +63,7 @@ public abstract class StatisticService
     }
 
     public Optional<TopicStatistic> findBy(Topic topic) {
-        return getSelectedProfileStatistic().map(profileStatistic ->
-            topicStatisticRepository.findByProfileStatisticAndTopic(profileStatistic, topic)
-            .orElseGet(() -> addStatisticFor(profileStatistic, topic))
-        );
+        return getSelectedProfileStatistic().map(profileStatistic -> findBy(profileStatistic, topic));
     }
 
     public TopicStatistic findBy(ProfileStatistic profileStatistic, Topic topic) {

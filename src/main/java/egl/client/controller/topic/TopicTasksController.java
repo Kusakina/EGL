@@ -85,7 +85,7 @@ public class TopicTasksController implements Controller {
         var taskController = (TaskController) taskRoot.getController();
         taskController.setContext(task, controllerTopic, (result) -> tryUpdateStatistic(task, result));
 
-        fxmlService.showStage(
+        fxmlService.showController(
                 taskRoot, task.getName(), TaskController.FINISH_BUTTON_TEXT
         );
     }
@@ -123,5 +123,10 @@ public class TopicTasksController implements Controller {
     @Override
     public void prepareToClose() {
 
+    }
+
+    @Override
+    public void refresh() {
+        tasksListView.refresh();
     }
 }
