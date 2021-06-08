@@ -146,7 +146,7 @@ public class LocalTopicsController implements Controller {
                     .filter(result -> result.getCorrectAnswers() > 0)
                     .count();
 
-            return String.format("Пройдено заданий: %d", passedTasksCount);
+            return String.format("Пройдено: %d", passedTasksCount);
         }).orElse(StatisticService.NO_DATA);
     }
 
