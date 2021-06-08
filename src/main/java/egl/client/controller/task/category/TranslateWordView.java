@@ -18,7 +18,7 @@ public class TranslateWordView extends GridPane implements Initializable {
     private Text translationText;
     @FXML
     private Text numberText;
-    @FXML
+
     private TextField answerTextField;
 
     private final Translation translation;

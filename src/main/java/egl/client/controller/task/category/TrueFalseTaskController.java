@@ -1,36 +1,20 @@
 package egl.client.controller.task.category;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+
 import egl.client.controller.task.LocalTaskController;
 import egl.client.model.local.topic.category.Category;
 import egl.client.model.local.topic.category.Translation;
 import egl.client.service.model.topic.CategoryService;
 import egl.client.service.model.topic.LocalTopicInfoService;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-import java.util.stream.Collectors;
-
-import egl.client.controller.task.AbstractTaskController;
-import egl.client.model.topic.category.Category;
-import egl.client.model.topic.category.Translation;
-import egl.client.model.topic.category.Word;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 @Component
 @FxmlView
@@ -56,7 +40,9 @@ public class TrueFalseTaskController extends LocalTaskController<Category> {
 
     @Override
     public void setPrefSize(double parentWidth, double parentHeight) {
-
+        for (var questionView : questionViews) {
+            questionView.setPrefWidth(parentWidth);
+        }
     }
 
     @Override
@@ -84,6 +70,8 @@ public class TrueFalseTaskController extends LocalTaskController<Category> {
 
     @Override
     protected void prepareToFinish() {
-
+        for (var questionView : questionViews) {
+            result.registerAnswer(questionView.isCorrect());
+        }
     }
 }

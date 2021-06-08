@@ -19,7 +19,6 @@ import org.springframework.stereotype.Component;
 public class TranslateWordController extends LocalTaskController<Category> {
 
     private static final int MAX_QUESTIONS_COUNT = 8;
-    private static final int HEIGHT = 100;
     private List<TranslateWordView> questionViews;
     private List<Translation> translations;
 
@@ -34,7 +33,7 @@ public class TranslateWordController extends LocalTaskController<Category> {
     @Override
     public void setPrefSize(double parentWidth, double parentHeight) {
         for (var questionView : questionViews) {
-            questionView.setPrefSize(parentWidth, HEIGHT);
+            questionView.setPrefWidth(parentWidth);
         }
     }
 

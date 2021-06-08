@@ -58,8 +58,8 @@ public class DatabaseInitializationService {
                 "Необходимо указать, соответствует ли слово своему переводу",
                 "task.category.TrueFalseTaskController");
 
-        Task TestTable = new Task(
-                "Перевод",
+        Task sourceOrTargetTask = new Task(
+                "Один из двух",
                 "Необходимо заполнить пропуски нужным переводом",
                 "task.category.TranslateWordController");
         String testSceneName = "task.TestController";
@@ -70,7 +70,7 @@ public class DatabaseInitializationService {
         List<Task> categoryTestInnerTasks = Arrays.asList(oneOfFourTask, matchIndexTask, trueFalseTask);
         Test categoryTest = new Test(categoryTestTask, categoryTestInnerTasks);
 
-        List<Task> categoryTasks = Arrays.asList(missingLettersTask);
+        List<Task> categoryTasks = Arrays.asList(missingLettersTask, oneOfFourTask);
         TopicTasks categoryTopicTasks = new TopicTasks(
                 "Категория", "Набор переводов, объединенных общей темой",
                 TopicType.CATEGORY, categoryTheoryTask, categoryTasks, categoryTest
