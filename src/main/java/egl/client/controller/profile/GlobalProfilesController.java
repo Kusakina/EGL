@@ -1,17 +1,29 @@
 package egl.client.controller.profile;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
+import egl.client.controller.profile.info.RatingListView;
 import egl.client.model.core.profile.Credentials;
 import egl.client.model.core.profile.Profile;
+import egl.client.model.core.statistic.ProfileStatistic;
+import egl.client.model.core.statistic.RatingInfo;
+import egl.client.model.core.statistic.Result;
+import egl.client.model.core.statistic.TaskStatistic;
+import egl.client.model.core.statistic.TopicStatistic;
+import egl.client.model.core.task.Task;
 import egl.client.model.core.topic.Topic;
 import egl.client.service.FxmlService;
 import egl.client.service.model.profile.GlobalCredentialsService;
 import egl.client.service.model.profile.GlobalProfileService;
 import egl.client.service.model.statistic.GlobalStatisticService;
 import egl.client.service.model.topic.LocalTopicService;
+import egl.client.service.model.topic.LocalTopicTasksService;
 import egl.client.view.text.LabeledTextField;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -29,6 +41,7 @@ public class GlobalProfilesController extends ProfileSelectController {
     private final GlobalCredentialsService globalCredentialsService;
     private final GlobalStatisticService globalStatisticService;
     private final LocalTopicService localTopicService;
+    private final LocalTopicTasksService localTopicTasksService;
 
     @FXML
     private TabPane activitiesTabPane;
@@ -57,17 +70,30 @@ public class GlobalProfilesController extends ProfileSelectController {
     @FXML
     private ListView<Topic> topicsListView;
 
+    @FXML
+    private RatingListView selfResultListView;
+
+    @FXML
+    private Text selectedTopicInfoText;
+
+    @FXML
+    private TabPane taskRatingsTabPane;
+
+    private List<ProfileStatistic> profileStatistics;
+
     public GlobalProfilesController(
             FxmlService fxmlService,
             GlobalProfileService globalProfileService,
             GlobalCredentialsService globalCredentialsService,
             GlobalStatisticService globalStatisticService,
-            LocalTopicService localTopicService
+            LocalTopicService localTopicService,
+            LocalTopicTasksService localTopicTasksService
     ) {
         super(fxmlService, globalProfileService);
         this.globalCredentialsService = globalCredentialsService;
         this.globalStatisticService = globalStatisticService;
         this.localTopicService = localTopicService;
+        this.localTopicTasksService = localTopicTasksService;
     }
 
     @Override
@@ -131,19 +157,88 @@ public class GlobalProfilesController extends ProfileSelectController {
     }
 
     private void showRatingsFor(Topic topic) {
+
         globalStatisticService.findBy(topic)
         .ifPresentOrElse(
-            topicStatistic -> {
-
-            },
-            () -> {
-
-            }
+            this::showRegisteredTopic,
+            this::showNotRegisteredTopic
         );
+    }
+
+    private void showRegisteredTopic(TopicStatistic topicStatistic) {
+        var topic = topicStatistic.getTopic();
+        var topicTasks = localTopicTasksService.findBy(topic.getTopicType());
+
+        selectedTopicInfoText.setText("");
+
+        var tasks = new ArrayList<>(topicTasks.getTasks());
+        tasks.add(topicTasks.getTest().getTask());
+
+        List<Tab> tabs = tasks.stream()
+                .map(task -> createRatingTab(topicStatistic, task))
+                .collect(Collectors.toList());
+        taskRatingsTabPane.getTabs().setAll(tabs);
+
+        taskRatingsTabPane.getSelectionModel().selectedIndexProperty()
+                .addListener((observableValue, oldIndex, newIndex) -> {
+                    var task = tasks.get(newIndex.intValue());
+
+                    var result = topicStatistic.getTaskStatisticFor(task)
+                            .map(TaskStatistic::getResult)
+                            .orElse(Result.NONE);
+
+                    var profile =
+                            globalStatisticService.selectedProfileProperty().getValue();
+
+                    selfResultListView.getItems().setAll(
+                            new RatingInfo(profile.getName(), result)
+                    );
+                });
+    }
+
+    private Tab createRatingTab(TopicStatistic topicStatistic, Task task) {
+        Tab tab = new Tab(task.getName());
+
+        var ratingListView = new RatingListView();
+        tab.setContent(ratingListView);
+
+        List<RatingInfo> ratingInfos = new ArrayList<>();
+        for (ProfileStatistic profileStatistic : profileStatistics) {
+            profileStatistic
+                .getTopicStatisticFor(topicStatistic.getTopic())
+                .flatMap(ts -> ts.getTaskStatisticFor(task))
+                .map(ts -> new RatingInfo(
+                    profileStatistic.getProfile().getName(),
+                    ts.getResult()
+                )).ifPresent(ratingInfos::add);
+        }
+
+        Collections.sort(ratingInfos);
+
+        // TODO made as const
+        if (ratingInfos.size() > 20) {
+            ratingInfos = ratingInfos.subList(0, 20);
+        }
+
+        ratingListView.setItems(ratingInfos);
+
+        return tab;
+    }
+
+    private void showNotRegisteredTopic() {
+        selectedTopicInfoText.setText("Неизвестная глобальная тема");
+
+        selfResultListView.getItems().clear();
+        selfResultListView.setDisable(true);
+
+        taskRatingsTabPane.getTabs().clear();
+        taskRatingsTabPane.setDisable(true);
     }
 
     @Override
     public void prepareToShow() {
+        this.profileStatistics = globalStatisticService.findAll();
+
         showSelectedProfile();
         showRatings();
     }

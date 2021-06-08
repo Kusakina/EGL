@@ -15,12 +15,14 @@ import egl.client.model.core.topic.Topic;
 import egl.client.repository.core.statistic.ProfileStatisticRepository;
 import egl.client.repository.core.statistic.TaskStatisticRepository;
 import egl.client.repository.core.statistic.TopicStatisticRepository;
+import egl.client.service.model.AbstractEntityService;
 import egl.client.service.model.profile.ProfileService;
 import javafx.beans.property.Property;
 
-public abstract class StatisticService {
+public abstract class StatisticService
+        extends AbstractEntityService<ProfileStatistic, ProfileStatisticRepository> {
 
-    public static final String NO_DATA = "Нет данных";
+    public static final String NO_DATA = Result.NO_DATA;
 
     protected final ProfileService profileService;
     protected final ProfileStatisticRepository profileStatisticRepository;
@@ -34,6 +36,7 @@ public abstract class StatisticService {
             ProfileStatisticRepository profileStatisticRepository,
             TopicStatisticRepository topicStatisticRepository,
             TaskStatisticRepository taskStatisticRepository) {
+        super(profileStatisticRepository);
         this.profileService = profileService;
         this.profileStatisticRepository = profileStatisticRepository;
         this.topicStatisticRepository = topicStatisticRepository;

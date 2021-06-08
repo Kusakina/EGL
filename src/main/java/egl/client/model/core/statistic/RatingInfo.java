@@ -12,6 +12,6 @@ public class RatingInfo implements Comparable<RatingInfo> {
 
     @Override
     public int compareTo(RatingInfo other) {
-        return this.result.compareTo(other.result);
+        return -this.result.compareTo(other.result);
     }
 }
