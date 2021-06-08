@@ -2,8 +2,10 @@ package egl.client.service.model.statistic;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import egl.client.model.core.profile.Profile;
 import egl.client.model.core.statistic.ProfileStatistic;
@@ -113,5 +115,12 @@ public abstract class StatisticService
                 save(taskStatistic);
             }
         });
+    }
+
+    public List<ProfileStatistic> findAll() {
+        return super.findAll()
+                .stream().map(ProfileStatistic::getProfile)
+                .map(this::findBy)
+                .collect(Collectors.toList());
     }
 }
