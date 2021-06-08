@@ -1,10 +1,9 @@
 package egl.client.repository.local.statistic;
 
-import egl.client.model.core.profile.Profile;
-import egl.client.model.core.statistic.ProfileStatistic;
-import org.springframework.data.jpa.repository.JpaRepository;
+import egl.client.repository.core.statistic.ProfileStatisticRepository;
+import org.springframework.stereotype.Repository;
 
-public interface LocalProfileStatisticRepository extends JpaRepository<ProfileStatistic, Long> {
+@Repository
+public interface LocalProfileStatisticRepository extends ProfileStatisticRepository {
 
-    ProfileStatistic findByProfile(Profile profile);
 }

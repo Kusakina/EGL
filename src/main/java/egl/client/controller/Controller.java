@@ -7,4 +7,6 @@ public interface Controller extends Initializable {
     void setPrefSize(double parentWidth, double parentHeight);
     void prepareToShow();
     void prepareToClose();
+
+    default void refresh() { }
 }

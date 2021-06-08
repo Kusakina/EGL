@@ -1,18 +1,22 @@
 package egl.client.model.local.topic;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+
 import egl.client.model.core.DatabaseEntity;
 import egl.client.model.core.topic.Topic;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.*;
-
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
-public class LocalTopicInfo extends DatabaseEntity {
+public class LocalTopicInfo extends DatabaseEntity implements GlobalHashCodeEntity {
 
-    private static final long NO_GLOBAL_ID = -1;
+    public static final long NO_GLOBAL_ID = -1;
 
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private Topic topic;
@@ -21,7 +25,10 @@ public class LocalTopicInfo extends DatabaseEntity {
     private Theory theory;
 
     @Column
-    private long ratingId;
+    private long globalId;
+
+    @Column
+    private int globalHashCode;
 
     public LocalTopicInfo() {
         this.topic = new Topic();
@@ -39,6 +46,7 @@ public class LocalTopicInfo extends DatabaseEntity {
     public LocalTopicInfo(Topic topic, Theory theory) {
         this.topic = topic;
         this.theory = theory;
-        this.ratingId = NO_GLOBAL_ID;
+        this.globalId = NO_GLOBAL_ID;
+        this.globalHashCode = 0;
     }
 }

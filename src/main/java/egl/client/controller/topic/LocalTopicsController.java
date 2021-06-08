@@ -1,22 +1,26 @@
 package egl.client.controller.topic;
 
+import java.net.URL;
+import java.util.List;
+import java.util.ResourceBundle;
+import java.util.function.Consumer;
+
 import egl.client.controller.Controller;
 import egl.client.controller.WindowController;
-import egl.client.controller.profile.GlobalProfileController;
+import egl.client.controller.profile.GlobalProfilesController;
 import egl.client.controller.profile.LocalProfilesController;
 import egl.client.model.core.profile.Profile;
 import egl.client.model.core.statistic.TaskStatistic;
-import egl.client.model.core.statistic.TopicStatistic;
 import egl.client.model.core.topic.Topic;
 import egl.client.model.core.topic.TopicType;
 import egl.client.model.local.topic.LocalTopicInfo;
 import egl.client.model.local.topic.category.Category;
+import egl.client.service.FileService;
 import egl.client.service.FxmlService;
 import egl.client.service.model.EntityService;
-import egl.client.service.model.profile.GlobalProfileService;
-import egl.client.service.model.profile.LocalProfileService;
-import egl.client.service.model.profile.ProfileService;
+import egl.client.service.model.statistic.GlobalStatisticService;
 import egl.client.service.model.statistic.LocalStatisticService;
+import egl.client.service.model.statistic.StatisticService;
 import egl.client.service.model.topic.CategoryService;
 import egl.client.service.model.topic.LocalTopicInfoService;
 import egl.client.service.model.topic.LocalTopicService;
@@ -26,15 +30,12 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
-
-import java.net.URL;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.function.Consumer;
 
 @Component
 @FxmlView
@@ -45,24 +46,32 @@ public class LocalTopicsController implements Controller {
     private final LocalTopicService localTopicService;
     private final LocalTopicInfoService localTopicInfoService;
     private final CategoryService categoryService;
-    private final LocalProfileService localProfileService;
     private final LocalStatisticService localStatisticService;
-    private final GlobalProfileService globalProfileService;
+    private final GlobalStatisticService globalStatisticService;
 
     @FXML private InfoSelectEditRemoveListView<Topic> categoriesListView;
+    @FXML private TableColumn<Topic, String> topicLocalStatisticColumn;
+    @FXML private TableColumn<Topic, String> topicGlobalStatisticColumn;
     @FXML private ButtonColumn<Topic> copyCategoryColumn;
-    @FXML private TableColumn<Topic, String> topicStatisticColumn;
+    @FXML private ButtonColumn<Topic> registerCategoryColumn;
+    @FXML private ButtonColumn<Topic> saveCategoryColumn;
 
     @FXML private Button selectLocalProfileButton;
     @FXML private Button selectGlobalProfileButton;
     @FXML private Button createCategoryButton;
+    @FXML private Button loadCategoriesButton;
+
+    private Stage stage;
+
+    public void setContext(Stage stage) {
+        this.stage = stage;
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initializeCategories();
         initializeProfiles();
     }
-
 
     @RequiredArgsConstructor
     private class TypedTopicService implements EntityService<Topic> {
@@ -75,8 +84,8 @@ public class LocalTopicsController implements Controller {
         }
 
         @Override
-        public void save(Topic entity) {
-            localTopicService.save(entity);
+        public Topic save(Topic entity) {
+            return localTopicService.save(entity);
         }
 
         @Override
@@ -106,49 +115,60 @@ public class LocalTopicsController implements Controller {
         categoriesListView.setOnSelect(this::onTopicSelect);
         categoriesListView.setOnEdit(processCategory(this::onCategoryEdit));
 
-        copyCategoryColumn.setOnAction(processCategory(this::onCategoryCopy));
         createCategoryButton.setOnAction(event -> onCategoryCreate());
+        copyCategoryColumn.setOnAction(processCategory(this::onCategoryCopy));
+        registerCategoryColumn.setOnAction(processLocalTopic(this::onLocalTopicRegister));
 
+        saveCategoryColumn.setOnAction(processCategory(this::onCategorySave));
+        loadCategoriesButton.setOnAction(event -> onCategoriesLoad());
+
+        initializeStatisticColumn(topicLocalStatisticColumn, localStatisticService);
+        initializeStatisticColumn(topicGlobalStatisticColumn, globalStatisticService);
+    }
+
+    private void initializeStatisticColumn(
+            TableColumn<Topic, String> topicStatisticColumn,
+            StatisticService statisticService
+    ) {
         topicStatisticColumn.setCellValueFactory(param -> {
             var topic = param.getValue();
-            var statisticString = getTopicStatistic(topic);
+            var statisticString = getTopicStatistic(statisticService, topic);
             return new SimpleStringProperty(statisticString);
         });
     }
 
-    private String getTopicStatistic(Topic topic) {
-        var profile = localProfileService.getSelectedProfile();
-        if (null == profile) return "Нет данных";
+    private String getTopicStatistic(StatisticService statisticService, Topic topic) {
+        return statisticService.findBy(topic).map(topicStatistic -> {
+            var taskStatistics = statisticService.findAllBy(topicStatistic);
 
-        TopicStatistic topicStatistic = localStatisticService.findBy(profile, topic);
+            var passedTasksCount = taskStatistics.stream()
+                    .map(TaskStatistic::getResult)
+                    .filter(result -> result.getCorrectAnswers() > 0)
+                    .count();
 
-        var passedTasksCount = topicStatistic.getTaskStatistics().stream()
-                .map(TaskStatistic::getResult)
-                .filter(result -> result.getCorrectAnswers() > 0)
-                .count();
-
-        return String.format("Количество пройденных заданий: %d", passedTasksCount);
+            return String.format("Пройдено заданий: %d", passedTasksCount);
+        }).orElse(StatisticService.NO_DATA);
     }
 
     private void initializeProfiles() {
-        initSelectProfileButton(selectLocalProfileButton, localProfileService, LocalProfilesController.class, "Локальный");
-        initSelectProfileButton(selectGlobalProfileButton, globalProfileService, GlobalProfileController.class, "Глобальный");
+        initSelectProfileButton(selectLocalProfileButton, localStatisticService, LocalProfilesController.class, "Локальный");
+        initSelectProfileButton(selectGlobalProfileButton, globalStatisticService, GlobalProfilesController.class, "Глобальный");
     }
 
     private void initSelectProfileButton(
             Button selectProfileButton,
-            ProfileService profileService,
+            StatisticService statisticService,
             Class<? extends Controller> selectProfileControllerClass,
             String profileTypeName) {
         String profileText = String.format("%s профиль", profileTypeName);
 
         selectProfileButton.setOnAction(event -> {
             var selectProfileRoot = fxmlService.load(selectProfileControllerClass);
-            fxmlService.showStage(selectProfileRoot, profileText, WindowController.CLOSE);
+            fxmlService.showController(selectProfileRoot, profileText, WindowController.CLOSE);
         });
 
         selectProfileButton.textProperty().bindBidirectional(
-                profileService.selectedProfileProperty(),
+                statisticService.selectedProfileProperty(),
                 new StringConverter<>() {
                     @Override
                     public String toString(Profile profile) {
@@ -163,7 +183,7 @@ public class LocalTopicsController implements Controller {
                 }
         );
 
-        profileService.selectedProfileProperty().addListener((observableValue, oldProfile, newProfile) -> categoriesListView.refresh());
+        statisticService.selectedProfileProperty().addListener((observableValue, oldProfile, newProfile) -> categoriesListView.refresh());
     }
 
     private void onTopicSelect(Topic topic) {
@@ -172,7 +192,7 @@ public class LocalTopicsController implements Controller {
         var topicController = localTopicRoot.getController();
         topicController.setContext(topic);
 
-        fxmlService.showStage(
+        fxmlService.showController(
                 localTopicRoot, topic.getName(), WindowController.CLOSE
         );
     }
@@ -202,6 +222,39 @@ public class LocalTopicsController implements Controller {
         }
     }
 
+    private void onLocalTopicRegister(LocalTopicInfo localTopicInfo) {
+        if (LocalTopicInfo.NO_GLOBAL_ID != localTopicInfo.getGlobalId()) {
+            return;
+        }
+
+        globalStatisticService.registerTopic(localTopicInfo);
+        refresh();
+    }
+
+    private void onCategorySave(Category category) {
+        var fileChooser = new FileChooser();
+        fileChooser.setTitle("Сохранить категорию");
+        var file = fileChooser.showSaveDialog(stage);
+        if (null != file) {
+            FileService.save(category, file);
+        }
+    }
+
+    private void onCategoriesLoad() {
+        var fileChooser = new FileChooser();
+        fileChooser.setTitle("Загрузить категории");
+        var files = fileChooser.showOpenMultipleDialog(stage);
+        files.forEach(file -> {
+            try {
+                var category = FileService.loadCategory(file);
+                categoryService.save(category);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        categoriesListView.showItems();
+    }
+
     @Override
     public void setPrefSize(double parentWidth, double parentHeight) {
         categoriesListView.setPrefSize(parentWidth, parentHeight);
@@ -219,5 +272,10 @@ public class LocalTopicsController implements Controller {
     @Override
     public void prepareToClose() {
 
+    }
+
+    @Override
+    public void refresh() {
+        categoriesListView.refresh();
     }
 }

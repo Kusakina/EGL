@@ -28,10 +28,12 @@ public class JavaFxClientApplication extends Application {
         applicationContext.getBean(DatabaseInitializationService.class).run();
 
         var fxmlService = applicationContext.getBean(FxmlService.class);
+        var window = fxmlService.showWindow();
 
         var localTopicsListRoot = fxmlService.load(LocalTopicsController.class);
-        fxmlService.showStage(
-                localTopicsListRoot, "Темы для изучения", WindowController.CLOSE, stage
+        localTopicsListRoot.getController().setContext(window.getStage());
+        fxmlService.showController(
+                localTopicsListRoot, "Темы для изучения", WindowController.CLOSE
         );
     }
 

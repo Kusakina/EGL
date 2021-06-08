@@ -1,5 +1,5 @@
-<?import egl.client.view.table.list.InfoSelectListView?>
 <?import egl.client.view.pane.CustomBorderPane?>
+<?import egl.client.view.table.list.InfoSelectListView?>
 <?import javafx.scene.control.TableColumn?>
 <CustomBorderPane fx:controller="egl.client.controller.topic.TopicTasksController"
                   xmlns:fx="http://javafx.com/fxml">
@@ -7,7 +7,8 @@
     <center>
         <InfoSelectListView fx:id="tasksListView" nameTitle="Задание">
             <infoColumns>
-                <TableColumn fx:id="taskStatisticColumn" text="Статистика"/>
+                <TableColumn fx:id="taskLocalStatisticColumn" text="Локально"/>
+                <TableColumn fx:id="taskGlobalStatisticColumn" text="Глобально"/>
             </infoColumns>
         </InfoSelectListView>
     </center>
