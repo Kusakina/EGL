@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import egl.client.view.table.column.PropertyColumn?>
+<?import egl.client.view.table.list.CustomListView?>
+<fx:root type="egl.client.view.table.list.CustomListView" xmlns="http://javafx.com/javafx"
+         xmlns:fx="http://javafx.com/fxml">
+    <infoColumns>
+        <PropertyColumn text="Игрок" property="name"/>
+        <PropertyColumn text="Результат" property="result"/>
+    </infoColumns>
+</fx:root>

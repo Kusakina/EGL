@@ -1,11 +1,14 @@
 package egl.client.model.core.topic;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
 import egl.client.model.core.DescribedEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -24,5 +27,10 @@ public class Topic extends DescribedEntity {
     public Topic(String name, String description, TopicType topicType) {
         super(name, description);
         this.topicType = topicType;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
     }
 }

@@ -1,4 +1,3 @@
-<?import egl.client.controller.profile.info.RatingListView?>
 <?import egl.client.view.pane.CustomBorderPane?>
 <?import egl.client.view.text.LabeledTextField?>
 <?import javafx.scene.control.Button?>
@@ -40,13 +39,14 @@
                         <ListView fx:id="topicsListView"/>
                     </left>
                     <top>
-                        <Text fx:id="selectedTopicInfoText"/>
+                        <CustomBorderPane>
+                            <right>
+                                <Text fx:id="selectedTopicInfoText"/>
+                            </right>
+                        </CustomBorderPane>
                     </top>
                     <center>
                         <CustomBorderPane>
-                            <top>
-                                <RatingListView fx:id="selfResultListView"/>
-                            </top>
                             <center>
                                 <TabPane fx:id="taskRatingsTabPane" tabClosingPolicy="UNAVAILABLE"/>
                             </center>

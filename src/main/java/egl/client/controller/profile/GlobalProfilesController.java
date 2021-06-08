@@ -71,9 +71,6 @@ public class GlobalProfilesController extends ProfileSelectController {
     private ListView<Topic> topicsListView;
 
     @FXML
-    private RatingListView selfResultListView;
-
-    @FXML
     private Text selectedTopicInfoText;
 
     @FXML
@@ -157,7 +154,6 @@ public class GlobalProfilesController extends ProfileSelectController {
     }
 
     private void showRatingsFor(Topic topic) {
-
         globalStatisticService.findBy(topic)
         .ifPresentOrElse(
             this::showRegisteredTopic,
@@ -175,28 +171,14 @@ public class GlobalProfilesController extends ProfileSelectController {
         tasks.add(topicTasks.getTest().getTask());
 
         List<Tab> tabs = tasks.stream()
-                .map(task -> createRatingTab(topicStatistic, task))
+                .map(task -> createRatingTab(topicStatistic, task, taskRatingsTabPane))
                 .collect(Collectors.toList());
+
+        taskRatingsTabPane.setDisable(false);
         taskRatingsTabPane.getTabs().setAll(tabs);
-
-        taskRatingsTabPane.getSelectionModel().selectedIndexProperty()
-                .addListener((observableValue, oldIndex, newIndex) -> {
-                    var task = tasks.get(newIndex.intValue());
-
-                    var result = topicStatistic.getTaskStatisticFor(task)
-                            .map(TaskStatistic::getResult)
-                            .orElse(Result.NONE);
-
-                    var profile =
-                            globalStatisticService.selectedProfileProperty().getValue();
-
-                    selfResultListView.getItems().setAll(
-                            new RatingInfo(profile.getName(), result)
-                    );
-                });
     }
 
-    private Tab createRatingTab(TopicStatistic topicStatistic, Task task) {
+    private Tab createRatingTab(TopicStatistic topicStatistic, Task task, TabPane tabPane) {
         Tab tab = new Tab(task.getName());
 
         var ratingListView = new RatingListView();
@@ -222,14 +204,26 @@ public class GlobalProfilesController extends ProfileSelectController {
 
         ratingListView.setItems(ratingInfos);
 
+        var result = topicStatistic.getTaskStatisticFor(task)
+                .map(TaskStatistic::getResult)
+                .orElse(Result.NONE);
+
+        var selfProfile =
+                globalStatisticService.selectedProfileProperty().getValue();
+
+        ratingListView.getItems()
+                .add(0, new RatingInfo(selfProfile.getName(), result));
+
+        ratingListView.setPrefSize(
+                tabPane.getTabMaxWidth(),
+                tabPane.getTabMaxHeight()
+        );
+
         return tab;
     }
 
     private void showNotRegisteredTopic() {
         selectedTopicInfoText.setText("Неизвестная глобальная тема");
-
-        selfResultListView.getItems().clear();
-        selfResultListView.setDisable(true);
 
         taskRatingsTabPane.getTabs().clear();
         taskRatingsTabPane.setDisable(true);
