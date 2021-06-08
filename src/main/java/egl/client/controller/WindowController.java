@@ -48,15 +48,15 @@ public class WindowController implements Controller {
         innerRoots.push(innerRoot);
         closeButtonTexts.push(closeButtonText);
         stageTitles.push(stageTitle);
+        prepareToShow();
         show();
+        resize();
     }
 
     public void show() {
         stage.setTitle(stageTitles.peek());
         closeButton.setText(closeButtonTexts.peek());
         windowBorderPane.centerProperty().setValue(getTopRoot().getView().orElseThrow());
-        prepareToShow();
-        resize();
     }
 
     private FxControllerAndView<? extends Controller, Parent> getTopRoot() {
@@ -97,6 +97,7 @@ public class WindowController implements Controller {
 
         if (!innerRoots.isEmpty()) {
             getTopController().refresh();
+            show();
         } else {
             stage.close();
         }
