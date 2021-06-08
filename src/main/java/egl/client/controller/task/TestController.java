@@ -1,5 +1,8 @@
 package egl.client.controller.task;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import egl.client.controller.Controller;
 import egl.client.model.core.task.Task;
 import egl.client.model.core.task.Test;
@@ -14,11 +17,6 @@ import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
-
 @Component
 @FxmlView
 @RequiredArgsConstructor
@@ -31,14 +29,6 @@ public class TestController extends AbstractTaskController {
     @FXML private Tab descriptionTab;
 
     private List<TaskController> taskControllers;
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        super.initialize(url, resourceBundle);
-
-        tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
-        descriptionTab.setText("Информация о тесте");
-    }
 
     @Override
     public void setPrefSize(double parentWidth, double parentHeight) {

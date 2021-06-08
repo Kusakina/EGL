@@ -1,6 +1,5 @@
 package egl.client.model.core.statistic;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -15,8 +14,11 @@ import lombok.EqualsAndHashCode;
 @Data
 public class TaskStatistic extends DatabaseEntity {
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
-    private Task task;
+    @ManyToOne
+    private TopicStatistic topicStatistic;
+
+    @Column
+    private String taskName;
 
     @Column
     private int correctAnswers;
@@ -28,9 +30,10 @@ public class TaskStatistic extends DatabaseEntity {
         this(Result.NONE);
     }
 
-    public TaskStatistic(Task task, Result result) {
+    public TaskStatistic(TopicStatistic topicStatistic, Task task, Result result) {
         this(result);
-        this.task = new Task(task);
+        this.topicStatistic = topicStatistic;
+        this.taskName = task.getName();
     }
 
     private TaskStatistic(Result result) {

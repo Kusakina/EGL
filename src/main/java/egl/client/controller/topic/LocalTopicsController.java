@@ -126,7 +126,9 @@ public class LocalTopicsController implements Controller {
 
     private String getTopicStatistic(StatisticService statisticService, Topic topic) {
         return statisticService.findBy(topic).map(topicStatistic -> {
-            var passedTasksCount = topicStatistic.getTaskStatistics().stream()
+            var taskStatistics = statisticService.findAllBy(topicStatistic);
+
+            var passedTasksCount = taskStatistics.stream()
                     .map(TaskStatistic::getResult)
                     .filter(result -> result.getCorrectAnswers() > 0)
                     .count();

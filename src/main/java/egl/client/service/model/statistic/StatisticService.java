@@ -1,7 +1,7 @@
 package egl.client.service.model.statistic;
 
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -15,12 +15,14 @@ import egl.client.model.core.topic.Topic;
 import egl.client.repository.core.statistic.ProfileStatisticRepository;
 import egl.client.repository.core.statistic.TaskStatisticRepository;
 import egl.client.repository.core.statistic.TopicStatisticRepository;
+import egl.client.service.model.AbstractEntityService;
 import egl.client.service.model.profile.ProfileService;
 import javafx.beans.property.Property;
 
-public abstract class StatisticService {
+public abstract class StatisticService
+        extends AbstractEntityService<ProfileStatistic, ProfileStatisticRepository> {
 
-    public static final String NO_DATA = "Нет данных";
+    public static final String NO_DATA = Result.NO_DATA;
 
     protected final ProfileService profileService;
     protected final ProfileStatisticRepository profileStatisticRepository;
@@ -34,6 +36,7 @@ public abstract class StatisticService {
             ProfileStatisticRepository profileStatisticRepository,
             TopicStatisticRepository topicStatisticRepository,
             TaskStatisticRepository taskStatisticRepository) {
+        super(profileStatisticRepository);
         this.profileService = profileService;
         this.profileStatisticRepository = profileStatisticRepository;
         this.topicStatisticRepository = topicStatisticRepository;
@@ -41,25 +44,11 @@ public abstract class StatisticService {
         this.profileToStatisticCache = new HashMap<>();
     }
 
-    private void memorize(TopicStatistic global) {
-        var memorizedTaskStatistics = new HashSet<>(global.getTaskStatistics());
-        global.setTaskStatistics(memorizedTaskStatistics);
-    }
-
-    private void memorize(ProfileStatistic global) {
-        var memorizedTopicStatistics = new HashSet<>(global.getTopicStatistics());
-        global.setTopicStatistics(memorizedTopicStatistics);
-
-        memorizedTopicStatistics.forEach(this::memorize);
-    }
-
     private ProfileStatistic findBy(Profile profile) {
         var profileStatistic = profileStatisticRepository.findByProfile(profile);
         if (null == profileStatistic) {
             profileStatistic = profileStatisticRepository.save(new ProfileStatistic(profile));
         }
-
-        memorize(profileStatistic);
 
         return profileStatistic;
     }
@@ -75,40 +64,48 @@ public abstract class StatisticService {
 
     public Optional<TopicStatistic> findBy(Topic topic) {
         return getSelectedProfileStatistic().map(profileStatistic ->
-            profileStatistic.getTopicStatisticFor(topic)
+            topicStatisticRepository.findByProfileStatisticAndTopic(profileStatistic, topic)
             .orElseGet(() -> addStatisticFor(profileStatistic, topic))
         );
     }
 
+    public TopicStatistic findBy(ProfileStatistic profileStatistic, Topic topic) {
+        return topicStatisticRepository
+                .findByProfileStatisticAndTopic(profileStatistic, topic)
+                .orElseGet(() -> addStatisticFor(profileStatistic, topic));
+    }
+
     private TopicStatistic addStatisticFor(ProfileStatistic profileStatistic, Topic topic) {
         var topicStatistic = new TopicStatistic(profileStatistic, topic);
-        topicStatistic = topicStatisticRepository.save(topicStatistic);
-        profileStatistic.getTopicStatistics().add(topicStatistic);
-        return topicStatistic;
+        return topicStatisticRepository.save(topicStatistic);
     }
 
     public Optional<TaskStatistic> findBy(Topic topic, Task task) {
-        return findBy(topic).map(topicStatistic ->
-            topicStatistic.getTaskStatisticFor(task)
-            .orElseGet(() -> addStatisticFor(topicStatistic, task))
-        );
+        return getSelectedProfileStatistic()
+                .map(profileStatistic -> findBy(profileStatistic, topic, task));
+    }
+
+    public TaskStatistic findBy(ProfileStatistic profileStatistic, Topic topic, Task task) {
+        var topicStatistic = findBy(profileStatistic, topic);
+        return taskStatisticRepository
+                .findByTopicStatisticAndTaskName(topicStatistic, task.getName())
+                .orElseGet(() -> addStatisticFor(topicStatistic, task));
     }
 
     private TaskStatistic addStatisticFor(TopicStatistic topicStatistic, Task task) {
-        var taskStatistic = save(new TaskStatistic(task, Result.NONE));
-        topicStatistic.getTaskStatistics().add(taskStatistic);
-        return taskStatistic;
-    }
-
-    private TaskStatistic save(TaskStatistic taskStatistic) {
+        var taskStatistic = new TaskStatistic(topicStatistic, task, Result.NONE);
         return taskStatisticRepository.save(taskStatistic);
     }
 
     public void update(Topic topic, Task task, Result result) {
         findBy(topic, task).ifPresent(taskStatistic -> {
             if (taskStatistic.updateBy(result)) {
-                save(taskStatistic);
+                taskStatisticRepository.save(taskStatistic);
             }
         });
+    }
+
+    public List<TaskStatistic> findAllBy(TopicStatistic topicStatistic) {
+        return taskStatisticRepository.findAllByTopicStatistic(topicStatistic);
     }
 }
