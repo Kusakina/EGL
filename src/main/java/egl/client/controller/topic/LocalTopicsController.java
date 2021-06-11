@@ -4,12 +4,14 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import egl.client.controller.Controller;
 import egl.client.controller.WindowController;
 import egl.client.controller.profile.GlobalProfilesController;
 import egl.client.controller.profile.LocalProfilesController;
 import egl.client.model.core.profile.Profile;
+import egl.client.model.core.statistic.Result;
 import egl.client.model.core.statistic.TaskStatistic;
 import egl.client.model.core.topic.Topic;
 import egl.client.model.core.topic.TopicType;
@@ -143,9 +145,11 @@ public class LocalTopicsController implements Controller {
         return statisticService.findBy(topic).map(topicStatistic -> {
             var tasks = localTopicTasksService.findBy(topic.getTopicType()).getTasks();
 
+            Function<TaskStatistic, Result> resultGenerator = TaskStatistic::getResult;
+
             var passedTasksCount = tasks.stream()
                     .map(task -> statisticService.findBy(topicStatistic, task))
-                    .map(TaskStatistic::getResult)
+                    .map(resultGenerator)
                     .filter(result -> result.getCorrectAnswers() > 0)
                     .count();
 
