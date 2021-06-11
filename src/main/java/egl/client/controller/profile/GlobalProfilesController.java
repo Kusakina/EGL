@@ -4,7 +4,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -128,14 +127,13 @@ public class GlobalProfilesController extends ProfileSelectController {
     private void showSelectedProfile() {
         activitiesTabPane.getSelectionModel().select(globalProfileTab);
 
-        var selectedProfile = profileService.getSelectedProfile();
+        var selectedProfileName = profileService.getSelectedProfile().map(Profile::getName);
 
-        boolean selected = Optional.ofNullable(selectedProfile).isPresent();
-        String profileText = (selected ? selectedProfile.getName() : "не выбран");
+        String profileText = selectedProfileName.orElse("не выбран");
         loginInfoText.setText("Глобальный профиль: " + profileText);
 
-        editProfileButton.setVisible(selected);
-        globalRatingsTab.setDisable(!selected);
+        editProfileButton.setVisible(selectedProfileName.isPresent());
+        globalRatingsTab.setDisable(selectedProfileName.isEmpty());
     }
 
     private void showRatings() {
@@ -177,18 +175,19 @@ public class GlobalProfilesController extends ProfileSelectController {
         taskRatingsTabPane.setDisable(false);
         taskRatingsTabPane.getTabs().setAll(tabs);
 
-        taskRatingsTabPane.getSelectionModel().selectedIndexProperty().addListener(
-                (observableValue, oldIndex, newIndexNumber) -> {
-                    int newIndex = newIndexNumber.intValue();
-                    if (newIndex < 0) {
-                        return;
-                    }
-
-                    var task = tasks.get(newIndex);
-
-                    // FIXME
-                    // пытается искать по локальному, но он уже глобальный
-                    // сейчас этот кусок не актуален, так как таблицы маленькие
+        // FIXME
+        // пытается искать по локальному, но он уже глобальный
+        // сейчас этот кусок не актуален, так как таблицы маленькие
+//        taskRatingsTabPane.getSelectionModel().selectedIndexProperty().addListener(
+//                (observableValue, oldIndex, newIndexNumber) -> {
+//                    int newIndex = newIndexNumber.intValue();
+//                    if (newIndex < 0) {
+//                        return;
+//                    }
+//
+//                    var task = tasks.get(newIndex);
+//
+//
 //                    var result = globalStatisticService
 //                            .findBy(topicStatistic.getTopic(), task)
 //                            .map(TaskStatistic::getResult)
@@ -198,7 +197,7 @@ public class GlobalProfilesController extends ProfileSelectController {
 //                            globalStatisticService.selectedProfileProperty().getValue();
 //
 //                    selectedTopicInfoText.setText(String.format("%s (%s)", selfProfile.getName(), result));
-                });
+//                });
     }
 
     private Tab createRatingTab(TopicStatistic topicStatistic, Task task, TabPane tabPane) {
@@ -260,7 +259,10 @@ public class GlobalProfilesController extends ProfileSelectController {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
 
-        editProfileButton.setOnAction(event -> onEdit(profileService.getSelectedProfile()));
+        editProfileButton.setOnAction(event -> {
+            profileService.getSelectedProfile()
+                    .ifPresent(this::onEdit);
+        });
 
         initLogin();
     }
