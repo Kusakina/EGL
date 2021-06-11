@@ -7,8 +7,6 @@ import egl.client.model.core.statistic.TopicStatistic;
 import egl.client.model.core.task.Task;
 import egl.client.model.core.topic.Topic;
 import egl.client.model.local.topic.LocalTopicInfo;
-import egl.client.repository.global.statistic.GlobalProfileStatisticRepository;
-import egl.client.repository.global.statistic.GlobalTopicStatisticRepository;
 import egl.client.service.model.core.StatisticService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,14 +18,16 @@ public class GlobalStatisticService extends StatisticService {
     private final GlobalTopicService globalTopicService;
 
     public GlobalStatisticService(GlobalProfileService profileService,
-                                  GlobalProfileStatisticRepository profileStatisticRepository,
-                                  GlobalTopicStatisticRepository topicStatisticRepository,
+                                  GlobalProfileStatisticService profileStatisticService,
+                                  GlobalTopicStatisticService topicStatisticService,
                                   GlobalTaskStatisticService taskStatisticService,
                                   GlobalTopicService globalTopicService) {
-        super(profileService,
-                profileStatisticRepository,
-                topicStatisticRepository,
-                taskStatisticService);
+        super(
+            profileService,
+            profileStatisticService,
+            topicStatisticService,
+            taskStatisticService
+        );
         this.globalTopicService = globalTopicService;
     }
 
@@ -44,11 +44,8 @@ public class GlobalStatisticService extends StatisticService {
     }
 
     public void registerTopic(LocalTopicInfo localTopicInfo) {
-        var author = profileService.getSelectedProfile();
-        if (null == author) {
-            return;
-        }
-
-        globalTopicService.registerTopic(localTopicInfo, author);
+        profileService.getSelectedProfile().ifPresent(author ->
+                globalTopicService.registerTopic(localTopicInfo, author)
+        );
     }
 }
