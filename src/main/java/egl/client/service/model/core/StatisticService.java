@@ -89,7 +89,7 @@ public abstract class StatisticService
     }
 
     private TaskStatistic addStatisticFor(TopicStatistic topicStatistic, Task task) {
-        var taskStatistic = new TaskStatistic(topicStatistic, task, Result.NONE);
+        var taskStatistic = new TaskStatistic(topicStatistic, task.getSceneName(), Result.NONE);
         return taskStatisticRepository.save(taskStatistic);
     }
 
