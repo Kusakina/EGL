@@ -1,50 +1,55 @@
 package egl.client.service.model.core;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Optional;
 
 import egl.client.model.core.statistic.Result;
 import egl.client.model.core.statistic.TaskStatistic;
 import egl.client.model.core.statistic.TopicStatistic;
 import egl.client.model.core.task.Task;
 import egl.client.repository.core.statistic.TaskStatisticRepository;
-import egl.client.service.model.AbstractEntityService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 public abstract class TaskStatisticService
-        extends AbstractEntityService<TaskStatistic, TaskStatisticRepository> {
+        extends CachedEntityService<
+            TaskStatistic,
+            TaskStatisticRepository,
+            TaskStatisticService.TaskStatisticId
+        > {
 
     @Data
     @RequiredArgsConstructor
-    private static class TaskStatisticId {
+    static class TaskStatisticId implements EntityId {
 
         private final TopicStatistic topicStatistic;
         private final String taskName;
     }
 
-    protected final Map<TaskStatisticId, TaskStatistic> taskStatisticCache;
-
-    public TaskStatisticService(TaskStatisticRepository taskStatisticRepository) {
-        super(taskStatisticRepository);
-        this.taskStatisticCache = new HashMap<>();
+    protected TaskStatisticService(TaskStatisticRepository repository) {
+        super(repository);
     }
 
-    private TaskStatistic findByInPersistence(TaskStatisticId taskStatisticId) {
-        var taskStatistic = repository
-                .findByTopicStatisticAndTaskName(
+    @Override
+    protected Optional<TaskStatistic> findById(TaskStatisticId taskStatisticId) {
+        return repository.findByTopicStatisticAndTaskName(
                         taskStatisticId.getTopicStatistic(),
                         taskStatisticId.getTaskName()
                 );
+    }
 
-        return taskStatistic.orElseGet(
-                () -> save(
-                        new TaskStatistic(
-                                taskStatisticId.getTopicStatistic(),
-                                taskStatisticId.getTaskName(),
-                                Result.NONE
-                        )
-                )
+    @Override
+    protected TaskStatistic createWith(TaskStatisticId taskStatisticId) {
+        return new TaskStatistic(
+                taskStatisticId.getTopicStatistic(),
+                taskStatisticId.getTaskName(),
+                Result.NONE
+        );
+    }
+
+    @Override
+    protected TaskStatisticId getIdOf(TaskStatistic entity) {
+        return new TaskStatisticId(
+                entity.getTopicStatistic(), entity.getTaskName()
         );
     }
 
@@ -56,9 +61,7 @@ public abstract class TaskStatisticService
         var taskName = getTaskName(task);
         var taskStatisticId = new TaskStatisticId(topicStatistic, taskName);
 
-        return taskStatisticCache.computeIfAbsent(
-                taskStatisticId, this::findByInPersistence
-        );
+        return findBy(taskStatisticId);
     }
 
     public void update(TopicStatistic topicStatistic, Task task, Result result) {
@@ -66,15 +69,5 @@ public abstract class TaskStatisticService
         if (taskStatistic.updateBy(result)) {
             save(taskStatistic);
         }
-    }
-
-    @Override
-    public void remove(TaskStatistic entity) {
-        super.remove(entity);
-        taskStatisticCache.remove(
-                new TaskStatisticId(
-                    entity.getTopicStatistic(), entity.getTaskName()
-                )
-        );
     }
 }
