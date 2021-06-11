@@ -1,7 +1,5 @@
 package egl.client.service.model.core;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 import egl.client.model.core.profile.Profile;
@@ -11,43 +9,26 @@ import egl.client.model.core.statistic.TaskStatistic;
 import egl.client.model.core.statistic.TopicStatistic;
 import egl.client.model.core.task.Task;
 import egl.client.model.core.topic.Topic;
-import egl.client.repository.core.statistic.ProfileStatisticRepository;
-import egl.client.repository.core.statistic.TopicStatisticRepository;
-import egl.client.service.model.AbstractEntityService;
 import javafx.beans.property.Property;
 
-public abstract class StatisticService
-        extends AbstractEntityService<ProfileStatistic, ProfileStatisticRepository> {
+public abstract class StatisticService {
 
     public static final String NO_DATA = Result.NO_DATA;
 
     protected final ProfileService profileService;
-    protected final ProfileStatisticRepository profileStatisticRepository;
-    protected final TopicStatisticRepository topicStatisticRepository;
+    protected final ProfileStatisticService profileStatisticService;
+    protected final TopicStatisticService topicStatisticService;
     protected final TaskStatisticService taskStatisticService;
-
-    protected final Map<Profile, ProfileStatistic> profileToStatisticCache;
 
     public StatisticService(
             ProfileService profileService,
-            ProfileStatisticRepository profileStatisticRepository,
-            TopicStatisticRepository topicStatisticRepository,
+            ProfileStatisticService profileStatisticService,
+            TopicStatisticService topicStatisticService,
             TaskStatisticService taskStatisticService) {
-        super(profileStatisticRepository);
         this.profileService = profileService;
-        this.profileStatisticRepository = profileStatisticRepository;
-        this.topicStatisticRepository = topicStatisticRepository;
+        this.profileStatisticService = profileStatisticService;
+        this.topicStatisticService = topicStatisticService;
         this.taskStatisticService = taskStatisticService;
-        this.profileToStatisticCache = new HashMap<>();
-    }
-
-    private ProfileStatistic findBy(Profile profile) {
-        var profileStatistic = profileStatisticRepository.findByProfile(profile);
-        if (null == profileStatistic) {
-            profileStatistic = profileStatisticRepository.save(new ProfileStatistic(profile));
-        }
-
-        return profileStatistic;
     }
 
     public Property<Profile> selectedProfileProperty() {
@@ -55,23 +36,14 @@ public abstract class StatisticService
     }
 
     public Optional<ProfileStatistic> getSelectedProfileStatistic() {
-        return Optional.ofNullable(profileService.getSelectedProfile())
-                .map(profile -> profileToStatisticCache.computeIfAbsent(profile, this::findBy));
+        return profileService.getSelectedProfile()
+                .map(profileStatisticService::findBy);
     }
 
     public Optional<TopicStatistic> findBy(Topic topic) {
-        return getSelectedProfileStatistic().map(profileStatistic -> findBy(profileStatistic, topic));
-    }
-
-    public TopicStatistic findBy(ProfileStatistic profileStatistic, Topic topic) {
-        return topicStatisticRepository
-                .findByProfileStatisticAndTopic(profileStatistic, topic)
-                .orElseGet(() -> addStatisticFor(profileStatistic, topic));
-    }
-
-    private TopicStatistic addStatisticFor(ProfileStatistic profileStatistic, Topic topic) {
-        var topicStatistic = new TopicStatistic(profileStatistic, topic);
-        return topicStatisticRepository.save(topicStatistic);
+        return getSelectedProfileStatistic().map(profileStatistic ->
+                topicStatisticService.findBy(profileStatistic, topic)
+        );
     }
 
     public Optional<TaskStatistic> findBy(Topic topic, Task task) {
