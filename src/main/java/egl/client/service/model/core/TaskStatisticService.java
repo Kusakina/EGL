@@ -48,8 +48,12 @@ public abstract class TaskStatisticService
         );
     }
 
+    private static String getTaskName(Task task) {
+        return task.getSceneName();
+    }
+
     public TaskStatistic findBy(TopicStatistic topicStatistic, Task task) {
-        var taskName = task.getName();
+        var taskName = getTaskName(task);
         var taskStatisticId = new TaskStatisticId(topicStatistic, taskName);
 
         return taskStatisticCache.computeIfAbsent(
