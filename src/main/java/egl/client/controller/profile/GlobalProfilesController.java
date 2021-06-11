@@ -2,8 +2,8 @@ package egl.client.controller.profile;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -12,7 +12,6 @@ import egl.client.model.core.profile.Credentials;
 import egl.client.model.core.profile.Profile;
 import egl.client.model.core.statistic.ProfileStatistic;
 import egl.client.model.core.statistic.RatingInfo;
-import egl.client.model.core.statistic.Result;
 import egl.client.model.core.statistic.TopicStatistic;
 import egl.client.model.core.task.Task;
 import egl.client.model.core.topic.Topic;
@@ -73,6 +72,8 @@ public class GlobalProfilesController extends ProfileSelectController {
 
     @FXML
     private TabPane taskRatingsTabPane;
+
+    private List<ProfileStatistic> profileStatistics;
 
     public GlobalProfilesController(
             FxmlService fxmlService,
@@ -137,6 +138,8 @@ public class GlobalProfilesController extends ProfileSelectController {
     }
 
     private void showRatings() {
+        profileStatistics = globalStatisticService.findAll();
+
         var topics = localTopicService.findAll();
         topicsListView.getItems().setAll(topics);
 
@@ -160,8 +163,8 @@ public class GlobalProfilesController extends ProfileSelectController {
     }
 
     private void showRegisteredTopic(TopicStatistic topicStatistic) {
-        var topic = topicStatistic.getTopic();
-        var topicTasks = localTopicTasksService.findBy(topic.getTopicType());
+        var globalTopic = topicStatistic.getTopic();
+        var topicTasks = localTopicTasksService.findBy(globalTopic.getTopicType());
 
         selectedTopicInfoText.setText("");
 
@@ -169,7 +172,7 @@ public class GlobalProfilesController extends ProfileSelectController {
         tasks.add(topicTasks.getTest().getTask());
 
         List<Tab> tabs = tasks.stream()
-                .map(task -> createRatingTab(topicStatistic, task, taskRatingsTabPane))
+                .map(task -> createRatingTab(globalTopic, task, taskRatingsTabPane))
                 .collect(Collectors.toList());
 
         taskRatingsTabPane.setDisable(false);
@@ -200,40 +203,28 @@ public class GlobalProfilesController extends ProfileSelectController {
 //                });
     }
 
-    private Tab createRatingTab(TopicStatistic topicStatistic, Task task, TabPane tabPane) {
+    private Tab createRatingTab(Topic globalTopic, Task task, TabPane tabPane) {
         Tab tab = new Tab(task.getName());
 
         var ratingListView = new RatingListView();
         tab.setContent(ratingListView);
 
-        List<RatingInfo> ratingInfos = new ArrayList<>();
-
-        var profileStatistics = globalStatisticService.findAll();
-        for (ProfileStatistic profileStatistic : profileStatistics) {
-            var taskStatistic = globalStatisticService
-                    .findBy(profileStatistic, topicStatistic.getTopic(), task);
-
-            var result = taskStatistic.getResult();
-
-            if (!Result.NONE.equals(result)) {
-                ratingInfos.add(
-                        new RatingInfo(
-                                profileStatistic.getProfile().getName(),
-                                result
-                        )
-                );
-            }
-        }
-
-        Collections.sort(ratingInfos);
-
-        // TODO made as const
-        if (ratingInfos.size() > 20) {
-            ratingInfos = ratingInfos.subList(0, 20);
-        }
+        List<RatingInfo> ratingInfos = profileStatistics.stream()
+                .map(profileStatistic ->
+                    globalStatisticService.tryFindBy(
+                        profileStatistic,
+                        globalTopic,
+                        task
+                    )
+                ).filter(Optional::isPresent)
+                .map(Optional::orElseThrow)
+                .map(RatingInfo::new)
+                .filter(RatingInfo::hasScores)
+                .sorted()
+                .limit(20) // TODO made as const
+                .collect(Collectors.toUnmodifiableList());
 
         ratingListView.setItems(ratingInfos);
-
         ratingListView.setPrefSize(
                 tabPane.getTabMaxWidth(),
                 tabPane.getTabMaxHeight()
@@ -259,10 +250,9 @@ public class GlobalProfilesController extends ProfileSelectController {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
 
-        editProfileButton.setOnAction(event -> {
-            profileService.getSelectedProfile()
-                    .ifPresent(this::onEdit);
-        });
+        editProfileButton.setOnAction(event ->
+                profileService.getSelectedProfile().ifPresent(this::onEdit)
+        );
 
         initLogin();
     }
