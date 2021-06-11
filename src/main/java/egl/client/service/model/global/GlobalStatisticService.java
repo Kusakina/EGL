@@ -1,7 +1,9 @@
 package egl.client.service.model.global;
 
+import java.util.List;
 import java.util.Optional;
 
+import egl.client.model.core.statistic.ProfileStatistic;
 import egl.client.model.core.statistic.TaskStatistic;
 import egl.client.model.core.statistic.TopicStatistic;
 import egl.client.model.core.task.Task;
@@ -47,5 +49,14 @@ public class GlobalStatisticService extends StatisticService {
         profileService.getSelectedProfile().ifPresent(author ->
                 globalTopicService.registerTopic(localTopicInfo, author)
         );
+    }
+
+    public List<ProfileStatistic> findAll() {
+        return profileStatisticService.findAll();
+    }
+
+    public Optional<TaskStatistic> tryFindBy(ProfileStatistic profileStatistic, Topic globalTopic, Task task) {
+        return topicStatisticService.tryFindBy(profileStatistic, globalTopic)
+                .flatMap(topicStatistic -> taskStatisticService.tryFindBy(topicStatistic, task));
     }
 }
