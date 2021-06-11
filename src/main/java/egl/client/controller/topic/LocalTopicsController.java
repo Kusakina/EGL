@@ -24,6 +24,7 @@ import egl.client.service.model.local.CategoryService;
 import egl.client.service.model.local.LocalStatisticService;
 import egl.client.service.model.local.LocalTopicInfoService;
 import egl.client.service.model.local.LocalTopicService;
+import egl.client.service.model.local.LocalTopicTasksService;
 import egl.client.view.table.column.ButtonColumn;
 import egl.client.view.table.list.InfoSelectEditRemoveListView;
 import javafx.beans.property.SimpleStringProperty;
@@ -45,6 +46,7 @@ public class LocalTopicsController implements Controller {
     private final FxmlService fxmlService;
     private final LocalTopicService localTopicService;
     private final LocalTopicInfoService localTopicInfoService;
+    private final LocalTopicTasksService localTopicTasksService;
     private final CategoryService categoryService;
     private final LocalStatisticService localStatisticService;
     private final GlobalStatisticService globalStatisticService;
@@ -139,14 +141,15 @@ public class LocalTopicsController implements Controller {
 
     private String getTopicStatistic(StatisticService statisticService, Topic topic) {
         return statisticService.findBy(topic).map(topicStatistic -> {
-            var taskStatistics = statisticService.findAllBy(topicStatistic);
+            var tasks = localTopicTasksService.findBy(topic.getTopicType()).getTasks();
 
-            var passedTasksCount = taskStatistics.stream()
+            var passedTasksCount = tasks.stream()
+                    .map(task -> statisticService.findBy(topicStatistic, task))
                     .map(TaskStatistic::getResult)
                     .filter(result -> result.getCorrectAnswers() > 0)
                     .count();
 
-            return String.format("Пройдено: %d", passedTasksCount);
+            return String.format("%d из %d", passedTasksCount, tasks.size());
         }).orElse(StatisticService.NO_DATA);
     }
 

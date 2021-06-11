@@ -8,7 +8,6 @@ import egl.client.model.core.task.Task;
 import egl.client.model.core.topic.Topic;
 import egl.client.model.local.topic.LocalTopicInfo;
 import egl.client.repository.global.statistic.GlobalProfileStatisticRepository;
-import egl.client.repository.global.statistic.GlobalTaskStatisticRepository;
 import egl.client.repository.global.statistic.GlobalTopicStatisticRepository;
 import egl.client.service.model.core.StatisticService;
 import org.springframework.stereotype.Service;
@@ -23,12 +22,12 @@ public class GlobalStatisticService extends StatisticService {
     public GlobalStatisticService(GlobalProfileService profileService,
                                   GlobalProfileStatisticRepository profileStatisticRepository,
                                   GlobalTopicStatisticRepository topicStatisticRepository,
-                                  GlobalTaskStatisticRepository taskStatisticRepository,
+                                  GlobalTaskStatisticService taskStatisticService,
                                   GlobalTopicService globalTopicService) {
         super(profileService,
                 profileStatisticRepository,
                 topicStatisticRepository,
-                taskStatisticRepository);
+                taskStatisticService);
         this.globalTopicService = globalTopicService;
     }
 

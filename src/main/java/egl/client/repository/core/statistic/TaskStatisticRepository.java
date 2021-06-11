@@ -1,6 +1,5 @@
 package egl.client.repository.core.statistic;
 
-import java.util.List;
 import java.util.Optional;
 
 import egl.client.model.core.statistic.TaskStatistic;
@@ -13,6 +12,4 @@ public interface TaskStatisticRepository extends EntityRepository<TaskStatistic>
             TopicStatistic topicStatistic,
             String taskName
     );
-
-    List<TaskStatistic> findAllByTopicStatistic(TopicStatistic topicStatistic);
 }
