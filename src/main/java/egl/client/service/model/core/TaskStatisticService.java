@@ -57,10 +57,18 @@ public abstract class TaskStatisticService
         return task.getSceneName();
     }
 
-    public TaskStatistic findBy(TopicStatistic topicStatistic, Task task) {
+    private TaskStatisticId toId(TopicStatistic topicStatistic, Task task) {
         var taskName = getTaskName(task);
-        var taskStatisticId = new TaskStatisticId(topicStatistic, taskName);
+        return new TaskStatisticId(topicStatistic, taskName);
+    }
 
+    public TaskStatistic findBy(TopicStatistic topicStatistic, Task task) {
+        var taskStatisticId = toId(topicStatistic, task);
         return findBy(taskStatisticId);
+    }
+
+    public Optional<TaskStatistic> tryFindBy(TopicStatistic topicStatistic, Task task) {
+        var taskStatisticId = toId(topicStatistic, task);
+        return tryFindBy(taskStatisticId);
     }
 }

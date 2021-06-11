@@ -43,6 +43,13 @@ public abstract class CachedEntityService<
         );
     }
 
+    protected Optional<T> tryFindBy(IdType entityId) {
+        var entity = entitiesCache.get(entityId);
+        if (null != entity) return Optional.of(entity);
+
+        return findById(entityId);
+    }
+
     @Override
     public void remove(T entity) {
         super.remove(entity);

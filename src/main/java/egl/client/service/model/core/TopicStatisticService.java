@@ -53,4 +53,9 @@ public abstract class TopicStatisticService
         var topicStatisticId = new TopicStatisticId(profileStatistic, topic);
         return findBy(topicStatisticId);
     }
+
+    public Optional<TopicStatistic> tryFindBy(ProfileStatistic profileStatistic, Topic topic) {
+        var topicStatisticId = new TopicStatisticId(profileStatistic, topic);
+        return tryFindBy(topicStatisticId);
+    }
 }
