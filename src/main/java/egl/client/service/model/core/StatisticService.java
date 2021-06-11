@@ -84,8 +84,11 @@ public abstract class StatisticService
     }
 
     public void update(Topic topic, Task task, Result result) {
-        findBy(topic).ifPresent(topicStatistic ->
-                taskStatisticService.update(topicStatistic, task, result)
-        );
+        findBy(topic).ifPresent(topicStatistic -> {
+            var taskStatistic = taskStatisticService.findBy(topicStatistic, task);
+            if (taskStatistic.updateBy(result)) {
+                taskStatisticService.save(taskStatistic);
+            }
+        });
     }
 }

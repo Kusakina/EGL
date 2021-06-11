@@ -63,11 +63,4 @@ public abstract class TaskStatisticService
 
         return findBy(taskStatisticId);
     }
-
-    public void update(TopicStatistic topicStatistic, Task task, Result result) {
-        var taskStatistic = findBy(topicStatistic, task);
-        if (taskStatistic.updateBy(result)) {
-            save(taskStatistic);
-        }
-    }
 }
