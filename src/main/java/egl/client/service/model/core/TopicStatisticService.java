@@ -1,56 +1,56 @@
 package egl.client.service.model.core;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Optional;
 
 import egl.client.model.core.statistic.ProfileStatistic;
 import egl.client.model.core.statistic.TopicStatistic;
 import egl.client.model.core.topic.Topic;
 import egl.client.repository.core.statistic.TopicStatisticRepository;
-import egl.client.service.model.AbstractEntityService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 public abstract class TopicStatisticService
-        extends AbstractEntityService<TopicStatistic, TopicStatisticRepository> {
+        extends CachedEntityService<
+            TopicStatistic,
+            TopicStatisticRepository,
+            TopicStatisticService.TopicStatisticId
+        > {
 
     @Data
     @RequiredArgsConstructor
-    private static class TopicStatisticId {
+    static class TopicStatisticId implements EntityId {
 
         private final ProfileStatistic profileStatistic;
         private final Topic topic;
     }
 
-    protected final Map<TopicStatisticId, TopicStatistic> topicStatisticCache;
-
-    public TopicStatisticService(TopicStatisticRepository topicStatisticRepository) {
-        super(topicStatisticRepository);
-        this.topicStatisticCache = new HashMap<>();
+    protected TopicStatisticService(TopicStatisticRepository repository) {
+        super(repository);
     }
 
-    private TopicStatistic findByInPersistence(TopicStatisticId topicStatisticId) {
-        var topicStatistic = repository
-                .findByProfileStatisticAndTopic(
+    @Override
+    protected Optional<TopicStatistic> findById(TopicStatisticId topicStatisticId) {
+        return repository.findByProfileStatisticAndTopic(
                         topicStatisticId.getProfileStatistic(),
                         topicStatisticId.getTopic()
                 );
+    }
 
-        return topicStatistic.orElseGet(
-                () -> save(
-                        new TopicStatistic(
-                                topicStatisticId.getProfileStatistic(),
-                                topicStatisticId.getTopic()
-                        )
-                )
+    @Override
+    protected TopicStatistic createWith(TopicStatisticId topicStatisticId) {
+        return new TopicStatistic(
+                topicStatisticId.getProfileStatistic(),
+                topicStatisticId.getTopic()
         );
+    }
+
+    @Override
+    protected TopicStatisticId getIdOf(TopicStatistic topicStatistic) {
+        return new TopicStatisticId(topicStatistic.getProfileStatistic(), topicStatistic.getTopic());
     }
 
     public TopicStatistic findBy(ProfileStatistic profileStatistic, Topic topic) {
         var topicStatisticId = new TopicStatisticId(profileStatistic, topic);
-
-        return topicStatisticCache.computeIfAbsent(
-                topicStatisticId, this::findByInPersistence
-        );
+        return findBy(topicStatisticId);
     }
 }
