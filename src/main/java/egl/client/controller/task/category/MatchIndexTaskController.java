@@ -6,8 +6,8 @@ import java.util.List;
 
 import egl.client.controller.task.LocalTaskController;
 import egl.client.model.local.topic.category.Category;
-import egl.client.service.model.topic.CategoryService;
-import egl.client.service.model.topic.LocalTopicInfoService;
+import egl.client.service.model.local.CategoryService;
+import egl.client.service.model.local.LocalTopicInfoService;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
 import net.rgielen.fxweaver.core.FxmlView;

@@ -1,4 +1,4 @@
-package egl.client.service.model.statistic;
+package egl.client.service.model.global;
 
 import java.util.Optional;
 
@@ -10,8 +10,7 @@ import egl.client.model.local.topic.LocalTopicInfo;
 import egl.client.repository.global.statistic.GlobalProfileStatisticRepository;
 import egl.client.repository.global.statistic.GlobalTaskStatisticRepository;
 import egl.client.repository.global.statistic.GlobalTopicStatisticRepository;
-import egl.client.service.model.profile.GlobalProfileService;
-import egl.client.service.model.topic.GlobalTopicService;
+import egl.client.service.model.core.StatisticService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

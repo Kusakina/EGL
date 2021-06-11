@@ -1,4 +1,4 @@
-package egl.client.service.model.profile;
+package egl.client.service.model.core;
 
 import egl.client.model.core.profile.Profile;
 import egl.client.service.model.AbstractEntityService;

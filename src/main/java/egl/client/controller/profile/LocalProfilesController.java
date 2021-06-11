@@ -1,15 +1,15 @@
 package egl.client.controller.profile;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import egl.client.model.core.profile.Profile;
 import egl.client.service.FxmlService;
-import egl.client.service.model.profile.LocalProfileService;
+import egl.client.service.model.local.LocalProfileService;
 import egl.client.view.table.list.InfoSelectEditRemoveListView;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableRow;
 import org.springframework.stereotype.Component;
-
-import java.net.URL;
-import java.util.ResourceBundle;
 
 @Component
 public class LocalProfilesController extends ProfileSelectController {

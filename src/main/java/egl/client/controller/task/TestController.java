@@ -7,7 +7,7 @@ import egl.client.controller.Controller;
 import egl.client.model.core.task.Task;
 import egl.client.model.core.task.Test;
 import egl.client.service.FxmlService;
-import egl.client.service.model.task.LocalTestService;
+import egl.client.service.model.local.LocalTestService;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Tab;

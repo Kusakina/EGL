@@ -1,4 +1,4 @@
-package egl.client.service.model.statistic;
+package egl.client.service.model.core;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +16,6 @@ import egl.client.repository.core.statistic.ProfileStatisticRepository;
 import egl.client.repository.core.statistic.TaskStatisticRepository;
 import egl.client.repository.core.statistic.TopicStatisticRepository;
 import egl.client.service.model.AbstractEntityService;
-import egl.client.service.model.profile.ProfileService;
 import javafx.beans.property.Property;
 
 public abstract class StatisticService

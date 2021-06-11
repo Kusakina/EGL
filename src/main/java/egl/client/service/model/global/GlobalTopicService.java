@@ -1,4 +1,4 @@
-package egl.client.service.model.topic;
+package egl.client.service.model.global;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,6 +10,7 @@ import egl.client.model.global.topic.GlobalTopicInfo;
 import egl.client.model.local.topic.LocalTopicInfo;
 import egl.client.repository.global.topic.GlobalTopicRepository;
 import egl.client.service.model.AbstractEntityService;
+import egl.client.service.model.local.LocalTopicInfoService;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -31,11 +32,11 @@ public class GlobalTopicService extends AbstractEntityService<Topic, GlobalTopic
     }
 
     private Optional<Topic> remoteFindByLocal(LocalTopicInfo localTopicInfo) {
-        return repository.findById(localTopicInfo.getGlobalId())
-            .filter(globalTopic -> {
-                var globalTopicInfo = globalTopicInfoService.findBy(globalTopic);
-                return globalTopicInfo.getLocalHashCode() == localTopicInfo.getGlobalHashCode();
-            });
+        return repository.findById(localTopicInfo.getGlobalId());
+//            .filter(globalTopic -> {
+//                var globalTopicInfo = globalTopicInfoService.findBy(globalTopic);
+//                return globalTopicInfo.getLocalHashCode() == localTopicInfo.getGlobalHashCode();
+//            });
     }
 
     public Optional<Topic> findByLocal(Topic localTopic) {

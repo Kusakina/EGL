@@ -1,11 +1,11 @@
 package egl.client.controller.task;
 
-import egl.client.model.core.DatabaseEntity;
-import egl.client.service.model.topic.LocalTopicInfoService;
-import egl.client.service.model.topic.SpecificLocalTopicInfoService;
-
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import egl.client.model.core.DatabaseEntity;
+import egl.client.service.model.local.LocalTopicInfoService;
+import egl.client.service.model.local.SpecificLocalTopicInfoService;
 
 public abstract class TheoryTaskController<T extends DatabaseEntity> extends LocalTaskController<T> {
 

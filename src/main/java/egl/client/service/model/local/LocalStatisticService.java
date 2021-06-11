@@ -1,9 +1,9 @@
-package egl.client.service.model.statistic;
+package egl.client.service.model.local;
 
 import egl.client.repository.local.statistic.LocalProfileStatisticRepository;
 import egl.client.repository.local.statistic.LocalTaskStatisticRepository;
 import egl.client.repository.local.statistic.LocalTopicStatisticRepository;
-import egl.client.service.model.profile.LocalProfileService;
+import egl.client.service.model.core.StatisticService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

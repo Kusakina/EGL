@@ -1,4 +1,4 @@
-package egl.client.service.model.profile;
+package egl.client.service.model.global;
 
 import egl.client.model.core.profile.Credentials;
 import egl.client.model.core.profile.Profile;

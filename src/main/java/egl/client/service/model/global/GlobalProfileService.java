@@ -1,6 +1,7 @@
-package egl.client.service.model.profile;
+package egl.client.service.model.global;
 
 import egl.client.repository.global.profile.GlobalProfileRepository;
+import egl.client.service.model.core.ProfileService;
 import org.springframework.stereotype.Service;
 
 @Service
