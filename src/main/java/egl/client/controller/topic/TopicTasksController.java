@@ -102,8 +102,11 @@ public class TopicTasksController implements Controller {
     }
 
     private void updateStatistic(StatisticService statisticService, Task task, Result result) {
-        statisticService.update(controllerTopic, task, result);
-        tasksListView.refresh();
+        statisticService.fromLocal(controllerTopic)
+            .ifPresent(topic -> {
+                statisticService.update(topic, task, result);
+                tasksListView.refresh();
+            });
     }
 
     @Override
