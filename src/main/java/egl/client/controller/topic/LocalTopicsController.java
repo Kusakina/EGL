@@ -141,9 +141,11 @@ public class LocalTopicsController implements Controller {
         });
     }
 
-    private String getTopicStatistic(StatisticService statisticService, Topic topic) {
-        return statisticService.findBy(topic).map(topicStatistic -> {
-            var tasks = localTopicTasksService.findBy(topic.getTopicType()).getTasks();
+    private String getTopicStatistic(StatisticService statisticService, Topic localTopic) {
+        return statisticService.fromLocal(localTopic)
+                .flatMap(statisticService::findBy)
+                .map(topicStatistic -> {
+            var tasks = localTopicTasksService.findBy(localTopic.getTopicType()).getTasks();
 
             Function<TaskStatistic, Result> resultGenerator = TaskStatistic::getResult;
 

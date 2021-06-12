@@ -63,4 +63,6 @@ public abstract class StatisticService {
             }
         });
     }
+
+    public abstract Optional<Topic> fromLocal(Topic topic);
 }

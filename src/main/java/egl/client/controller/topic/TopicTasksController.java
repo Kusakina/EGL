@@ -64,7 +64,9 @@ public class TopicTasksController implements Controller {
     }
 
     private String getTaskStatistic(StatisticService statisticService, Task task) {
-        return statisticService.findBy(controllerTopic, task)
+        return statisticService
+            .fromLocal(controllerTopic)
+            .flatMap(topic -> statisticService.findBy(topic, task))
             .map(taskStatistic -> {
                 Result result = taskStatistic.getResult();
                 if (Result.NONE.equals(result)) {
