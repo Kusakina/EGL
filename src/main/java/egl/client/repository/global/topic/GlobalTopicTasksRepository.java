@@ -1,13 +1,10 @@
 package egl.client.repository.global.topic;
 
-import javax.persistence.PersistenceContext;
-
 import egl.client.model.core.topic.TopicTasks;
-import egl.client.repository.core.EntityRepository;
+import egl.client.repository.core.task.TopicTasksRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-@Transactional("globalTransactionManager")
-@PersistenceContext(name = "globalEntityManager")
-public interface GlobalTopicTasksRepository extends EntityRepository<TopicTasks> { }
+public interface GlobalTopicTasksRepository extends TopicTasksRepository,
+        JpaRepository<TopicTasks, Long> { }

@@ -1,7 +1,7 @@
 package egl.client.repository.local;
 
 import egl.client.model.local.topic.MigrationInfo;
-import egl.client.repository.core.EntityRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface MigrationRepository extends EntityRepository<MigrationInfo> {
+public interface MigrationRepository extends JpaRepository<MigrationInfo, Long> {
 }

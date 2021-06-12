@@ -1,7 +1,15 @@
 package egl.client.repository.core;
 
-import egl.client.model.core.DatabaseEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
+import java.util.Optional;
 
-public interface EntityRepository<T extends DatabaseEntity> extends JpaRepository<T, Long> {
+import egl.client.model.core.DatabaseEntity;
+
+public interface EntityRepository<T extends DatabaseEntity> {
+
+    <S extends T> S save(S value);
+    void delete(T value);
+
+    Optional<T> findById(long id);
+    List<T> findAll();
 }
