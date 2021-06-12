@@ -21,7 +21,8 @@ import egl.client.service.FileService;
 import egl.client.service.FxmlService;
 import egl.client.service.model.EntityService;
 import egl.client.service.model.core.StatisticService;
-import egl.client.service.model.global.GlobalStatisticService;
+import egl.client.service.model.core.StatisticServiceHolder;
+import egl.client.service.model.global.GlobalStatisticServiceHolder;
 import egl.client.service.model.local.CategoryService;
 import egl.client.service.model.local.LocalStatisticService;
 import egl.client.service.model.local.LocalTopicInfoService;
@@ -51,7 +52,7 @@ public class LocalTopicsController implements Controller {
     private final LocalTopicTasksService localTopicTasksService;
     private final CategoryService categoryService;
     private final LocalStatisticService localStatisticService;
-    private final GlobalStatisticService globalStatisticService;
+    private final GlobalStatisticServiceHolder globalStatisticService;
 
     @FXML private InfoSelectEditRemoveListView<Topic> categoriesListView;
     @FXML private TableColumn<Topic, String> topicLocalStatisticColumn;
@@ -132,7 +133,7 @@ public class LocalTopicsController implements Controller {
 
     private void initializeStatisticColumn(
             TableColumn<Topic, String> topicStatisticColumn,
-            StatisticService statisticService
+            StatisticServiceHolder statisticService
     ) {
         topicStatisticColumn.setCellValueFactory(param -> {
             var topic = param.getValue();
@@ -141,9 +142,8 @@ public class LocalTopicsController implements Controller {
         });
     }
 
-    private String getTopicStatistic(StatisticService statisticService, Topic localTopic) {
-        return statisticService.fromLocal(localTopic)
-                .flatMap(statisticService::findBy)
+    private String getTopicStatistic(StatisticServiceHolder statisticService, Topic localTopic) {
+        return statisticService.findBy(localTopic)
                 .map(topicStatistic -> {
             var tasks = localTopicTasksService.findBy(localTopic.getTopicType()).getTasks();
 
@@ -166,7 +166,7 @@ public class LocalTopicsController implements Controller {
 
     private void initSelectProfileButton(
             Button selectProfileButton,
-            StatisticService statisticService,
+            StatisticServiceHolder statisticService,
             Class<? extends Controller> selectProfileControllerClass,
             String profileTypeName) {
         String profileText = String.format("%s профиль", profileTypeName);

@@ -10,7 +10,8 @@ import egl.client.model.core.task.Task;
 import egl.client.model.core.topic.Topic;
 import egl.client.service.FxmlService;
 import egl.client.service.model.core.StatisticService;
-import egl.client.service.model.global.GlobalStatisticService;
+import egl.client.service.model.core.StatisticServiceHolder;
+import egl.client.service.model.global.GlobalStatisticServiceHolder;
 import egl.client.service.model.local.LocalStatisticService;
 import egl.client.service.model.local.LocalTopicTasksService;
 import egl.client.view.table.list.InfoSelectListView;
@@ -29,7 +30,7 @@ public class TopicTasksController implements Controller {
     private final FxmlService fxmlService;
     private final LocalTopicTasksService localTopicTasksService;
     private final LocalStatisticService localStatisticService;
-    private final GlobalStatisticService globalStatisticService;
+    private final GlobalStatisticServiceHolder globalStatisticService;
 
     @FXML private InfoSelectListView<Task> tasksListView;
     @FXML private TableColumn<Task, String> taskLocalStatisticColumn;
@@ -55,7 +56,7 @@ public class TopicTasksController implements Controller {
 
     private void initializeStatisticColumn(
             TableColumn<Task, String> taskStatisticColumn,
-            StatisticService statisticService) {
+            StatisticServiceHolder statisticService) {
         taskStatisticColumn.setCellValueFactory(param -> {
             var task = param.getValue();
             var statisticString = getTaskStatistic(statisticService, task);
@@ -63,10 +64,9 @@ public class TopicTasksController implements Controller {
         });
     }
 
-    private String getTaskStatistic(StatisticService statisticService, Task task) {
-        return statisticService
-            .fromLocal(controllerTopic)
-            .flatMap(topic -> statisticService.findBy(topic, task))
+    private String getTaskStatistic(StatisticServiceHolder statisticService, Task task) {
+        return statisticService.findBy(controllerTopic)
+            .map(topicStatistic -> statisticService.findBy(topicStatistic, task))
             .map(taskStatistic -> {
                 Result result = taskStatistic.getResult();
                 if (Result.NONE.equals(result)) {
@@ -101,10 +101,10 @@ public class TopicTasksController implements Controller {
         updateStatistic(globalStatisticService, task, result);
     }
 
-    private void updateStatistic(StatisticService statisticService, Task task, Result result) {
-        statisticService.fromLocal(controllerTopic)
-            .ifPresent(topic -> {
-                statisticService.update(topic, task, result);
+    private void updateStatistic(StatisticServiceHolder statisticService, Task task, Result result) {
+        statisticService.findBy(controllerTopic)
+            .ifPresent(topicStatistic -> {
+                statisticService.update(topicStatistic, task, result);
                 tasksListView.refresh();
             });
     }

@@ -18,7 +18,7 @@ import egl.client.model.core.topic.Topic;
 import egl.client.service.FxmlService;
 import egl.client.service.model.global.GlobalCredentialsService;
 import egl.client.service.model.global.GlobalProfileService;
-import egl.client.service.model.global.GlobalStatisticService;
+import egl.client.service.model.global.GlobalStatisticServiceHolder;
 import egl.client.service.model.local.LocalTopicService;
 import egl.client.service.model.local.LocalTopicTasksService;
 import egl.client.view.text.LabeledTextField;
@@ -36,7 +36,7 @@ import org.springframework.stereotype.Component;
 public class GlobalProfilesController extends ProfileSelectController {
 
     private final GlobalCredentialsService globalCredentialsService;
-    private final GlobalStatisticService globalStatisticService;
+    private final GlobalStatisticServiceHolder globalStatisticService;
     private final LocalTopicService localTopicService;
     private final LocalTopicTasksService localTopicTasksService;
 
@@ -75,15 +75,13 @@ public class GlobalProfilesController extends ProfileSelectController {
 
     private List<ProfileStatistic> profileStatistics;
 
-    public GlobalProfilesController(
-            FxmlService fxmlService,
-            GlobalProfileService globalProfileService,
-            GlobalCredentialsService globalCredentialsService,
-            GlobalStatisticService globalStatisticService,
-            LocalTopicService localTopicService,
-            LocalTopicTasksService localTopicTasksService
-    ) {
-        super(fxmlService, globalProfileService);
+    public GlobalProfilesController(FxmlService fxmlService,
+                                    GlobalProfileService profileService,
+                                    GlobalCredentialsService globalCredentialsService,
+                                    GlobalStatisticServiceHolder globalStatisticService,
+                                    LocalTopicService localTopicService,
+                                    LocalTopicTasksService localTopicTasksService) {
+        super(fxmlService, profileService);
         this.globalCredentialsService = globalCredentialsService;
         this.globalStatisticService = globalStatisticService;
         this.localTopicService = localTopicService;
@@ -155,8 +153,7 @@ public class GlobalProfilesController extends ProfileSelectController {
             return;
         }
 
-        globalStatisticService.fromLocal(topic)
-                .flatMap(globalStatisticService::findBy)
+        globalStatisticService.findBy(topic)
                 .ifPresentOrElse(
                         this::showRegisteredTopic,
                         this::showNotRegisteredTopic

@@ -35,8 +35,12 @@ public abstract class StatisticService {
         return profileService.selectedProfileProperty();
     }
 
-    public Optional<ProfileStatistic> getSelectedProfileStatistic() {
-        return profileService.getSelectedProfile()
+    public Optional<Profile> getSelectedProfile() {
+        return profileService.getSelectedProfile();
+    }
+
+    private Optional<ProfileStatistic> getSelectedProfileStatistic() {
+        return getSelectedProfile()
                 .map(profileStatisticService::findBy);
     }
 
@@ -55,14 +59,10 @@ public abstract class StatisticService {
         return taskStatisticService.findBy(topicStatistic, task);
     }
 
-    public void update(Topic topic, Task task, Result result) {
-        findBy(topic).ifPresent(topicStatistic -> {
-            var taskStatistic = taskStatisticService.findBy(topicStatistic, task);
-            if (taskStatistic.updateBy(result)) {
-                taskStatisticService.save(taskStatistic);
-            }
-        });
+    public void update(TopicStatistic topicStatistic, Task task, Result result) {
+        var taskStatistic = findBy(topicStatistic, task);
+        if (taskStatistic.updateBy(result)) {
+            taskStatisticService.save(taskStatistic);
+        }
     }
-
-    public abstract Optional<Topic> fromLocal(Topic topic);
 }
