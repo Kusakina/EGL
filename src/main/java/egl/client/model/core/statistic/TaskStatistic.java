@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 import egl.client.model.core.DatabaseEntity;
-import egl.client.model.core.task.Task;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -30,10 +29,10 @@ public class TaskStatistic extends DatabaseEntity {
         this(Result.NONE);
     }
 
-    public TaskStatistic(TopicStatistic topicStatistic, Task task, Result result) {
+    public TaskStatistic(TopicStatistic topicStatistic, String taskName, Result result) {
         this(result);
         this.topicStatistic = topicStatistic;
-        this.taskName = task.getName();
+        this.taskName = taskName;
     }
 
     private TaskStatistic(Result result) {

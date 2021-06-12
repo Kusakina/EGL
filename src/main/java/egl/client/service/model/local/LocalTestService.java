@@ -1,4 +1,4 @@
-package egl.client.service.model.task;
+package egl.client.service.model.local;
 
 import egl.client.model.core.task.Task;
 import egl.client.model.core.task.Test;

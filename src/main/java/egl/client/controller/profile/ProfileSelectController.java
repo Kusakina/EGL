@@ -1,15 +1,15 @@
 package egl.client.controller.profile;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import egl.client.controller.Controller;
 import egl.client.model.core.profile.Profile;
 import egl.client.service.FxmlService;
-import egl.client.service.model.profile.ProfileService;
+import egl.client.service.model.core.ProfileService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import lombok.RequiredArgsConstructor;
-
-import java.net.URL;
-import java.util.ResourceBundle;
 
 @RequiredArgsConstructor
 public abstract class ProfileSelectController implements Controller {

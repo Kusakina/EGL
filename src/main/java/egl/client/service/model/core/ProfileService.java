@@ -1,16 +1,18 @@
-package egl.client.service.model.profile;
+package egl.client.service.model.core;
+
+import java.util.Optional;
 
 import egl.client.model.core.profile.Profile;
+import egl.client.repository.core.profile.ProfileRepository;
 import egl.client.service.model.AbstractEntityService;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
-import org.springframework.data.jpa.repository.JpaRepository;
 
-public abstract class ProfileService extends AbstractEntityService<Profile, JpaRepository<Profile, Long>> {
+public abstract class ProfileService extends AbstractEntityService<Profile, ProfileRepository> {
 
     private final Property<Profile> selectedProfileProperty;
 
-    public ProfileService(JpaRepository<Profile, Long> repository) {
+    public ProfileService(ProfileRepository repository) {
         super(repository);
         this.selectedProfileProperty = new SimpleObjectProperty<>();
     }
@@ -23,7 +25,9 @@ public abstract class ProfileService extends AbstractEntityService<Profile, JpaR
         return selectedProfileProperty;
     }
 
-    public Profile getSelectedProfile() {
-        return selectedProfileProperty.getValue();
+    public Optional<Profile> getSelectedProfile() {
+        return Optional.ofNullable(
+                selectedProfileProperty.getValue()
+        );
     }
 }

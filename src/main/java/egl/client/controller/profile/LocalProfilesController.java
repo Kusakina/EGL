@@ -1,15 +1,15 @@
 package egl.client.controller.profile;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import egl.client.model.core.profile.Profile;
 import egl.client.service.FxmlService;
-import egl.client.service.model.profile.LocalProfileService;
+import egl.client.service.model.local.LocalProfileService;
 import egl.client.view.table.list.InfoSelectEditRemoveListView;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableRow;
 import org.springframework.stereotype.Component;
-
-import java.net.URL;
-import java.util.ResourceBundle;
 
 @Component
 public class LocalProfilesController extends ProfileSelectController {
@@ -36,10 +36,11 @@ public class LocalProfilesController extends ProfileSelectController {
                 if (profile == null) {
                     setStyle("");
                 } else {
-                    var selectedProfile = profileService.getSelectedProfile();
-                    boolean selected = selectedProfile != null && selectedProfile.equals(profile);
+                    String color = profileService.getSelectedProfile()
+                            .filter(selectedProfile -> selectedProfile.equals(profile))
+                            .map(selectedProfile -> "#06c806")
+                            .orElse("white");
 
-                    String color = (selected ? "#06c806" : "white");
                     setStyle(String.format("-fx-text-inner-color: black; -fx-background-color: %s;", color));
                 }
             }

@@ -9,7 +9,7 @@ import egl.client.model.core.topic.TopicTasks;
 import egl.client.model.core.topic.TopicType;
 import egl.client.model.local.topic.MigrationInfo;
 import egl.client.repository.local.MigrationRepository;
-import egl.client.service.model.topic.LocalTopicTasksService;
+import egl.client.service.model.local.LocalTopicTasksService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

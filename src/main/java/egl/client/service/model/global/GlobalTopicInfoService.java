@@ -1,4 +1,4 @@
-package egl.client.service.model.topic;
+package egl.client.service.model.global;
 
 import egl.client.model.core.topic.Topic;
 import egl.client.model.global.topic.GlobalTopicInfo;

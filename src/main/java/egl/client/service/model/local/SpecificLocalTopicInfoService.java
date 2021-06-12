@@ -1,4 +1,4 @@
-package egl.client.service.model.topic;
+package egl.client.service.model.local;
 
 import egl.client.model.core.DatabaseEntity;
 import egl.client.model.local.topic.LocalTopicInfo;

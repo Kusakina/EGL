@@ -2,7 +2,6 @@ package egl.client.controller.profile;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -13,16 +12,15 @@ import egl.client.model.core.profile.Credentials;
 import egl.client.model.core.profile.Profile;
 import egl.client.model.core.statistic.ProfileStatistic;
 import egl.client.model.core.statistic.RatingInfo;
-import egl.client.model.core.statistic.Result;
 import egl.client.model.core.statistic.TopicStatistic;
 import egl.client.model.core.task.Task;
 import egl.client.model.core.topic.Topic;
 import egl.client.service.FxmlService;
-import egl.client.service.model.profile.GlobalCredentialsService;
-import egl.client.service.model.profile.GlobalProfileService;
-import egl.client.service.model.statistic.GlobalStatisticService;
-import egl.client.service.model.topic.LocalTopicService;
-import egl.client.service.model.topic.LocalTopicTasksService;
+import egl.client.service.model.global.GlobalCredentialsService;
+import egl.client.service.model.global.GlobalProfileService;
+import egl.client.service.model.global.GlobalStatisticServiceHolder;
+import egl.client.service.model.local.LocalTopicService;
+import egl.client.service.model.local.LocalTopicTasksService;
 import egl.client.view.text.LabeledTextField;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -38,7 +36,7 @@ import org.springframework.stereotype.Component;
 public class GlobalProfilesController extends ProfileSelectController {
 
     private final GlobalCredentialsService globalCredentialsService;
-    private final GlobalStatisticService globalStatisticService;
+    private final GlobalStatisticServiceHolder globalStatisticService;
     private final LocalTopicService localTopicService;
     private final LocalTopicTasksService localTopicTasksService;
 
@@ -75,15 +73,15 @@ public class GlobalProfilesController extends ProfileSelectController {
     @FXML
     private TabPane taskRatingsTabPane;
 
-    public GlobalProfilesController(
-            FxmlService fxmlService,
-            GlobalProfileService globalProfileService,
-            GlobalCredentialsService globalCredentialsService,
-            GlobalStatisticService globalStatisticService,
-            LocalTopicService localTopicService,
-            LocalTopicTasksService localTopicTasksService
-    ) {
-        super(fxmlService, globalProfileService);
+    private List<ProfileStatistic> profileStatistics;
+
+    public GlobalProfilesController(FxmlService fxmlService,
+                                    GlobalProfileService profileService,
+                                    GlobalCredentialsService globalCredentialsService,
+                                    GlobalStatisticServiceHolder globalStatisticService,
+                                    LocalTopicService localTopicService,
+                                    LocalTopicTasksService localTopicTasksService) {
+        super(fxmlService, profileService);
         this.globalCredentialsService = globalCredentialsService;
         this.globalStatisticService = globalStatisticService;
         this.localTopicService = localTopicService;
@@ -128,17 +126,18 @@ public class GlobalProfilesController extends ProfileSelectController {
     private void showSelectedProfile() {
         activitiesTabPane.getSelectionModel().select(globalProfileTab);
 
-        var selectedProfile = profileService.getSelectedProfile();
+        var selectedProfileName = profileService.getSelectedProfile().map(Profile::getName);
 
-        boolean selected = Optional.ofNullable(selectedProfile).isPresent();
-        String profileText = (selected ? selectedProfile.getName() : "не выбран");
+        String profileText = selectedProfileName.orElse("не выбран");
         loginInfoText.setText("Глобальный профиль: " + profileText);
 
-        editProfileButton.setVisible(selected);
-        globalRatingsTab.setDisable(!selected);
+        editProfileButton.setVisible(selectedProfileName.isPresent());
+        globalRatingsTab.setDisable(selectedProfileName.isEmpty());
     }
 
     private void showRatings() {
+        profileStatistics = globalStatisticService.findAll();
+
         var topics = localTopicService.findAll();
         topicsListView.getItems().setAll(topics);
 
@@ -162,8 +161,8 @@ public class GlobalProfilesController extends ProfileSelectController {
     }
 
     private void showRegisteredTopic(TopicStatistic topicStatistic) {
-        var topic = topicStatistic.getTopic();
-        var topicTasks = localTopicTasksService.findBy(topic.getTopicType());
+        var globalTopic = topicStatistic.getTopic();
+        var topicTasks = localTopicTasksService.findBy(globalTopic.getTopicType());
 
         selectedTopicInfoText.setText("");
 
@@ -171,24 +170,25 @@ public class GlobalProfilesController extends ProfileSelectController {
         tasks.add(topicTasks.getTest().getTask());
 
         List<Tab> tabs = tasks.stream()
-                .map(task -> createRatingTab(topicStatistic, task, taskRatingsTabPane))
+                .map(task -> createRatingTab(globalTopic, task, taskRatingsTabPane))
                 .collect(Collectors.toList());
 
         taskRatingsTabPane.setDisable(false);
         taskRatingsTabPane.getTabs().setAll(tabs);
 
-        taskRatingsTabPane.getSelectionModel().selectedIndexProperty().addListener(
-                (observableValue, oldIndex, newIndexNumber) -> {
-                    int newIndex = newIndexNumber.intValue();
-                    if (newIndex < 0) {
-                        return;
-                    }
-
-                    var task = tasks.get(newIndex);
-
-                    // FIXME
-                    // пытается искать по локальному, но он уже глобальный
-                    // сейчас этот кусок не актуален, так как таблицы маленькие
+        // FIXME
+        // пытается искать по локальному, но он уже глобальный
+        // сейчас этот кусок не актуален, так как таблицы маленькие
+//        taskRatingsTabPane.getSelectionModel().selectedIndexProperty().addListener(
+//                (observableValue, oldIndex, newIndexNumber) -> {
+//                    int newIndex = newIndexNumber.intValue();
+//                    if (newIndex < 0) {
+//                        return;
+//                    }
+//
+//                    var task = tasks.get(newIndex);
+//
+//
 //                    var result = globalStatisticService
 //                            .findBy(topicStatistic.getTopic(), task)
 //                            .map(TaskStatistic::getResult)
@@ -198,43 +198,31 @@ public class GlobalProfilesController extends ProfileSelectController {
 //                            globalStatisticService.selectedProfileProperty().getValue();
 //
 //                    selectedTopicInfoText.setText(String.format("%s (%s)", selfProfile.getName(), result));
-                });
+//                });
     }
 
-    private Tab createRatingTab(TopicStatistic topicStatistic, Task task, TabPane tabPane) {
+    private Tab createRatingTab(Topic globalTopic, Task task, TabPane tabPane) {
         Tab tab = new Tab(task.getName());
 
         var ratingListView = new RatingListView();
         tab.setContent(ratingListView);
 
-        List<RatingInfo> ratingInfos = new ArrayList<>();
-
-        var profileStatistics = globalStatisticService.findAll();
-        for (ProfileStatistic profileStatistic : profileStatistics) {
-            var taskStatistic = globalStatisticService
-                    .findBy(profileStatistic, topicStatistic.getTopic(), task);
-
-            var result = taskStatistic.getResult();
-
-            if (!Result.NONE.equals(result)) {
-                ratingInfos.add(
-                        new RatingInfo(
-                                profileStatistic.getProfile().getName(),
-                                result
-                        )
-                );
-            }
-        }
-
-        Collections.sort(ratingInfos);
-
-        // TODO made as const
-        if (ratingInfos.size() > 20) {
-            ratingInfos = ratingInfos.subList(0, 20);
-        }
+        List<RatingInfo> ratingInfos = profileStatistics.stream()
+                .map(profileStatistic ->
+                    globalStatisticService.tryFindBy(
+                        profileStatistic,
+                        globalTopic,
+                        task
+                    )
+                ).filter(Optional::isPresent)
+                .map(Optional::orElseThrow)
+                .map(RatingInfo::new)
+                .filter(RatingInfo::hasScores)
+                .sorted()
+                .limit(20) // TODO made as const
+                .collect(Collectors.toUnmodifiableList());
 
         ratingListView.setItems(ratingInfos);
-
         ratingListView.setPrefSize(
                 tabPane.getTabMaxWidth(),
                 tabPane.getTabMaxHeight()
@@ -260,7 +248,9 @@ public class GlobalProfilesController extends ProfileSelectController {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         super.initialize(url, resourceBundle);
 
-        editProfileButton.setOnAction(event -> onEdit(profileService.getSelectedProfile()));
+        editProfileButton.setOnAction(event ->
+                profileService.getSelectedProfile().ifPresent(this::onEdit)
+        );
 
         initLogin();
     }

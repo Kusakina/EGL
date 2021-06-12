@@ -4,12 +4,14 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import egl.client.controller.Controller;
 import egl.client.controller.WindowController;
 import egl.client.controller.profile.GlobalProfilesController;
 import egl.client.controller.profile.LocalProfilesController;
 import egl.client.model.core.profile.Profile;
+import egl.client.model.core.statistic.Result;
 import egl.client.model.core.statistic.TaskStatistic;
 import egl.client.model.core.topic.Topic;
 import egl.client.model.core.topic.TopicType;
@@ -18,12 +20,14 @@ import egl.client.model.local.topic.category.Category;
 import egl.client.service.FileService;
 import egl.client.service.FxmlService;
 import egl.client.service.model.EntityService;
-import egl.client.service.model.statistic.GlobalStatisticService;
-import egl.client.service.model.statistic.LocalStatisticService;
-import egl.client.service.model.statistic.StatisticService;
-import egl.client.service.model.topic.CategoryService;
-import egl.client.service.model.topic.LocalTopicInfoService;
-import egl.client.service.model.topic.LocalTopicService;
+import egl.client.service.model.core.StatisticService;
+import egl.client.service.model.core.StatisticServiceHolder;
+import egl.client.service.model.global.GlobalStatisticServiceHolder;
+import egl.client.service.model.local.CategoryService;
+import egl.client.service.model.local.LocalStatisticService;
+import egl.client.service.model.local.LocalTopicInfoService;
+import egl.client.service.model.local.LocalTopicService;
+import egl.client.service.model.local.LocalTopicTasksService;
 import egl.client.view.table.column.ButtonColumn;
 import egl.client.view.table.list.InfoSelectEditRemoveListView;
 import javafx.beans.property.SimpleStringProperty;
@@ -45,9 +49,10 @@ public class LocalTopicsController implements Controller {
     private final FxmlService fxmlService;
     private final LocalTopicService localTopicService;
     private final LocalTopicInfoService localTopicInfoService;
+    private final LocalTopicTasksService localTopicTasksService;
     private final CategoryService categoryService;
     private final LocalStatisticService localStatisticService;
-    private final GlobalStatisticService globalStatisticService;
+    private final GlobalStatisticServiceHolder globalStatisticService;
 
     @FXML private InfoSelectEditRemoveListView<Topic> categoriesListView;
     @FXML private TableColumn<Topic, String> topicLocalStatisticColumn;
@@ -128,7 +133,7 @@ public class LocalTopicsController implements Controller {
 
     private void initializeStatisticColumn(
             TableColumn<Topic, String> topicStatisticColumn,
-            StatisticService statisticService
+            StatisticServiceHolder statisticService
     ) {
         topicStatisticColumn.setCellValueFactory(param -> {
             var topic = param.getValue();
@@ -137,16 +142,20 @@ public class LocalTopicsController implements Controller {
         });
     }
 
-    private String getTopicStatistic(StatisticService statisticService, Topic topic) {
-        return statisticService.findBy(topic).map(topicStatistic -> {
-            var taskStatistics = statisticService.findAllBy(topicStatistic);
+    private String getTopicStatistic(StatisticServiceHolder statisticService, Topic localTopic) {
+        return statisticService.findBy(localTopic)
+                .map(topicStatistic -> {
+            var tasks = localTopicTasksService.findBy(localTopic.getTopicType()).getTasks();
 
-            var passedTasksCount = taskStatistics.stream()
-                    .map(TaskStatistic::getResult)
+            Function<TaskStatistic, Result> resultGenerator = TaskStatistic::getResult;
+
+            var passedTasksCount = tasks.stream()
+                    .map(task -> statisticService.findBy(topicStatistic, task))
+                    .map(resultGenerator)
                     .filter(result -> result.getCorrectAnswers() > 0)
                     .count();
 
-            return String.format("Пройдено: %d", passedTasksCount);
+            return String.format("%d из %d", passedTasksCount, tasks.size());
         }).orElse(StatisticService.NO_DATA);
     }
 
@@ -157,7 +166,7 @@ public class LocalTopicsController implements Controller {
 
     private void initSelectProfileButton(
             Button selectProfileButton,
-            StatisticService statisticService,
+            StatisticServiceHolder statisticService,
             Class<? extends Controller> selectProfileControllerClass,
             String profileTypeName) {
         String profileText = String.format("%s профиль", profileTypeName);
