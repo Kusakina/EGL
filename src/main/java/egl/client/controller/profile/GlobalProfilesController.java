@@ -155,7 +155,8 @@ public class GlobalProfilesController extends ProfileSelectController {
             return;
         }
 
-        globalStatisticService.findBy(topic)
+        globalStatisticService.fromLocal(topic)
+                .flatMap(globalStatisticService::findBy)
                 .ifPresentOrElse(
                         this::showRegisteredTopic,
                         this::showNotRegisteredTopic
