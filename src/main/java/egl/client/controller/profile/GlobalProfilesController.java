@@ -88,6 +88,8 @@ public class GlobalProfilesController extends ProfileSelectController {
         this.localTopicTasksService = localTopicTasksService;
     }
 
+
+
     @Override
     protected void onEdit(Profile profile, boolean isCreated, String title) {
         var credentialsOptional = (isCreated
@@ -239,7 +241,6 @@ public class GlobalProfilesController extends ProfileSelectController {
     @Override
     public void prepareToShow() {
         showSelectedProfile();
-        showRatings();
     }
 
     @Override
@@ -251,10 +252,20 @@ public class GlobalProfilesController extends ProfileSelectController {
         );
 
         initLogin();
+        initRatings();
     }
 
     private void initLogin() {
         loginButton.setOnAction(event -> onLogin());
+    }
+
+    private void initRatings() {
+        activitiesTabPane.getSelectionModel().selectedItemProperty()
+            .addListener((observableValue, oldTab, newTab) -> {
+                   if (globalRatingsTab == newTab) {
+                       showRatings();
+                   }
+            });
     }
 
     private void showLoginError() {
