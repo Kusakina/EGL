@@ -32,9 +32,9 @@ public class GlobalTopicService extends AbstractEntityService<Topic, GlobalTopic
     }
 
     private Optional<Topic> remoteFindByLocal(LocalTopicInfo localTopicInfo) {
-        return repository.getById(localTopicInfo.getGlobalId());
+        return repository.findById(localTopicInfo.getGlobalId());
 //            .filter(globalTopic -> {
-//                var globalTopicInfo = globalTopicInfoService.getById(globalTopic);
+//                var globalTopicInfo = globalTopicInfoService.findById(globalTopic);
 //                return globalTopicInfo.getLocalHashCode() == localTopicInfo.getGlobalHashCode();
 //            });
     }

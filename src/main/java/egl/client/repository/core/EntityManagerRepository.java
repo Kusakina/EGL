@@ -30,12 +30,12 @@ public abstract class EntityManagerRepository<T extends DatabaseEntity> implemen
     }
 
     @Override
-    public Optional<T> getById(Long id) {
+    public Optional<T> findById(Long id) {
         var result = getEntityManager().find(
                 getEntityClass(), id
         );
 
-        return Optional.of(result);
+        return Optional.ofNullable(result);
     }
 
     protected <Field> Optional<T> getByField(String fieldName, Field field) {
@@ -54,7 +54,7 @@ public abstract class EntityManagerRepository<T extends DatabaseEntity> implemen
 
         fields.forEach(query::setParameter);
 
-        return Optional.of(query.getSingleResult());
+        return Optional.ofNullable(query.getSingleResult());
     }
 
     @Override

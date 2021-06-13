@@ -10,6 +10,6 @@ public interface EntityRepository<T extends DatabaseEntity> {
     <S extends T> S save(S value);
     void delete(T value);
 
-    Optional<T> getById(Long id);
+    Optional<T> findById(Long id);
     List<T> findAll();
 }
