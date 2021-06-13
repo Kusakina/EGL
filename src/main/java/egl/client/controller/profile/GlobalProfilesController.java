@@ -90,26 +90,24 @@ public class GlobalProfilesController extends ProfileSelectController {
 
     @Override
     protected void onEdit(Profile profile, boolean isCreated, String title) {
-        var credentials = (isCreated
-                ? new Credentials(profile)
+        var credentialsOptional = (isCreated
+                ? Optional.of(new Credentials(profile))
                 : globalCredentialsService.findBy(profile)
         );
 
         // TODO check errors
-        if (null == credentials) {
-            return;
-        }
+        credentialsOptional.ifPresent(credentials -> {
+            var changed = fxmlService.showInfoDialog(
+                    CredentialsInfoController.class,
+                    credentials,
+                    title, isCreated
+            );
 
-        var changed = fxmlService.showInfoDialog(
-                CredentialsInfoController.class,
-                credentials,
-                title, isCreated
-        );
-
-        if (changed) {
-            globalCredentialsService.save(credentials);
-            onSelect(profile);
-        }
+            if (changed) {
+                globalCredentialsService.save(credentials);
+                onSelect(profile);
+            }
+        });
     }
 
     @Override
@@ -263,15 +261,8 @@ public class GlobalProfilesController extends ProfileSelectController {
         errorText.setText("Некорректный логин/пароль");
     }
 
-    private void onLogin() {
-        String login = loginTextField.getText();
+    private void tryAutorizeWith(Credentials credentials) {
         String password = passwordTextField.getText();
-
-        Credentials credentials = globalCredentialsService.findBy(login);
-        if (null == credentials) {
-            showLoginError();
-            return;
-        }
 
         long loginPasswordHash = Credentials.calculatePasswordHash(password);
         if (credentials.getPasswordHash() != loginPasswordHash) {
@@ -284,5 +275,13 @@ public class GlobalProfilesController extends ProfileSelectController {
         errorText.setText("");
 
         onSelect(credentials.getProfile());
+    }
+
+    private void onLogin() {
+        String login = loginTextField.getText();
+        globalCredentialsService.findBy(login).ifPresentOrElse(
+                this::tryAutorizeWith,
+                this::showLoginError
+        );
     }
 }

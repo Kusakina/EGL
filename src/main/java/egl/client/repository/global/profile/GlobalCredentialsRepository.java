@@ -1,5 +1,7 @@
 package egl.client.repository.global.profile;
 
+import java.util.Optional;
+
 import egl.client.model.core.profile.Credentials;
 import egl.client.model.core.profile.Profile;
 import egl.client.repository.global.GlobalEntityManagerRepository;
@@ -14,17 +16,11 @@ public class GlobalCredentialsRepository
         return Credentials.class;
     }
 
-    public Credentials findByProfile(Profile profile) {
-        return getEntityManager().createQuery(
-                "SELECT credentials from Credentials credentials where credentials.profile = :profile",
-                getEntityClass()
-        ).setParameter("profile", profile).getSingleResult();
+    public Optional<Credentials> findByProfile(Profile profile) {
+        return getByField("profile", profile);
     }
 
-    public Credentials findByLogin(String login) {
-        return getEntityManager().createQuery(
-                "SELECT credentials from Credentials credentials where credentials.login = :login",
-                getEntityClass()
-        ).setParameter("login", login).getSingleResult();
+    public Optional<Credentials> findByLogin(String login) {
+        return getByField("login", login);
     }
 }

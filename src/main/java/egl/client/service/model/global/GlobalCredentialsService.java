@@ -1,5 +1,7 @@
 package egl.client.service.model.global;
 
+import java.util.Optional;
+
 import egl.client.model.core.profile.Credentials;
 import egl.client.model.core.profile.Profile;
 import egl.client.repository.global.profile.GlobalCredentialsRepository;
@@ -13,11 +15,11 @@ public class GlobalCredentialsService extends AbstractEntityService<Credentials,
         super(repository);
     }
 
-    public Credentials findBy(Profile profile) {
+    public Optional<Credentials> findBy(Profile profile) {
         return repository.findByProfile(profile);
     }
 
-    public Credentials findBy(String login) {
+    public Optional<Credentials> findBy(String login) {
         return repository.findByLogin(login);
     }
 }
