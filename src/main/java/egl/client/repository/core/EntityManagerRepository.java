@@ -38,11 +38,11 @@ public abstract class EntityManagerRepository<T extends DatabaseEntity> implemen
         return Optional.ofNullable(result);
     }
 
-    protected <Field> Optional<T> getByField(String fieldName, Field field) {
-        return getByFields(Map.of(fieldName, field));
+    protected <Field> Optional<T> findByField(String fieldName, Field field) {
+        return findByFields(Map.of(fieldName, field));
     }
 
-    protected Optional<T> getByFields(Map<String, ?> fields) {
+    protected Optional<T> findByFields(Map<String, ?> fields) {
         var condition = fields.keySet().stream()
                 .map(fieldName -> String.format("e.%s = :%s", fieldName, fieldName))
                 .collect(Collectors.joining(" and "));

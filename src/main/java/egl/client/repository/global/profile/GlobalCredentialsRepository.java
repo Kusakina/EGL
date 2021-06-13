@@ -17,10 +17,10 @@ public class GlobalCredentialsRepository
     }
 
     public Optional<Credentials> findByProfile(Profile profile) {
-        return getByField("profile", profile);
+        return findByField("profile", profile);
     }
 
     public Optional<Credentials> findByLogin(String login) {
-        return getByField("login", login);
+        return findByField("login", login);
     }
 }
