@@ -59,6 +59,9 @@ public abstract class EntityManagerRepository<T extends DatabaseEntity> implemen
 
     @Override
     public List<T> findAll() {
-        throw new UnsupportedOperationException();
+        return getEntityManager().createQuery(
+                String.format("select e from %s e", getTableName()),
+                getEntityClass()
+        ).getResultList();
     }
 }
