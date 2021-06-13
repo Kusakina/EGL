@@ -2,15 +2,29 @@ package egl.client.repository.global.profile;
 
 import egl.client.model.core.profile.Credentials;
 import egl.client.model.core.profile.Profile;
-import egl.client.repository.core.EntityRepository;
-import org.springframework.data.jpa.repository.JpaRepository;
+import egl.client.repository.global.GlobalEntityManagerRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface GlobalCredentialsRepository extends EntityRepository<Credentials>,
-        JpaRepository<Credentials, Long> {
+public class GlobalCredentialsRepository
+        extends GlobalEntityManagerRepository<Credentials> {
 
-    Credentials findByProfile(Profile profile);
+    @Override
+    protected Class<Credentials> getEntityClass() {
+        return Credentials.class;
+    }
 
-    Credentials findByLogin(String login);
+    public Credentials findByProfile(Profile profile) {
+        return getEntityManager().createQuery(
+                "SELECT credentials from Credentials credentials where credentials.profile = :profile",
+                getEntityClass()
+        ).setParameter("profile", profile).getSingleResult();
+    }
+
+    public Credentials findByLogin(String login) {
+        return getEntityManager().createQuery(
+                "SELECT credentials from Credentials credentials where credentials.login = :login",
+                getEntityClass()
+        ).setParameter("login", login).getSingleResult();
+    }
 }
