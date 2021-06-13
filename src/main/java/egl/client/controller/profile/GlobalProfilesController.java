@@ -261,7 +261,7 @@ public class GlobalProfilesController extends ProfileSelectController {
         errorText.setText("Некорректный логин/пароль");
     }
 
-    private void tryAutorizeWith(Credentials credentials) {
+    private void tryAuthorizeWith(Credentials credentials) {
         String password = passwordTextField.getText();
 
         long loginPasswordHash = Credentials.calculatePasswordHash(password);
@@ -280,7 +280,7 @@ public class GlobalProfilesController extends ProfileSelectController {
     private void onLogin() {
         String login = loginTextField.getText();
         globalCredentialsService.findBy(login).ifPresentOrElse(
-                this::tryAutorizeWith,
+                this::tryAuthorizeWith,
                 this::showLoginError
         );
     }
