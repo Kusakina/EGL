@@ -14,21 +14,21 @@ import org.springframework.stereotype.Repository;
 public class GlobalProfileRepository implements ProfileRepository {
 
     @PersistenceContext(unitName = "global")
-    private EntityManager globalEntityManager;
+    private EntityManager entityManager;
 
     @Override
     public <S extends Profile> S save(S value) {
-        return globalEntityManager.merge(value);
+        return entityManager.merge(value);
     }
 
     @Override
     public void delete(Profile value) {
-        globalEntityManager.remove(value);
+        entityManager.remove(value);
     }
 
     @Override
     public Optional<Profile> getById(Long id) {
-        return Optional.of(globalEntityManager.find(Profile.class, id));
+        return Optional.of(entityManager.find(Profile.class, id));
     }
 
     @Override
