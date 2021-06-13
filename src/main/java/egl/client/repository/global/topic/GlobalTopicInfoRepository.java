@@ -1,14 +1,22 @@
 package egl.client.repository.global.topic;
 
+import java.util.Optional;
+
 import egl.client.model.core.topic.Topic;
 import egl.client.model.global.topic.GlobalTopicInfo;
-import egl.client.repository.core.EntityRepository;
-import org.springframework.data.jpa.repository.JpaRepository;
+import egl.client.repository.global.GlobalEntityManagerRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface GlobalTopicInfoRepository extends EntityRepository<GlobalTopicInfo>,
-        JpaRepository<GlobalTopicInfo, Long> {
+public class GlobalTopicInfoRepository
+        extends GlobalEntityManagerRepository<GlobalTopicInfo> {
 
-    GlobalTopicInfo findByTopic(Topic topic);
+    @Override
+    protected Class<GlobalTopicInfo> getEntityClass() {
+        return GlobalTopicInfo.class;
+    }
+
+    public Optional<GlobalTopicInfo> findByTopic(Topic topic) {
+        return findByField("topic", topic);
+    }
 }

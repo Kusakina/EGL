@@ -1,5 +1,7 @@
 package egl.client.service.model.global;
 
+import java.util.Optional;
+
 import egl.client.model.core.topic.Topic;
 import egl.client.model.global.topic.GlobalTopicInfo;
 import egl.client.repository.global.topic.GlobalTopicInfoRepository;
@@ -13,7 +15,7 @@ public class GlobalTopicInfoService extends AbstractEntityService<GlobalTopicInf
         super(repository);
     }
 
-    public GlobalTopicInfo findBy(Topic topic) {
+    public Optional<GlobalTopicInfo> findBy(Topic topic) {
         return repository.findByTopic(topic);
     }
 }
