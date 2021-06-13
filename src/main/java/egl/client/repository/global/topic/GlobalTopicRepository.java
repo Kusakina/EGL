@@ -2,9 +2,16 @@ package egl.client.repository.global.topic;
 
 import egl.client.model.core.topic.Topic;
 import egl.client.repository.core.task.TopicRepository;
-import org.springframework.data.jpa.repository.JpaRepository;
+import egl.client.repository.global.GlobalEntityManagerRepository;
+import org.springframework.stereotype.Repository;
 
-public interface GlobalTopicRepository extends TopicRepository,
-        JpaRepository<Topic, Long> {
+@Repository
+public class GlobalTopicRepository
+        extends GlobalEntityManagerRepository<Topic>
+        implements TopicRepository {
 
+    @Override
+    protected Class<Topic> getEntityClass() {
+        return Topic.class;
+    }
 }
