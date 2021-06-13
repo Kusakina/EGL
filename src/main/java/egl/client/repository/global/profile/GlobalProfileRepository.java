@@ -10,7 +10,8 @@ public class GlobalProfileRepository
         extends GlobalEntityManagerRepository<Profile>
         implements ProfileRepository {
 
-    public GlobalProfileRepository() {
-        super(Profile.class);
+    @Override
+    protected Class<Profile> getEntityClass() {
+        return Profile.class;
     }
 }

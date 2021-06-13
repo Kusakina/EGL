@@ -6,14 +6,12 @@ import java.util.Optional;
 import javax.persistence.EntityManager;
 
 import egl.client.model.core.DatabaseEntity;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 public abstract class EntityManagerRepository<T extends DatabaseEntity> implements EntityRepository<T> {
 
-    private final Class<T> entityClass;
-
     protected abstract EntityManager getEntityManager();
+
+    protected abstract Class<T> getEntityClass();
 
     @Override
     public <S extends T> S save(S value) {
@@ -27,7 +25,11 @@ public abstract class EntityManagerRepository<T extends DatabaseEntity> implemen
 
     @Override
     public Optional<T> getById(Long id) {
-        return Optional.of(getEntityManager().find(entityClass, id));
+        var result = getEntityManager().find(
+                getEntityClass(), id
+        );
+
+        return Optional.of(result);
     }
 
     @Override
