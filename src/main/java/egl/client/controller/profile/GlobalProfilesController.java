@@ -190,7 +190,7 @@ public class GlobalProfilesController extends ProfileSelectController {
 //
 //
 //                    var result = globalStatisticService
-//                            .findBy(topicStatistic.getTopic(), task)
+//                            .getById(topicStatistic.getTopic(), task)
 //                            .map(TaskStatistic::getResult)
 //                            .orElse(Result.NONE);
 //
