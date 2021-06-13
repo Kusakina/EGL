@@ -1,9 +1,31 @@
 package egl.client.repository.global.statistic;
 
-import egl.client.model.core.statistic.TopicStatistic;
-import egl.client.repository.core.statistic.TopicStatisticRepository;
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.Map;
+import java.util.Optional;
 
-public interface GlobalTopicStatisticRepository extends TopicStatisticRepository,
-        JpaRepository<TopicStatistic, Long> {
+import egl.client.model.core.statistic.ProfileStatistic;
+import egl.client.model.core.statistic.TopicStatistic;
+import egl.client.model.core.topic.Topic;
+import egl.client.repository.core.statistic.TopicStatisticRepository;
+import egl.client.repository.global.GlobalEntityManagerRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class GlobalTopicStatisticRepository
+        extends GlobalEntityManagerRepository<TopicStatistic>
+        implements TopicStatisticRepository {
+
+    @Override
+    protected Class<TopicStatistic> getEntityClass() {
+        return TopicStatistic.class;
+    }
+
+    @Override
+    public Optional<TopicStatistic> findByProfileStatisticAndTopic(
+            ProfileStatistic profileStatistic, Topic topic) {
+        return findByFields(Map.of(
+            "profileStatistic", profileStatistic,
+            "topic", topic
+        ));
+    }
 }
