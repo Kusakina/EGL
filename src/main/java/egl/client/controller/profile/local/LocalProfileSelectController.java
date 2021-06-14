@@ -14,11 +14,11 @@ import javafx.scene.control.TableRow;
 import org.springframework.stereotype.Component;
 
 @Component
-public class LocalProfilesController extends ProfileSelectController {
+public class LocalProfileSelectController extends ProfileSelectController {
 
     @FXML private InfoSelectEditRemoveListView<Profile> localProfilesListView;
 
-    public LocalProfilesController(
+    public LocalProfileSelectController(
             FxmlService fxmlService,
             LocalProfileService profileService) {
         super(fxmlService, profileService);
