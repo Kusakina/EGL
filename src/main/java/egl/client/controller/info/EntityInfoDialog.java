@@ -1,7 +1,7 @@
 package egl.client.controller.info;
 
 import egl.client.model.core.DatabaseEntity;
-import javafx.scene.control.Alert;
+import egl.client.service.ErrorService;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 
@@ -27,7 +27,7 @@ public class EntityInfoDialog<T extends DatabaseEntity> extends Dialog<T> {
                 if (null != getResult()) controller.prepareToClose();
             } catch (IllegalArgumentException e) {
                 dialogEvent.consume();
-                new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK).show();
+                ErrorService.showErrorAlert(e.getMessage());
             }
         });
 

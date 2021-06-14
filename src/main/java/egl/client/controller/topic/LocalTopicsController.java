@@ -36,9 +36,7 @@ import egl.client.view.table.column.ButtonColumn;
 import egl.client.view.table.list.InfoSelectEditRemoveListView;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -169,9 +167,6 @@ public class LocalTopicsController implements Controller {
                         return String.format("%d из %d", passedTasksCount, tasks.size());
                     }).orElse(AbstractStatisticService.NO_DATA);
         } catch (EntityServiceException e) {
-            new Alert(Alert.AlertType.ERROR,
-                    "Проблема при загрузке результатов",
-                    ButtonType.OK).show();
             return AbstractStatisticService.NO_DATA;
         }
     }

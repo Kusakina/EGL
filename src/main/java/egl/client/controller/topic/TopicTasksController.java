@@ -21,8 +21,6 @@ import egl.client.service.model.local.LocalTopicTasksService;
 import egl.client.view.table.list.InfoSelectListView;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxmlView;
@@ -91,10 +89,6 @@ public class TopicTasksController implements Controller {
                             }
                     ).orElse(AbstractStatisticService.NO_DATA);
         } catch (EntityServiceException e) {
-            new Alert(Alert.AlertType.ERROR,
-                    "Проблема при загрузке результатов",
-                    ButtonType.OK).show();
-
             return AbstractStatisticService.NO_DATA;
         }
     }
