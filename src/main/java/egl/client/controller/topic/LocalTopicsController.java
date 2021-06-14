@@ -8,8 +8,9 @@ import java.util.function.Function;
 
 import egl.client.controller.Controller;
 import egl.client.controller.WindowController;
-import egl.client.controller.profile.global.GlobalProfileSelectController;
-import egl.client.controller.profile.local.LocalProfileSelectController;
+import egl.client.controller.profile.StatisticsController;
+import egl.client.controller.profile.global.GlobalStatisticsController;
+import egl.client.controller.profile.local.LocalStatisticsController;
 import egl.client.model.core.profile.Profile;
 import egl.client.model.core.statistic.Result;
 import egl.client.model.core.statistic.TaskStatistic;
@@ -176,19 +177,19 @@ public class LocalTopicsController implements Controller {
     }
 
     private void initializeProfiles() {
-        initSelectProfileButton(selectLocalProfileButton, localStatisticService, LocalProfileSelectController.class, "Локальный");
-        initSelectProfileButton(selectGlobalProfileButton, globalStatisticService, GlobalProfileSelectController.class, "Глобальный");
+        initSelectProfileButton(selectLocalProfileButton, localStatisticService, LocalStatisticsController.class, "Локальный");
+        initSelectProfileButton(selectGlobalProfileButton, globalStatisticService, GlobalStatisticsController.class, "Глобальный");
     }
 
     private void initSelectProfileButton(
             Button selectProfileButton,
             StatisticService statisticService,
-            Class<? extends Controller> selectProfileControllerClass,
+            Class<? extends StatisticsController> statisticsControllerClass,
             String profileTypeName) {
         String profileText = String.format("%s профиль", profileTypeName);
 
         selectProfileButton.setOnAction(event -> {
-            var selectProfileRoot = fxmlService.load(selectProfileControllerClass);
+            var selectProfileRoot = fxmlService.load(statisticsControllerClass);
             fxmlService.showController(selectProfileRoot, profileText, WindowController.CLOSE);
         });
 

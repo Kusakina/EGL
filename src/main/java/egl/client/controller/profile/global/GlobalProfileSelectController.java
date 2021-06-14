@@ -21,7 +21,7 @@ import javafx.scene.text.Text;
 import org.springframework.stereotype.Component;
 
 @Component
-public class GlobalProfileSelectController extends ProfileSelectController {
+class GlobalProfileSelectController extends ProfileSelectController {
 
     private final GlobalCredentialsService globalCredentialsService;
 

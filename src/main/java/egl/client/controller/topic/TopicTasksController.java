@@ -99,7 +99,10 @@ public class TopicTasksController implements Controller {
     }
 
     private void onSelect(Task task) {
-        var taskRoot = fxmlService.load(task.getSceneName());
+        var taskControllerClass = FxmlService.controllerClassWith(
+                task.getSceneName(), TaskController.class
+        );
+        var taskRoot = fxmlService.load(taskControllerClass);
 
         var taskController = (TaskController) taskRoot.getController();
         taskController.setContext(task, controllerTopic, (result) -> tryUpdateStatistic(task, result));
