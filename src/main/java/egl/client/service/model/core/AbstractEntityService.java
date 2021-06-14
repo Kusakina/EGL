@@ -18,11 +18,11 @@ public abstract class AbstractEntityService<
     protected final RepositoryType repository;
 
     @Override
-    public List<T> findAll() throws EntityServiceException {
+    public List<T> findAll() {
         try {
             return repository.findAll();
-        } catch (RuntimeException e) {
-            throw new EntityServiceException(e);
+        } catch (Exception e) {
+            throw new EntityServiceException();
         }
     }
 

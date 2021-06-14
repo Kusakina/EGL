@@ -11,7 +11,6 @@ import egl.client.model.core.statistic.TopicStatistic;
 import egl.client.model.core.task.Task;
 import egl.client.model.core.topic.Topic;
 import egl.client.model.local.topic.LocalTopicInfo;
-import egl.client.service.model.EntityServiceException;
 import egl.client.service.model.core.StatisticServiceHolder;
 import javafx.beans.property.Property;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +31,7 @@ public class GlobalStatisticServiceHolder implements StatisticServiceHolder {
         );
     }
 
-    public List<ProfileStatistic> findAll() throws EntityServiceException {
+    public List<ProfileStatistic> findAll() {
         return globalStatisticService.findAll();
     }
 
@@ -41,7 +40,7 @@ public class GlobalStatisticServiceHolder implements StatisticServiceHolder {
     }
 
     @Override
-    public Optional<TopicStatistic> findBy(Topic localTopic) throws EntityServiceException {
+    public Optional<TopicStatistic> findBy(Topic localTopic) {
         return globalTopicService.findByLocal(localTopic)
                 .flatMap(globalStatisticService::findBy);
     }

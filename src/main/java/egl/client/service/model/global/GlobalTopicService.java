@@ -32,11 +32,11 @@ public class GlobalTopicService extends AbstractEntityService<Topic, GlobalTopic
         this.localToGlobalCache = new HashMap<>();
     }
 
-    private Optional<Topic> remoteFindByLocal(LocalTopicInfo localTopicInfo) throws EntityServiceException {
+    private Optional<Topic> remoteFindByLocal(LocalTopicInfo localTopicInfo) {
         try {
             return repository.findById(localTopicInfo.getGlobalId());
         } catch (RuntimeException e) {
-            throw new EntityServiceException(e);
+            throw new EntityServiceException();
         }
 //            .filter(globalTopic -> {
 //                var globalTopicInfo = globalTopicInfoService.findBy(globalTopic);
@@ -44,7 +44,7 @@ public class GlobalTopicService extends AbstractEntityService<Topic, GlobalTopic
 //            });
     }
 
-    public Optional<Topic> findByLocal(Topic localTopic) throws EntityServiceException {
+    public Optional<Topic> findByLocal(Topic localTopic) {
         var localTopicInfo = localTopicInfoService.findBy(localTopic);
         //FIXME
         if (null == localTopicInfo) return Optional.empty();
@@ -54,12 +54,9 @@ public class GlobalTopicService extends AbstractEntityService<Topic, GlobalTopic
             return Optional.empty();
         }
 
-        if (!localToGlobalCache.containsKey(localTopicInfo)) {
-            var globalTopic = remoteFindByLocal(localTopicInfo);
-            localToGlobalCache.put(localTopicInfo, globalTopic);
-        }
-
-        return localToGlobalCache.get(localTopicInfo);
+        return localToGlobalCache.computeIfAbsent(
+                localTopicInfo, this::remoteFindByLocal
+        );
     }
 
     public void registerTopic(LocalTopicInfo localTopicInfo, Profile author) {

@@ -6,7 +6,7 @@ import egl.client.model.core.DatabaseEntity;
 
 public interface EntityService<T extends DatabaseEntity> {
 
-    List<T> findAll() throws EntityServiceException;
+    List<T> findAll();
 
     T save(T entity);
     void remove(T entity);
