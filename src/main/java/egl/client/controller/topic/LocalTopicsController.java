@@ -8,7 +8,7 @@ import java.util.function.Function;
 
 import egl.client.controller.Controller;
 import egl.client.controller.WindowController;
-import egl.client.controller.profile.global.GlobalProfilesController;
+import egl.client.controller.profile.global.GlobalProfileSelectController;
 import egl.client.controller.profile.local.LocalProfilesController;
 import egl.client.model.core.profile.Profile;
 import egl.client.model.core.statistic.Result;
@@ -177,7 +177,7 @@ public class LocalTopicsController implements Controller {
 
     private void initializeProfiles() {
         initSelectProfileButton(selectLocalProfileButton, localStatisticService, LocalProfilesController.class, "Локальный");
-        initSelectProfileButton(selectGlobalProfileButton, globalStatisticService, GlobalProfilesController.class, "Глобальный");
+        initSelectProfileButton(selectGlobalProfileButton, globalStatisticService, GlobalProfileSelectController.class, "Глобальный");
     }
 
     private void initSelectProfileButton(
