@@ -1,8 +1,10 @@
-package egl.client.controller.profile;
+package egl.client.controller.profile.local;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import egl.client.controller.profile.ProfileInfoController;
+import egl.client.controller.profile.ProfileSelectController;
 import egl.client.model.core.profile.Profile;
 import egl.client.service.FxmlService;
 import egl.client.service.model.local.LocalProfileService;

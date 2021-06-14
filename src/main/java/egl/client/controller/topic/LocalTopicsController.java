@@ -8,8 +8,8 @@ import java.util.function.Function;
 
 import egl.client.controller.Controller;
 import egl.client.controller.WindowController;
-import egl.client.controller.profile.GlobalProfilesController;
-import egl.client.controller.profile.LocalProfilesController;
+import egl.client.controller.profile.global.GlobalProfilesController;
+import egl.client.controller.profile.local.LocalProfilesController;
 import egl.client.model.core.profile.Profile;
 import egl.client.model.core.statistic.Result;
 import egl.client.model.core.statistic.TaskStatistic;

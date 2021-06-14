@@ -1,4 +1,4 @@
-package egl.client.controller.profile;
+package egl.client.controller.profile.global;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -7,6 +7,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
+import egl.client.controller.profile.CredentialsInfoController;
+import egl.client.controller.profile.ProfileSelectController;
 import egl.client.controller.profile.info.RatingListView;
 import egl.client.model.core.profile.Credentials;
 import egl.client.model.core.profile.Profile;

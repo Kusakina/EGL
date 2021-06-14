@@ -1,4 +1,4 @@
-package egl.client.controller.statistic;
+package egl.client.controller.profile;
 
 import java.net.URL;
 import java.time.LocalDateTime;

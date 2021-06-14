@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.text.Text?>
-<CustomBorderPane fx:controller="egl.client.controller.profile.GlobalProfilesController"
+<CustomBorderPane fx:controller="egl.client.controller.profile.global.GlobalProfilesController"
                   xmlns:fx="http://javafx.com/fxml" margin="5">
 
     <top>
