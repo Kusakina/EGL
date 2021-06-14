@@ -196,30 +196,6 @@ public class GlobalProfilesController extends ProfileSelectController {
 
         taskRatingsTabPane.setDisable(false);
         taskRatingsTabPane.getTabs().setAll(tabs);
-
-        // FIXME
-        // пытается искать по локальному, но он уже глобальный
-        // сейчас этот кусок не актуален, так как таблицы маленькие
-//        taskRatingsTabPane.getSelectionModel().selectedIndexProperty().addListener(
-//                (observableValue, oldIndex, newIndexNumber) -> {
-//                    int newIndex = newIndexNumber.intValue();
-//                    if (newIndex < 0) {
-//                        return;
-//                    }
-//
-//                    var task = tasks.get(newIndex);
-//
-//
-//                    var result = globalStatisticService
-//                            .findBy(topicStatistic.getTopic(), task)
-//                            .map(TaskStatistic::getResult)
-//                            .orElse(Result.NONE);
-//
-//                    var selfProfile =
-//                            globalStatisticService.selectedProfileProperty().getValue();
-//
-//                    selectedTopicInfoText.setText(String.format("%s (%s)", selfProfile.getName(), result));
-//                });
     }
 
     private Tab createRatingTab(Topic globalTopic, Task task, TabPane tabPane) {
