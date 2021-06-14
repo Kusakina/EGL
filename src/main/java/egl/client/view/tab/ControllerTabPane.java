@@ -3,6 +3,7 @@ package egl.client.view.tab;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import egl.client.controller.Controller;
@@ -16,7 +17,7 @@ public class ControllerTabPane extends TabPane implements Initializable {
         setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
     }
 
-    public List<Controller> getControllers() {
+    private List<Controller> getControllers() {
         return getTabs().stream()
                 .filter(tab -> tab instanceof ControllerTab<?>)
                 .map(tab -> (ControllerTab<?>)tab)
@@ -34,5 +35,9 @@ public class ControllerTabPane extends TabPane implements Initializable {
                 getPrefHeight()
             )
         );
+    }
+
+    public void forEachController(Consumer<Controller> controllerConsumer) {
+        getControllers().forEach(controllerConsumer);
     }
 }

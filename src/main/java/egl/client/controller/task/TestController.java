@@ -43,7 +43,7 @@ public class TestController extends AbstractTaskController {
         List<Tab> taskTabs = prepareTasks();
         tabs.addAll(taskTabs);
 
-        tabPane.getControllers().forEach(
+        tabPane.forEachController(
                 Controller::prepareToShow
         );
 
@@ -83,7 +83,7 @@ public class TestController extends AbstractTaskController {
 
     @Override
     protected void prepareToFinish() {
-        tabPane.getControllers().forEach(
+        tabPane.forEachController(
                 Controller::prepareToClose
         );
     }
