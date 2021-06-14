@@ -13,7 +13,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import egl.client.controller.Controller;
-import egl.client.controller.profile.info.RatingListView;
 import egl.client.model.core.statistic.ProfileStatistic;
 import egl.client.model.core.statistic.RatingInfo;
 import egl.client.model.core.task.Task;
