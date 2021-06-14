@@ -20,6 +20,7 @@ import egl.client.model.local.topic.category.Category;
 import egl.client.service.FileService;
 import egl.client.service.FxmlService;
 import egl.client.service.model.EntityService;
+import egl.client.service.model.EntityServiceException;
 import egl.client.service.model.core.StatisticService;
 import egl.client.service.model.core.StatisticServiceHolder;
 import egl.client.service.model.global.GlobalStatisticServiceHolder;

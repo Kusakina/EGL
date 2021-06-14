@@ -288,22 +288,28 @@ public class GlobalProfilesController extends ProfileSelectController {
         String login = loginTextField.getText();
         String password = passwordTextField.getText();
 
-        Credentials credentials = globalCredentialsService.findBy(login);
-        if (null == credentials) {
-            showLoginError();
-            return;
+        try {
+            Credentials credentials = globalCredentialsService.findBy(login);
+            if (null == credentials) {
+                showLoginError();
+                return;
+            }
+
+            long loginPasswordHash = Credentials.calculatePasswordHash(password);
+            if (credentials.getPasswordHash() != loginPasswordHash) {
+                showLoginError();
+                return;
+            }
+
+            loginTextField.setText("");
+            passwordTextField.setText("");
+            errorText.setText("");
+
+            onSelect(credentials.getProfile());
+        } catch (EntityServiceException e) {
+            new Alert(Alert.AlertType.ERROR,
+                    "Проблема при проверке логина/пароля",
+                    ButtonType.OK).show();
         }
-
-        long loginPasswordHash = Credentials.calculatePasswordHash(password);
-        if (credentials.getPasswordHash() != loginPasswordHash) {
-            showLoginError();
-            return;
-        }
-
-        loginTextField.setText("");
-        passwordTextField.setText("");
-        errorText.setText("");
-
-        onSelect(credentials.getProfile());
     }
 }
