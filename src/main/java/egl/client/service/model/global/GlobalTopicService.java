@@ -9,7 +9,7 @@ import egl.client.model.core.topic.Topic;
 import egl.client.model.global.topic.GlobalTopicInfo;
 import egl.client.model.local.topic.LocalTopicInfo;
 import egl.client.repository.global.topic.GlobalTopicRepository;
-import egl.client.service.model.AbstractEntityService;
+import egl.client.service.model.core.AbstractEntityService;
 import egl.client.service.model.local.LocalTopicInfoService;
 import org.springframework.stereotype.Service;
 

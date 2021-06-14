@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import egl.client.model.core.DatabaseEntity;
 import egl.client.repository.core.EntityRepository;
-import egl.client.service.model.AbstractEntityService;
 
 public abstract class CachedEntityService<
         T extends DatabaseEntity,

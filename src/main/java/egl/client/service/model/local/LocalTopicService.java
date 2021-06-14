@@ -5,7 +5,7 @@ import java.util.List;
 import egl.client.model.core.topic.Topic;
 import egl.client.model.core.topic.TopicType;
 import egl.client.repository.local.topic.LocalTopicRepository;
-import egl.client.service.model.AbstractEntityService;
+import egl.client.service.model.core.AbstractEntityService;
 import org.springframework.stereotype.Service;
 
 @Service

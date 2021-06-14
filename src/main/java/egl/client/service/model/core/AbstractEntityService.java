@@ -1,9 +1,10 @@
-package egl.client.service.model;
+package egl.client.service.model.core;
 
 import java.util.List;
 
 import egl.client.model.core.DatabaseEntity;
 import egl.client.repository.core.EntityRepository;
+import egl.client.service.model.EntityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 

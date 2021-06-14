@@ -3,7 +3,7 @@ package egl.client.service.model.global;
 import egl.client.model.core.profile.Credentials;
 import egl.client.model.core.profile.Profile;
 import egl.client.repository.global.profile.GlobalCredentialsRepository;
-import egl.client.service.model.AbstractEntityService;
+import egl.client.service.model.core.AbstractEntityService;
 import org.springframework.stereotype.Service;
 
 @Service
