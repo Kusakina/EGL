@@ -5,7 +5,7 @@ import java.util.Optional;
 import egl.client.model.core.statistic.TopicStatistic;
 import egl.client.model.core.topic.Topic;
 
-public interface StatisticFindService {
+public interface TopicStatisticByLocalService {
 
-    Optional<TopicStatistic> findBy(Topic topic);
+    Optional<TopicStatistic> findStatisticByLocal(Topic topic);
 }

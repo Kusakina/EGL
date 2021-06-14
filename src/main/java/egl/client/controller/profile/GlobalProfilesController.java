@@ -19,8 +19,8 @@ import egl.client.service.FxmlService;
 import egl.client.service.model.EntityServiceException;
 import egl.client.service.model.global.GlobalCredentialsService;
 import egl.client.service.model.global.GlobalProfileService;
+import egl.client.service.model.global.GlobalStatisticByLocalService;
 import egl.client.service.model.global.GlobalStatisticService;
-import egl.client.service.model.global.LocalToGlobalStatisticService;
 import egl.client.service.model.local.LocalTopicService;
 import egl.client.service.model.local.LocalTopicTasksService;
 import egl.client.view.text.LabeledTextField;
@@ -41,7 +41,7 @@ public class GlobalProfilesController extends ProfileSelectController {
 
     private final GlobalCredentialsService globalCredentialsService;
     private final GlobalStatisticService globalStatisticService;
-    private final LocalToGlobalStatisticService localToGlobalStatisticService;
+    private final GlobalStatisticByLocalService localToGlobalStatisticService;
     private final LocalTopicService localTopicService;
     private final LocalTopicTasksService localTopicTasksService;
 
@@ -84,7 +84,7 @@ public class GlobalProfilesController extends ProfileSelectController {
                                     GlobalProfileService profileService,
                                     GlobalCredentialsService globalCredentialsService,
                                     GlobalStatisticService globalStatisticService,
-                                    LocalToGlobalStatisticService localToGlobalStatisticService,
+                                    GlobalStatisticByLocalService localToGlobalStatisticService,
                                     LocalTopicService localTopicService,
                                     LocalTopicTasksService localTopicTasksService) {
         super(fxmlService, profileService);
@@ -173,7 +173,7 @@ public class GlobalProfilesController extends ProfileSelectController {
         }
 
         try {
-            localToGlobalStatisticService.findBy(topic)
+            localToGlobalStatisticService.findStatisticByLocal(topic)
                     .ifPresentOrElse(
                             this::showRegisteredTopic,
                             this::showNotRegisteredTopic

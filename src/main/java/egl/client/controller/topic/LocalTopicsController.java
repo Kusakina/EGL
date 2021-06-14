@@ -22,10 +22,10 @@ import egl.client.service.FxmlService;
 import egl.client.service.model.EntityService;
 import egl.client.service.model.EntityServiceException;
 import egl.client.service.model.core.AbstractStatisticService;
-import egl.client.service.model.core.StatisticFindService;
 import egl.client.service.model.core.StatisticService;
+import egl.client.service.model.core.TopicStatisticByLocalService;
+import egl.client.service.model.global.GlobalStatisticByLocalService;
 import egl.client.service.model.global.GlobalStatisticService;
-import egl.client.service.model.global.LocalToGlobalStatisticService;
 import egl.client.service.model.local.CategoryService;
 import egl.client.service.model.local.LocalStatisticService;
 import egl.client.service.model.local.LocalTopicInfoService;
@@ -58,7 +58,7 @@ public class LocalTopicsController implements Controller {
     private final CategoryService categoryService;
     private final LocalStatisticService localStatisticService;
     private final GlobalStatisticService globalStatisticService;
-    private final LocalToGlobalStatisticService localToGlobalStatisticService;
+    private final GlobalStatisticByLocalService localToGlobalStatisticService;
 
     @FXML private InfoSelectEditRemoveListView<Topic> categoriesListView;
     @FXML private TableColumn<Topic, String> topicLocalStatisticColumn;
@@ -140,7 +140,7 @@ public class LocalTopicsController implements Controller {
     private void initializeStatisticColumn(
             TableColumn<Topic, String> topicStatisticColumn,
             StatisticService statisticService,
-            StatisticFindService statisticFindService
+            TopicStatisticByLocalService statisticFindService
     ) {
         topicStatisticColumn.setCellValueFactory(param -> {
             var topic = param.getValue();
@@ -150,10 +150,10 @@ public class LocalTopicsController implements Controller {
     }
 
     private String getTopicStatistic(StatisticService statisticService,
-                                     StatisticFindService statisticFindService,
+                                     TopicStatisticByLocalService statisticFindService,
                                      Topic localTopic) {
         try {
-            return statisticFindService.findBy(localTopic)
+            return statisticFindService.findStatisticByLocal(localTopic)
                     .map(topicStatistic -> {
                         var tasks = localTopicTasksService.findBy(localTopic.getTopicType()).getTasks();
 
