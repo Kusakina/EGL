@@ -27,7 +27,9 @@ public class GlobalStatisticByLocalService
 
     @Override
     public Optional<TopicStatistic> findStatisticByLocal(Topic localTopic) {
-        return globalTopicService.findTopicByLocal(localTopic)
-                .flatMap(globalStatisticService::findBy);
+        return globalStatisticService.getSelectedProfile().flatMap(
+           profile -> globalTopicService.findTopicByLocal(localTopic)
+                        .flatMap(globalStatisticService::findBy)
+        );
     }
 }
