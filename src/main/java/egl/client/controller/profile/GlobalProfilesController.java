@@ -19,7 +19,8 @@ import egl.client.service.FxmlService;
 import egl.client.service.model.EntityServiceException;
 import egl.client.service.model.global.GlobalCredentialsService;
 import egl.client.service.model.global.GlobalProfileService;
-import egl.client.service.model.global.GlobalStatisticServiceHolder;
+import egl.client.service.model.global.GlobalStatisticService;
+import egl.client.service.model.global.LocalToGlobalStatisticService;
 import egl.client.service.model.local.LocalTopicService;
 import egl.client.service.model.local.LocalTopicTasksService;
 import egl.client.view.text.LabeledTextField;
@@ -39,7 +40,8 @@ import org.springframework.stereotype.Component;
 public class GlobalProfilesController extends ProfileSelectController {
 
     private final GlobalCredentialsService globalCredentialsService;
-    private final GlobalStatisticServiceHolder globalStatisticService;
+    private final GlobalStatisticService globalStatisticService;
+    private final LocalToGlobalStatisticService localToGlobalStatisticService;
     private final LocalTopicService localTopicService;
     private final LocalTopicTasksService localTopicTasksService;
 
@@ -81,12 +83,14 @@ public class GlobalProfilesController extends ProfileSelectController {
     public GlobalProfilesController(FxmlService fxmlService,
                                     GlobalProfileService profileService,
                                     GlobalCredentialsService globalCredentialsService,
-                                    GlobalStatisticServiceHolder globalStatisticService,
+                                    GlobalStatisticService globalStatisticService,
+                                    LocalToGlobalStatisticService localToGlobalStatisticService,
                                     LocalTopicService localTopicService,
                                     LocalTopicTasksService localTopicTasksService) {
         super(fxmlService, profileService);
         this.globalCredentialsService = globalCredentialsService;
         this.globalStatisticService = globalStatisticService;
+        this.localToGlobalStatisticService = localToGlobalStatisticService;
         this.localTopicService = localTopicService;
         this.localTopicTasksService = localTopicTasksService;
     }
@@ -140,7 +144,7 @@ public class GlobalProfilesController extends ProfileSelectController {
 
     private void showRatings() {
         try {
-            profileStatistics = globalStatisticService.findAll();
+            profileStatistics = globalStatisticService.findAllProfileStatistics();
         } catch (EntityServiceException e) {
             new Alert(Alert.AlertType.ERROR,
                     "Проблема при загрузке глобальных результатов",
@@ -169,7 +173,7 @@ public class GlobalProfilesController extends ProfileSelectController {
         }
 
         try {
-            globalStatisticService.findBy(topic)
+            localToGlobalStatisticService.findBy(topic)
                     .ifPresentOrElse(
                             this::showRegisteredTopic,
                             this::showNotRegisteredTopic

@@ -21,9 +21,11 @@ import egl.client.service.FileService;
 import egl.client.service.FxmlService;
 import egl.client.service.model.EntityService;
 import egl.client.service.model.EntityServiceException;
+import egl.client.service.model.core.AbstractStatisticService;
+import egl.client.service.model.core.StatisticFindService;
 import egl.client.service.model.core.StatisticService;
-import egl.client.service.model.core.StatisticServiceHolder;
-import egl.client.service.model.global.GlobalStatisticServiceHolder;
+import egl.client.service.model.global.GlobalStatisticService;
+import egl.client.service.model.global.LocalToGlobalStatisticService;
 import egl.client.service.model.local.CategoryService;
 import egl.client.service.model.local.LocalStatisticService;
 import egl.client.service.model.local.LocalTopicInfoService;
@@ -55,7 +57,8 @@ public class LocalTopicsController implements Controller {
     private final LocalTopicTasksService localTopicTasksService;
     private final CategoryService categoryService;
     private final LocalStatisticService localStatisticService;
-    private final GlobalStatisticServiceHolder globalStatisticService;
+    private final GlobalStatisticService globalStatisticService;
+    private final LocalToGlobalStatisticService localToGlobalStatisticService;
 
     @FXML private InfoSelectEditRemoveListView<Topic> categoriesListView;
     @FXML private TableColumn<Topic, String> topicLocalStatisticColumn;
@@ -130,24 +133,27 @@ public class LocalTopicsController implements Controller {
         saveCategoryColumn.setOnAction(processCategory(this::onCategorySave));
         loadCategoriesButton.setOnAction(event -> onCategoriesLoad());
 
-        initializeStatisticColumn(topicLocalStatisticColumn, localStatisticService);
-        initializeStatisticColumn(topicGlobalStatisticColumn, globalStatisticService);
+        initializeStatisticColumn(topicLocalStatisticColumn, localStatisticService, localStatisticService);
+        initializeStatisticColumn(topicGlobalStatisticColumn, globalStatisticService, localToGlobalStatisticService);
     }
 
     private void initializeStatisticColumn(
             TableColumn<Topic, String> topicStatisticColumn,
-            StatisticServiceHolder statisticService
+            StatisticService statisticService,
+            StatisticFindService statisticFindService
     ) {
         topicStatisticColumn.setCellValueFactory(param -> {
             var topic = param.getValue();
-            var statisticString = getTopicStatistic(statisticService, topic);
+            var statisticString = getTopicStatistic(statisticService, statisticFindService, topic);
             return new SimpleStringProperty(statisticString);
         });
     }
 
-    private String getTopicStatistic(StatisticServiceHolder statisticService, Topic localTopic) {
+    private String getTopicStatistic(StatisticService statisticService,
+                                     StatisticFindService statisticFindService,
+                                     Topic localTopic) {
         try {
-            return statisticService.findBy(localTopic)
+            return statisticFindService.findBy(localTopic)
                     .map(topicStatistic -> {
                         var tasks = localTopicTasksService.findBy(localTopic.getTopicType()).getTasks();
 
@@ -160,12 +166,12 @@ public class LocalTopicsController implements Controller {
                                 .count();
 
                         return String.format("%d из %d", passedTasksCount, tasks.size());
-                    }).orElse(StatisticService.NO_DATA);
+                    }).orElse(AbstractStatisticService.NO_DATA);
         } catch (EntityServiceException e) {
             new Alert(Alert.AlertType.ERROR,
                     "Проблема при загрузке результатов",
                     ButtonType.OK).show();
-            return StatisticService.NO_DATA;
+            return AbstractStatisticService.NO_DATA;
         }
     }
 
@@ -176,7 +182,7 @@ public class LocalTopicsController implements Controller {
 
     private void initSelectProfileButton(
             Button selectProfileButton,
-            StatisticServiceHolder statisticService,
+            StatisticService statisticService,
             Class<? extends Controller> selectProfileControllerClass,
             String profileTypeName) {
         String profileText = String.format("%s профиль", profileTypeName);
@@ -246,7 +252,7 @@ public class LocalTopicsController implements Controller {
             return;
         }
 
-        globalStatisticService.registerTopic(localTopicInfo);
+        localToGlobalStatisticService.registerTopic(localTopicInfo);
         refresh();
     }
 

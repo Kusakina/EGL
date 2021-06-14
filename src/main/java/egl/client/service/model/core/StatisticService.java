@@ -1,5 +1,6 @@
 package egl.client.service.model.core;
 
+import java.util.List;
 import java.util.Optional;
 
 import egl.client.model.core.profile.Profile;
@@ -11,58 +12,15 @@ import egl.client.model.core.task.Task;
 import egl.client.model.core.topic.Topic;
 import javafx.beans.property.Property;
 
-public abstract class StatisticService {
+public interface StatisticService {
 
-    public static final String NO_DATA = Result.NO_DATA;
+    Property<Profile> selectedProfileProperty();
+    Optional<Profile> getSelectedProfile();
 
-    protected final ProfileService profileService;
-    protected final ProfileStatisticService profileStatisticService;
-    protected final TopicStatisticService topicStatisticService;
-    protected final TaskStatisticService taskStatisticService;
+    List<ProfileStatistic> findAllProfileStatistics();
 
-    public StatisticService(
-            ProfileService profileService,
-            ProfileStatisticService profileStatisticService,
-            TopicStatisticService topicStatisticService,
-            TaskStatisticService taskStatisticService) {
-        this.profileService = profileService;
-        this.profileStatisticService = profileStatisticService;
-        this.topicStatisticService = topicStatisticService;
-        this.taskStatisticService = taskStatisticService;
-    }
+    TaskStatistic findBy(TopicStatistic topicStatistic, Task task);
+    Optional<TaskStatistic> tryFindBy(ProfileStatistic profileStatistic, Topic globalTopic, Task task);
 
-    public Property<Profile> selectedProfileProperty() {
-        return profileService.selectedProfileProperty();
-    }
-
-    public Optional<Profile> getSelectedProfile() {
-        return profileService.getSelectedProfile();
-    }
-
-    private Optional<ProfileStatistic> getSelectedProfileStatistic() {
-        return getSelectedProfile()
-                .map(profileStatisticService::findBy);
-    }
-
-    public Optional<TopicStatistic> findBy(Topic topic) {
-        return getSelectedProfileStatistic().map(profileStatistic ->
-                topicStatisticService.findBy(profileStatistic, topic)
-        );
-    }
-
-    public Optional<TaskStatistic> findBy(Topic topic, Task task) {
-        return findBy(topic)
-                .map(topicStatistic -> findBy(topicStatistic, task));
-    }
-
-    public TaskStatistic findBy(TopicStatistic topicStatistic, Task task) {
-        return taskStatisticService.findBy(topicStatistic, task);
-    }
-
-    public void update(TopicStatistic topicStatistic, Task task, Result result) {
-        var taskStatistic = findBy(topicStatistic, task);
-        if (taskStatistic.updateBy(result)) {
-            taskStatisticService.save(taskStatistic);
-        }
-    }
+    void update(TopicStatistic topicStatistic, Task task, Result result);
 }

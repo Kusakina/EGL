@@ -10,9 +10,11 @@ import egl.client.model.core.task.Task;
 import egl.client.model.core.topic.Topic;
 import egl.client.service.FxmlService;
 import egl.client.service.model.EntityServiceException;
+import egl.client.service.model.core.AbstractStatisticService;
+import egl.client.service.model.core.StatisticFindService;
 import egl.client.service.model.core.StatisticService;
-import egl.client.service.model.core.StatisticServiceHolder;
-import egl.client.service.model.global.GlobalStatisticServiceHolder;
+import egl.client.service.model.global.GlobalStatisticService;
+import egl.client.service.model.global.LocalToGlobalStatisticService;
 import egl.client.service.model.local.LocalStatisticService;
 import egl.client.service.model.local.LocalTopicTasksService;
 import egl.client.view.table.list.InfoSelectListView;
@@ -33,7 +35,8 @@ public class TopicTasksController implements Controller {
     private final FxmlService fxmlService;
     private final LocalTopicTasksService localTopicTasksService;
     private final LocalStatisticService localStatisticService;
-    private final GlobalStatisticServiceHolder globalStatisticService;
+    private final GlobalStatisticService globalStatisticService;
+    private final LocalToGlobalStatisticService localToGlobalStatisticService;
 
     @FXML private InfoSelectListView<Task> tasksListView;
     @FXML private TableColumn<Task, String> taskLocalStatisticColumn;
@@ -53,28 +56,31 @@ public class TopicTasksController implements Controller {
     public void initializeTasks() {
         tasksListView.setOnSelect(this::onSelect);
 
-        initializeStatisticColumn(taskLocalStatisticColumn, localStatisticService);
-        initializeStatisticColumn(taskGlobalStatisticColumn, globalStatisticService);
+        initializeStatisticColumn(taskLocalStatisticColumn, localStatisticService, localStatisticService);
+        initializeStatisticColumn(taskGlobalStatisticColumn, globalStatisticService, localToGlobalStatisticService);
     }
 
     private void initializeStatisticColumn(
             TableColumn<Task, String> taskStatisticColumn,
-            StatisticServiceHolder statisticService) {
+            StatisticService statisticService,
+            StatisticFindService statisticFindService) {
         taskStatisticColumn.setCellValueFactory(param -> {
             var task = param.getValue();
-            var statisticString = getTaskStatistic(statisticService, task);
+            var statisticString = getTaskStatistic(statisticService, statisticFindService, task);
             return new SimpleStringProperty(statisticString);
         });
     }
 
-    private String getTaskStatistic(StatisticServiceHolder statisticService, Task task) {
+    private String getTaskStatistic(StatisticService statisticService, 
+                                    StatisticFindService statisticFindService, 
+                                    Task task) {
         try {
-            return statisticService.findBy(controllerTopic)
+            return statisticFindService.findBy(controllerTopic)
                     .map(topicStatistic -> statisticService.findBy(topicStatistic, task))
                     .map(taskStatistic -> {
                                 Result result = taskStatistic.getResult();
                                 if (Result.NONE.equals(result)) {
-                                    return StatisticService.NO_DATA;
+                                    return AbstractStatisticService.NO_DATA;
                                 }
 
                                 return String.format(
@@ -82,13 +88,13 @@ public class TopicTasksController implements Controller {
                                         result.toString()
                                 );
                             }
-                    ).orElse(StatisticService.NO_DATA);
+                    ).orElse(AbstractStatisticService.NO_DATA);
         } catch (EntityServiceException e) {
             new Alert(Alert.AlertType.ERROR,
                     "Проблема при загрузке результатов",
                     ButtonType.OK).show();
 
-            return StatisticService.NO_DATA;
+            return AbstractStatisticService.NO_DATA;
         }
     }
 
@@ -108,13 +114,15 @@ public class TopicTasksController implements Controller {
          FIXME show dialog with question
          local/global profiles
          */
-        updateStatistic(localStatisticService, task, result);
-        updateStatistic(globalStatisticService, task, result);
+        updateStatistic(localStatisticService, localStatisticService, task, result);
+        updateStatistic(globalStatisticService, localToGlobalStatisticService, task, result);
     }
 
-    private void updateStatistic(StatisticServiceHolder statisticService, Task task, Result result) {
+    private void updateStatistic(StatisticService statisticService, 
+                                 StatisticFindService statisticFindService, 
+                                 Task task, Result result) {
         try {
-            statisticService.findBy(controllerTopic)
+            statisticFindService.findBy(controllerTopic)
                     .ifPresent(topicStatistic -> {
                         statisticService.update(topicStatistic, task, result);
                         tasksListView.refresh();
