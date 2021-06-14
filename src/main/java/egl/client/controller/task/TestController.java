@@ -3,14 +3,15 @@ package egl.client.controller.task;
 import java.util.ArrayList;
 import java.util.List;
 
+import egl.client.controller.Controller;
 import egl.client.model.core.task.Task;
 import egl.client.model.core.task.Test;
 import egl.client.service.FxmlService;
 import egl.client.service.model.local.LocalTestService;
 import egl.client.view.tab.ControllerTab;
+import egl.client.view.tab.ControllerTabPane;
 import javafx.fxml.FXML;
 import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
 import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
@@ -23,17 +24,12 @@ public class TestController extends AbstractTaskController {
     private final FxmlService fxmlService;
     private final LocalTestService localTestService;
 
-    @FXML private TabPane tabPane;
+    @FXML private ControllerTabPane tabPane;
     @FXML private Tab descriptionTab;
-
-    private List<TaskController> taskControllers;
 
     @Override
     public void setPrefSize(double parentWidth, double parentHeight) {
         tabPane.setPrefSize(parentWidth, parentHeight);
-        for (TaskController taskController : taskControllers) {
-            taskController.setPrefSize(tabPane.getPrefWidth(), tabPane.getPrefHeight());
-        }
     }
 
     @Override
@@ -47,11 +43,14 @@ public class TestController extends AbstractTaskController {
         List<Tab> taskTabs = prepareTasks();
         tabs.addAll(taskTabs);
 
+        tabPane.getControllers().forEach(
+                Controller::prepareToShow
+        );
+
         tabPane.getSelectionModel().selectFirst();
     }
 
     private List<Tab> prepareTasks() {
-        this.taskControllers = new ArrayList<>();
         List<Tab> taskTabs = new ArrayList<>();
 
         Test test = localTestService.findBy(controllerTask);
@@ -66,7 +65,6 @@ public class TestController extends AbstractTaskController {
 
             var taskController = taskTab.getController();
             taskController.setContext(task, controllerTopic, result::accumulate);
-            taskControllers.add(taskController);
 
             taskTabs.add(taskTab);
         }
@@ -85,8 +83,8 @@ public class TestController extends AbstractTaskController {
 
     @Override
     protected void prepareToFinish() {
-        for (TaskController taskController : taskControllers) {
-            taskController.prepareToClose();
-        }
+        tabPane.getControllers().forEach(
+                Controller::prepareToClose
+        );
     }
 }
