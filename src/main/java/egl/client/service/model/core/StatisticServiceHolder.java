@@ -12,8 +12,10 @@ import javafx.beans.property.Property;
 
 public interface StatisticServiceHolder {
 
+    Property<Profile> selectedProfileProperty();
+
     Optional<TopicStatistic> findBy(Topic localTopic);
     TaskStatistic findBy(TopicStatistic topicStatistic, Task task);
-    Property<Profile> selectedProfileProperty();
+
     void update(TopicStatistic topicStatistic, Task task, Result result);
 }
