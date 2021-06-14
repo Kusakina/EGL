@@ -6,6 +6,7 @@ import egl.client.model.core.statistic.ProfileStatistic;
 import egl.client.model.core.statistic.TopicStatistic;
 import egl.client.model.core.topic.Topic;
 import egl.client.repository.core.statistic.TopicStatisticRepository;
+import egl.client.service.model.EntityServiceException;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
@@ -30,10 +31,14 @@ public abstract class TopicStatisticService
 
     @Override
     protected Optional<TopicStatistic> findById(TopicStatisticId topicStatisticId) {
-        return repository.findByProfileStatisticAndTopic(
-                        topicStatisticId.getProfileStatistic(),
-                        topicStatisticId.getTopic()
-                );
+        try {
+            return repository.findByProfileStatisticAndTopic(
+                    topicStatisticId.getProfileStatistic(),
+                    topicStatisticId.getTopic()
+            );
+        } catch (Exception e) {
+            throw new EntityServiceException();
+        }
     }
 
     @Override

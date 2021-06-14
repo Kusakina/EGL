@@ -28,11 +28,19 @@ public abstract class AbstractEntityService<
 
     @Override
     public T save(T entity) {
-        return repository.save(entity);
+        try {
+            return repository.save(entity);
+        } catch (Exception e) {
+            throw new EntityServiceException();
+        }
     }
 
     @Override
     public void remove(T entity) {
-        repository.delete(entity);
+        try {
+            repository.delete(entity);
+        } catch (Exception e) {
+            throw new EntityServiceException();
+        }
     }
 }
