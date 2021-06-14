@@ -8,6 +8,7 @@ import egl.client.controller.task.TaskController;
 import egl.client.model.core.statistic.Result;
 import egl.client.model.core.task.Task;
 import egl.client.model.core.topic.Topic;
+import egl.client.service.ErrorService;
 import egl.client.service.FxmlService;
 import egl.client.service.model.EntityServiceException;
 import egl.client.service.model.core.AbstractStatisticService;
@@ -113,10 +114,6 @@ public class TopicTasksController implements Controller {
     }
 
     private void tryUpdateStatistic(Task task, Result result) {
-        /*
-         FIXME show dialog with question
-         local/global profiles
-         */
         updateStatistic(localStatisticService, localStatisticService, task, result);
         updateStatistic(globalStatisticService, localToGlobalStatisticService, task, result);
     }
@@ -131,9 +128,9 @@ public class TopicTasksController implements Controller {
                         tasksListView.refresh();
                     });
         } catch (EntityServiceException e) {
-            new Alert(Alert.AlertType.ERROR,
-                    "Проблема при обновлении результатов",
-                    ButtonType.OK).show();
+            ErrorService.showErrorAlert(
+                    "Проблема подключения к базе данных при обновлении результатов"
+            );
         }
     }
 
