@@ -41,7 +41,7 @@ public class GlobalStatisticServiceHolder implements StatisticServiceHolder {
     }
 
     @Override
-    public Optional<TopicStatistic> findBy(Topic localTopic) {
+    public Optional<TopicStatistic> findBy(Topic localTopic) throws EntityServiceException {
         return globalTopicService.findByLocal(localTopic)
                 .flatMap(globalStatisticService::findBy);
     }

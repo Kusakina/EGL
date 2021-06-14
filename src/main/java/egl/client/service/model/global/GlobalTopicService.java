@@ -9,6 +9,7 @@ import egl.client.model.core.topic.Topic;
 import egl.client.model.global.topic.GlobalTopicInfo;
 import egl.client.model.local.topic.LocalTopicInfo;
 import egl.client.repository.global.topic.GlobalTopicRepository;
+import egl.client.service.model.EntityServiceException;
 import egl.client.service.model.core.AbstractEntityService;
 import egl.client.service.model.local.LocalTopicInfoService;
 import org.springframework.stereotype.Service;
@@ -31,15 +32,19 @@ public class GlobalTopicService extends AbstractEntityService<Topic, GlobalTopic
         this.localToGlobalCache = new HashMap<>();
     }
 
-    private Optional<Topic> remoteFindByLocal(LocalTopicInfo localTopicInfo) {
-        return repository.findById(localTopicInfo.getGlobalId());
+    private Optional<Topic> remoteFindByLocal(LocalTopicInfo localTopicInfo) throws EntityServiceException {
+        try {
+            return repository.findById(localTopicInfo.getGlobalId());
+        } catch (RuntimeException e) {
+            throw new EntityServiceException(e);
+        }
 //            .filter(globalTopic -> {
 //                var globalTopicInfo = globalTopicInfoService.findBy(globalTopic);
 //                return globalTopicInfo.getLocalHashCode() == localTopicInfo.getGlobalHashCode();
 //            });
     }
 
-    public Optional<Topic> findByLocal(Topic localTopic) {
+    public Optional<Topic> findByLocal(Topic localTopic) throws EntityServiceException {
         var localTopicInfo = localTopicInfoService.findBy(localTopic);
         //FIXME
         if (null == localTopicInfo) return Optional.empty();
@@ -49,9 +54,12 @@ public class GlobalTopicService extends AbstractEntityService<Topic, GlobalTopic
             return Optional.empty();
         }
 
-        return localToGlobalCache.computeIfAbsent(
-                localTopicInfo, this::remoteFindByLocal
-        );
+        if (!localToGlobalCache.containsKey(localTopicInfo)) {
+            var globalTopic = remoteFindByLocal(localTopicInfo);
+            localToGlobalCache.put(localTopicInfo, globalTopic);
+        }
+
+        return localToGlobalCache.get(localTopicInfo);
     }
 
     public void registerTopic(LocalTopicInfo localTopicInfo, Profile author) {

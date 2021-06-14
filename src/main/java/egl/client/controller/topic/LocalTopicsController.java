@@ -32,7 +32,9 @@ import egl.client.view.table.column.ButtonColumn;
 import egl.client.view.table.list.InfoSelectEditRemoveListView;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -143,20 +145,27 @@ public class LocalTopicsController implements Controller {
     }
 
     private String getTopicStatistic(StatisticServiceHolder statisticService, Topic localTopic) {
-        return statisticService.findBy(localTopic)
-                .map(topicStatistic -> {
-            var tasks = localTopicTasksService.findBy(localTopic.getTopicType()).getTasks();
+        try {
+            return statisticService.findBy(localTopic)
+                    .map(topicStatistic -> {
+                        var tasks = localTopicTasksService.findBy(localTopic.getTopicType()).getTasks();
 
-            Function<TaskStatistic, Result> resultGenerator = TaskStatistic::getResult;
+                        Function<TaskStatistic, Result> resultGenerator = TaskStatistic::getResult;
 
-            var passedTasksCount = tasks.stream()
-                    .map(task -> statisticService.findBy(topicStatistic, task))
-                    .map(resultGenerator)
-                    .filter(result -> result.getCorrectAnswers() > 0)
-                    .count();
+                        var passedTasksCount = tasks.stream()
+                                .map(task -> statisticService.findBy(topicStatistic, task))
+                                .map(resultGenerator)
+                                .filter(result -> result.getCorrectAnswers() > 0)
+                                .count();
 
-            return String.format("%d из %d", passedTasksCount, tasks.size());
-        }).orElse(StatisticService.NO_DATA);
+                        return String.format("%d из %d", passedTasksCount, tasks.size());
+                    }).orElse(StatisticService.NO_DATA);
+        } catch (EntityServiceException e) {
+            new Alert(Alert.AlertType.ERROR,
+                    "Проблема при загрузке результатов",
+                    ButtonType.OK).show();
+            return StatisticService.NO_DATA;
+        }
     }
 
     private void initializeProfiles() {

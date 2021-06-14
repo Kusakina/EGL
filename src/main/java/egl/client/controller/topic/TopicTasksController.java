@@ -9,6 +9,7 @@ import egl.client.model.core.statistic.Result;
 import egl.client.model.core.task.Task;
 import egl.client.model.core.topic.Topic;
 import egl.client.service.FxmlService;
+import egl.client.service.model.EntityServiceException;
 import egl.client.service.model.core.StatisticService;
 import egl.client.service.model.core.StatisticServiceHolder;
 import egl.client.service.model.global.GlobalStatisticServiceHolder;
@@ -17,6 +18,8 @@ import egl.client.service.model.local.LocalTopicTasksService;
 import egl.client.view.table.list.InfoSelectListView;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxmlView;
@@ -65,20 +68,28 @@ public class TopicTasksController implements Controller {
     }
 
     private String getTaskStatistic(StatisticServiceHolder statisticService, Task task) {
-        return statisticService.findBy(controllerTopic)
-            .map(topicStatistic -> statisticService.findBy(topicStatistic, task))
-            .map(taskStatistic -> {
-                Result result = taskStatistic.getResult();
-                if (Result.NONE.equals(result)) {
-                    return StatisticService.NO_DATA;
-                }
+        try {
+            return statisticService.findBy(controllerTopic)
+                    .map(topicStatistic -> statisticService.findBy(topicStatistic, task))
+                    .map(taskStatistic -> {
+                                Result result = taskStatistic.getResult();
+                                if (Result.NONE.equals(result)) {
+                                    return StatisticService.NO_DATA;
+                                }
 
-                return String.format(
-                        "Лучший результат %s",
-                        result.toString()
-                );
-            }
-        ).orElse(StatisticService.NO_DATA);
+                                return String.format(
+                                        "Лучший результат %s",
+                                        result.toString()
+                                );
+                            }
+                    ).orElse(StatisticService.NO_DATA);
+        } catch (EntityServiceException e) {
+            new Alert(Alert.AlertType.ERROR,
+                    "Проблема при загрузке результатов",
+                    ButtonType.OK).show();
+
+            return StatisticService.NO_DATA;
+        }
     }
 
     private void onSelect(Task task) {
@@ -102,11 +113,17 @@ public class TopicTasksController implements Controller {
     }
 
     private void updateStatistic(StatisticServiceHolder statisticService, Task task, Result result) {
-        statisticService.findBy(controllerTopic)
-            .ifPresent(topicStatistic -> {
-                statisticService.update(topicStatistic, task, result);
-                tasksListView.refresh();
-            });
+        try {
+            statisticService.findBy(controllerTopic)
+                    .ifPresent(topicStatistic -> {
+                        statisticService.update(topicStatistic, task, result);
+                        tasksListView.refresh();
+                    });
+        } catch (EntityServiceException e) {
+            new Alert(Alert.AlertType.ERROR,
+                    "Проблема при обновлении результатов",
+                    ButtonType.OK).show();
+        }
     }
 
     @Override

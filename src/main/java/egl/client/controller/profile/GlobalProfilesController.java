@@ -24,7 +24,9 @@ import egl.client.service.model.local.LocalTopicService;
 import egl.client.service.model.local.LocalTopicTasksService;
 import egl.client.view.text.LabeledTextField;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Tab;
@@ -166,11 +168,17 @@ public class GlobalProfilesController extends ProfileSelectController {
             return;
         }
 
-        globalStatisticService.findBy(topic)
-                .ifPresentOrElse(
-                        this::showRegisteredTopic,
-                        this::showNotRegisteredTopic
-                );
+        try {
+            globalStatisticService.findBy(topic)
+                    .ifPresentOrElse(
+                            this::showRegisteredTopic,
+                            this::showNotRegisteredTopic
+                    );
+        } catch (EntityServiceException e) {
+            new Alert(Alert.AlertType.ERROR,
+                    "Проблема при загрузке результатов для темы",
+                    ButtonType.OK).show();
+        }
     }
 
     private void showRegisteredTopic(TopicStatistic topicStatistic) {
