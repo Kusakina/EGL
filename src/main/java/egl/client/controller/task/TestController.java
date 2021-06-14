@@ -3,17 +3,15 @@ package egl.client.controller.task;
 import java.util.ArrayList;
 import java.util.List;
 
-import egl.client.controller.Controller;
 import egl.client.model.core.task.Task;
 import egl.client.model.core.task.Test;
 import egl.client.service.FxmlService;
 import egl.client.service.model.local.LocalTestService;
+import egl.client.view.tab.ControllerTab;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import lombok.RequiredArgsConstructor;
-import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
 
@@ -58,16 +56,18 @@ public class TestController extends AbstractTaskController {
 
         Test test = localTestService.findBy(controllerTask);
         for (Task task : test.getInnerTasks()) {
-            FxControllerAndView<? extends Controller, Parent> controllerAndView = fxmlService.load(task.getSceneName());
+            var taskTab = new ControllerTab<TaskController>(task.getName());
 
-            TaskController taskController = (TaskController) controllerAndView.getController();
+            var controllerClass = FxmlService.controllerClassWith(
+                    task.getSceneName(), TaskController.class
+            );
+
+            taskTab.setContent(fxmlService, controllerClass);
+
+            var taskController = taskTab.getController();
             taskController.setContext(task, controllerTopic, result::accumulate);
-            taskController.prepareToShow();
             taskControllers.add(taskController);
 
-            Tab taskTab = new Tab(task.getName());
-            Parent taskParent = controllerAndView.getView().orElseThrow();
-            taskTab.contentProperty().setValue(taskParent);
             taskTabs.add(taskTab);
         }
 
