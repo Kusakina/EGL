@@ -5,8 +5,10 @@ import egl.client.service.FxmlService;
 import javafx.scene.Parent;
 import javafx.scene.control.Tab;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import net.rgielen.fxweaver.core.FxControllerAndView;
 
+@NoArgsConstructor
 public class ControllerTab<T extends Controller> extends Tab {
 
     public ControllerTab(String text) {
