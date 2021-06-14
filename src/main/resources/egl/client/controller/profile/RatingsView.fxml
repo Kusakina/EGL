@@ -12,7 +12,7 @@
     <top>
         <HBox alignment="CENTER_RIGHT">
             <Text fx:id="refreshRatingsInformationText"/>
-            <Button fx:id="tryRefreshRatingsButton"/>
+            <Button fx:id="tryRefreshRatingsButton" text="Обновить рейтинги"/>
         </HBox>
     </top>
     <center>
