@@ -47,6 +47,7 @@ public abstract class AbstractStatisticService implements StatisticService {
                 .map(profileStatisticService::findBy);
     }
 
+    @Override
     public Optional<TopicStatistic> findBy(Topic topic) {
         return getSelectedProfileStatistic().map(profileStatistic ->
                 topicStatisticService.findBy(profileStatistic, topic)

@@ -19,6 +19,8 @@ public interface StatisticService {
 
     List<ProfileStatistic> findAllProfileStatistics();
 
+    Optional<TopicStatistic> findBy(Topic topic);
+
     TaskStatistic findBy(TopicStatistic topicStatistic, Task task);
     Optional<TaskStatistic> tryFindBy(ProfileStatistic profileStatistic, Topic globalTopic, Task task);
 
