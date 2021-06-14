@@ -50,10 +50,20 @@ public abstract class RatingsController implements Controller {
 
     @Override
     public void prepareToShow() {
+        refresh();
+    }
+
+    @Override
+    public void refresh() {
         if (!triedToUpdate) {
             ratingsView.tryRefreshRatings();
             triedToUpdate = true;
         }
+    }
+
+    @Override
+    public void prepareToClose() {
+
     }
 
     @Override
