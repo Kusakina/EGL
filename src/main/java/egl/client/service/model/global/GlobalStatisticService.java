@@ -7,6 +7,7 @@ import egl.client.model.core.statistic.ProfileStatistic;
 import egl.client.model.core.statistic.TaskStatistic;
 import egl.client.model.core.task.Task;
 import egl.client.model.core.topic.Topic;
+import egl.client.service.model.EntityServiceException;
 import egl.client.service.model.core.StatisticService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +23,7 @@ public class GlobalStatisticService extends StatisticService {
         super(profileService, profileStatisticService, topicStatisticService, taskStatisticService);
     }
 
-    public List<ProfileStatistic> findAll() {
+    public List<ProfileStatistic> findAll() throws EntityServiceException {
         return profileStatisticService.findAll();
     }
 

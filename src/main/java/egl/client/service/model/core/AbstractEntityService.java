@@ -5,6 +5,7 @@ import java.util.List;
 import egl.client.model.core.DatabaseEntity;
 import egl.client.repository.core.EntityRepository;
 import egl.client.service.model.EntityService;
+import egl.client.service.model.EntityServiceException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,8 +18,12 @@ public abstract class AbstractEntityService<
     protected final RepositoryType repository;
 
     @Override
-    public List<T> findAll() {
-        return repository.findAll();
+    public List<T> findAll() throws EntityServiceException {
+        try {
+            return repository.findAll();
+        } catch (RuntimeException e) {
+            throw new EntityServiceException(e);
+        }
     }
 
     @Override

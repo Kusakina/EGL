@@ -16,6 +16,7 @@ import egl.client.model.core.statistic.TopicStatistic;
 import egl.client.model.core.task.Task;
 import egl.client.model.core.topic.Topic;
 import egl.client.service.FxmlService;
+import egl.client.service.model.EntityServiceException;
 import egl.client.service.model.global.GlobalCredentialsService;
 import egl.client.service.model.global.GlobalProfileService;
 import egl.client.service.model.global.GlobalStatisticServiceHolder;
@@ -136,16 +137,28 @@ public class GlobalProfilesController extends ProfileSelectController {
     }
 
     private void showRatings() {
-        profileStatistics = globalStatisticService.findAll();
-
-        var topics = localTopicService.findAll();
-        topicsListView.getItems().setAll(topics);
+        try {
+            profileStatistics = globalStatisticService.findAll();
+        } catch (EntityServiceException e) {
+            new Alert(Alert.AlertType.ERROR,
+                    "Проблема при загрузке глобальных результатов",
+                    ButtonType.OK).show();
+        }
 
         topicsListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
         topicsListView.getSelectionModel().selectedItemProperty().addListener(
                 (observableValue, oldTopic, newTopic) -> showRatingsFor(newTopic)
         );
+
+        try {
+            var topics = localTopicService.findAll();
+            topicsListView.getItems().setAll(topics);
+        } catch (EntityServiceException e) {
+            new Alert(Alert.AlertType.ERROR,
+                    "Проблема при загрузке списка локальных топиков",
+                    ButtonType.OK).show();
+        }
     }
 
     private void showRatingsFor(Topic topic) {
