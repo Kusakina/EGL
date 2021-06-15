@@ -1,0 +1,31 @@
+<?import egl.client.controller.topic.info.TheoryTextArea?>
+<?import egl.client.controller.topic.info.TranslationsEditableListView?>
+<?import egl.client.view.info.NameDescriptionInfoView?>
+<?import egl.client.view.pane.CustomBorderPane?>
+<?import javafx.scene.control.Button?>
+<CustomBorderPane fx:id="parentPane" fx:controller="egl.client.controller.topic.CategoryInfoController"
+                  xmlns:fx="http://javafx.com/fxml" margin="5">
+
+    <top>
+        <NameDescriptionInfoView fx:id="nameDescriptionInfoView" nameTitle="Название"/>
+    </top>
+
+    <right>
+        <CustomBorderPane fx:id="editableTranslationsPane">
+            <center>
+                <TranslationsEditableListView fx:id="translationsListView"/>
+            </center>
+            <bottom>
+                <CustomBorderPane>
+                    <right>
+                        <Button text="Добавить перевод" onAction="#onAddTranslation"/>
+                    </right>
+                </CustomBorderPane>
+            </bottom>
+        </CustomBorderPane>
+    </right>
+
+    <center>
+        <TheoryTextArea fx:id="theoryTextArea"/>
+    </center>
+</CustomBorderPane>

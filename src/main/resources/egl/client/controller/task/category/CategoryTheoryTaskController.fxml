@@ -1,21 +1,14 @@
-<?import egl.client.view.table.CustomTableView?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.layout.*?>
-<?import egl.client.view.table.PropertyColumn?>
+<?import egl.client.controller.topic.info.TranslationsListView?>
 <?import egl.client.view.pane.CustomBorderPane?>
+<?import javafx.scene.control.TextArea?>
 <CustomBorderPane fx:controller="egl.client.controller.task.category.CategoryTheoryTaskController"
                   xmlns:fx="http://javafx.com/fxml" margin="5">
 
     <top>
-        <TextArea fx:id="descriptionTextArea" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <TextArea fx:id="descriptionTextArea"/>
     </top>
 
     <center>
-        <CustomTableView fx:id="translationsTableView" GridPane.columnIndex="0" GridPane.rowIndex="1">
-            <columns>
-                <PropertyColumn text="Оригинал" property="source"/>
-                <PropertyColumn text="Перевод" property="target"/>
-            </columns>
-        </CustomTableView>
+        <TranslationsListView fx:id="translationsListView"/>
     </center>
 </CustomBorderPane>

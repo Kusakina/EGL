@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import egl.client.view.pane.CustomBorderPane?>
+<?import egl.client.view.tab.ControllerTab?>
+<?import egl.client.view.tab.ControllerTabPane?>
+<CustomBorderPane fx:controller="egl.client.controller.profile.global.GlobalStatisticsController"
+                  xmlns:fx="http://javafx.com/fxml">
+    <center>
+        <ControllerTabPane fx:id="activitiesTabPane">
+            <ControllerTab fx:id="profileSelectTab" text="Глобальный профиль"/>
+            <ControllerTab fx:id="ratingsTab" text="Глобальные рейтинги"/>
+        </ControllerTabPane>
+    </center>
+
+</CustomBorderPane>

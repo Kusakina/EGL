@@ -7,9 +7,12 @@ import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
 
-import egl.client.controller.task.AbstractTaskController;
-import egl.client.model.topic.category.Category;
-import egl.client.model.topic.category.Translation;
+import egl.client.controller.task.LocalTaskController;
+import egl.client.model.local.topic.category.Category;
+import egl.client.model.local.topic.category.Language;
+import egl.client.model.local.topic.category.Translation;
+import egl.client.service.model.local.CategoryService;
+import egl.client.service.model.local.LocalTopicInfoService;
 import egl.client.view.pane.CustomBorderPane;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -24,7 +27,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @FxmlView
-public class MissingLettersTaskController extends AbstractTaskController {
+public class MissingLettersTaskController extends LocalTaskController<Category> {
 
     private static final int DEFAULT_ADDITIONAL_LETTERS_COUNT = 3;
 
@@ -51,7 +54,8 @@ public class MissingLettersTaskController extends AbstractTaskController {
 
     private final Random random;
 
-    public MissingLettersTaskController() {
+    public MissingLettersTaskController(LocalTopicInfoService localTopicInfoService, CategoryService categoryService) {
+        super(localTopicInfoService, categoryService);
         this.random = new Random();
     }
 
@@ -92,8 +96,9 @@ public class MissingLettersTaskController extends AbstractTaskController {
 
     private List<Translation> translations;
     private int curMissingLetterIndex;
+    private int curIndex;
 
-    void initializeCurrentWord(int curIndex) {
+    void initializeCurrentWord() {
         if (translations.size() == curIndex) {
             taskText.setText("Все слова закончились. Можете завершать игру");
             sourceWordText.setVisible(false);
@@ -105,6 +110,8 @@ public class MissingLettersTaskController extends AbstractTaskController {
         String curSource = translations.get(curIndex).getSource().toString();
         String curTarget = translations.get(curIndex).getTarget().toString();
         sourceWordText.setText(curSource);
+
+        Language targetLanguage = translations.get(curIndex).getTarget().getLanguage();
 
         // запись слова по буквам в список
         List<Integer> removedPositions = new ArrayList<>();
@@ -138,10 +145,10 @@ public class MissingLettersTaskController extends AbstractTaskController {
         for (int index : removedPositions) {
             buttonLetters.add(curTarget.charAt(index));
         }
-
+        
         for (int j = 0; j < DEFAULT_ADDITIONAL_LETTERS_COUNT; ++j) {
-            int letterIndex = random.nextInt(26);
-            char letter = (char) ('a' + letterIndex);
+            int letterIndex = random.nextInt(targetLanguage.getLettersCount());
+            char letter = (char) (targetLanguage.getStartLetter() + letterIndex);
             if (!buttonLetters.contains(letter)) {
                 buttonLetters.add(letter);
             } else {
@@ -193,7 +200,8 @@ public class MissingLettersTaskController extends AbstractTaskController {
             result.registerAnswer(isCorrect);
 
             if (isCorrect) {
-                initializeCurrentWord(curIndex + 1);
+                ++curIndex;
+                initializeCurrentWord();
             } else {
                 curMissingLetterIndex = 0;
                 for (int index : finalRemovedPositions) {
@@ -221,7 +229,8 @@ public class MissingLettersTaskController extends AbstractTaskController {
         taskText.setFont(Font.font(fontSize));
         sourceWordText.setFont(Font.font(fontSize * 1.2));
 
-        initializeCurrentWord(0);
+        this.curIndex = 0;
+        initializeCurrentWord();
     }
 
     @Override
@@ -231,7 +240,7 @@ public class MissingLettersTaskController extends AbstractTaskController {
     }
 
     private void initializeTranslations() {
-        Category category = (Category) controllerTopic;
+        Category category = specificLocalTopic;
 
         this.translations = category.getTranslations();
         Collections.shuffle(translations);
@@ -243,7 +252,10 @@ public class MissingLettersTaskController extends AbstractTaskController {
 
     @Override
     protected void prepareToFinish() {
-
+        while (curIndex < translations.size()) {
+            result.registerAnswer(false);
+            ++curIndex;
+        }
     }
 }
 

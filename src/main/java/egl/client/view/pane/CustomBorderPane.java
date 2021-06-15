@@ -1,22 +1,20 @@
 package egl.client.view.pane;
 
-import egl.client.service.FxmlService;
+import java.util.Arrays;
+
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
 import lombok.Getter;
 
-import java.util.Arrays;
-
 public class CustomBorderPane extends BorderPane {
 
-    public static final double DEFAULT_SPACING = 10;
+    public static final double DEFAULT_SPACING = 0;
     public static final double DEFAULT_MARGIN = 0;
 
     @Getter private double margin;
 
     public CustomBorderPane() {
-        FxmlService.loadView(this, CustomBorderPane.class);
         setSpacing(DEFAULT_SPACING);
         setMargin(DEFAULT_MARGIN);
     }

@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.HBox?>
+<?import egl.client.view.pane.CustomBorderPane?>
+<?import egl.client.view.text.LabeledTextField?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.VBox?>
 <fx:root type="egl.client.view.pane.CustomBorderPane" xmlns="http://javafx.com/javafx"
          xmlns:fx="http://javafx.com/fxml" margin="5">
 
     <top>
-        <HBox spacing="10">
-            <Label fx:id="nameLabel"/>
-            <TextField fx:id="nameTextField"/>
-        </HBox>
+        <LabeledTextField fx:id="nameTextField"/>
     </top>
 
-    <bottom>
+    <center>
         <VBox>
             <Label text="Описание"/>
             <TextArea fx:id="descriptionTextArea"/>
         </VBox>
-    </bottom>
+    </center>
 </fx:root>

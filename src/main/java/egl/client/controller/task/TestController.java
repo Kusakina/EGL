@@ -1,20 +1,18 @@
 package egl.client.controller.task;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
 import egl.client.controller.Controller;
+import egl.client.model.core.task.Task;
+import egl.client.model.core.task.Test;
 import egl.client.service.FxmlService;
-import egl.core.model.task.Task;
-import egl.core.model.task.Test;
+import egl.client.service.model.local.LocalTestService;
+import egl.client.view.tab.ControllerTab;
+import egl.client.view.tab.ControllerTabPane;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
 import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
 import lombok.RequiredArgsConstructor;
-import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
 
@@ -24,26 +22,14 @@ import org.springframework.stereotype.Component;
 public class TestController extends AbstractTaskController {
 
     private final FxmlService fxmlService;
+    private final LocalTestService localTestService;
 
-    @FXML private TabPane tabPane;
+    @FXML private ControllerTabPane tabPane;
     @FXML private Tab descriptionTab;
-
-    private List<TaskController> taskControllers;
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        super.initialize(url, resourceBundle);
-
-        tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
-        descriptionTab.setText("Информация о тесте");
-    }
 
     @Override
     public void setPrefSize(double parentWidth, double parentHeight) {
         tabPane.setPrefSize(parentWidth, parentHeight);
-        for (TaskController taskController : taskControllers) {
-            taskController.setPrefSize(tabPane.getPrefWidth(), tabPane.getPrefHeight());
-        }
     }
 
     @Override
@@ -57,25 +43,29 @@ public class TestController extends AbstractTaskController {
         List<Tab> taskTabs = prepareTasks();
         tabs.addAll(taskTabs);
 
+        tabPane.forEachController(
+                Controller::prepareToShow
+        );
+
         tabPane.getSelectionModel().selectFirst();
     }
 
     private List<Tab> prepareTasks() {
-        this.taskControllers = new ArrayList<>();
         List<Tab> taskTabs = new ArrayList<>();
 
-        Test test = (Test) controllerTask;
-        for (Task task : test.getTasks()) {
-            FxControllerAndView<? extends Controller, Parent> controllerAndView = fxmlService.load(task.getSceneName());
+        Test test = localTestService.findBy(controllerTask);
+        for (Task task : test.getInnerTasks()) {
+            var taskTab = new ControllerTab<TaskController>(task.getName());
 
-            TaskController taskController = (TaskController) controllerAndView.getController();
+            var controllerClass = FxmlService.controllerClassWith(
+                    task.getSceneName(), TaskController.class
+            );
+
+            taskTab.setContent(fxmlService, controllerClass);
+
+            var taskController = taskTab.getController();
             taskController.setContext(task, controllerTopic, result::accumulate);
-            taskController.prepareToShow();
-            taskControllers.add(taskController);
 
-            Tab taskTab = new Tab(task.getName());
-            Parent taskParent = controllerAndView.getView().orElseThrow();
-            taskTab.contentProperty().setValue(taskParent);
             taskTabs.add(taskTab);
         }
 
@@ -93,8 +83,8 @@ public class TestController extends AbstractTaskController {
 
     @Override
     protected void prepareToFinish() {
-        for (TaskController taskController : taskControllers) {
-            taskController.prepareToClose();
-        }
+        tabPane.forEachController(
+                Controller::prepareToClose
+        );
     }
 }

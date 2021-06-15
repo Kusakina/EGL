@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import egl.client.model.topic.category.Translation;
+import egl.client.model.local.topic.category.Translation;
 import egl.client.service.FxmlService;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -31,7 +31,7 @@ public class OneOfFourQuestionView extends GridPane implements Initializable {
         this.correctTranslation = correctTranslation;
         this.incorrectAnswers = incorrectAnswers;
 
-        FxmlService.loadView(this, OneOfFourQuestionView.class, true);
+        FxmlService.loadView(this, OneOfFourQuestionView.class);
     }
 
     @Override
@@ -74,5 +74,15 @@ public class OneOfFourQuestionView extends GridPane implements Initializable {
         for (ColumnConstraints columnConstraints : getColumnConstraints()) {
             columnConstraints.setPercentWidth(100.0 / Math.max(1, incorrectAnswers.size()));
         }
+    }
+
+    public boolean isCorrect() {
+        for (RadioButton radioButton : answerRadioButtons) {
+            if (radioButton.isSelected()) {
+                return radioButton.getText().equals(correctTranslation.getTarget().getText());
+            }
+        }
+
+        return false;
     }
 }

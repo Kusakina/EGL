@@ -1,16 +1,16 @@
 package egl.client.controller.task.category;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-import egl.client.controller.task.AbstractTaskController;
-import egl.client.model.topic.category.Category;
-import egl.client.model.topic.category.Translation;
-import egl.client.model.topic.category.Word;
+import egl.client.controller.task.LocalTaskController;
+import egl.client.model.local.topic.category.Category;
+import egl.client.model.local.topic.category.Translation;
+import egl.client.model.local.topic.category.Word;
+import egl.client.service.model.local.CategoryService;
+import egl.client.service.model.local.LocalTopicInfoService;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
 import net.rgielen.fxweaver.core.FxmlView;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @FxmlView
-public class OneOfFourTaskController extends AbstractTaskController {
+public class OneOfFourTaskController extends LocalTaskController<Category> {
 
     private static final int MAX_TASKS_COUNT = 8;
     private static final int MAX_ANSWERS_COUNT = 4;
@@ -26,16 +26,16 @@ public class OneOfFourTaskController extends AbstractTaskController {
     @FXML
     private VBox tasksVBox;
 
-    private List<OneOfFourQuestionView> questionViews;
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public OneOfFourTaskController(LocalTopicInfoService localTopicInfoService, CategoryService categoryService) {
+        super(localTopicInfoService, categoryService);
     }
+
+    private List<OneOfFourQuestionView> questionViews;
 
     private List<Translation> translations;
 
     private void prepareTasks() {
-        Category category = (Category) controllerTopic;
+        Category category = specificLocalTopic;
 
         this.translations = category.getTranslations();
         Collections.shuffle(translations);
@@ -77,7 +77,9 @@ public class OneOfFourTaskController extends AbstractTaskController {
 
     @Override
     protected void prepareToFinish() {
-
+        for (var questionView : questionViews) {
+            result.registerAnswer(questionView.isCorrect());
+        }
     }
 
     @Override

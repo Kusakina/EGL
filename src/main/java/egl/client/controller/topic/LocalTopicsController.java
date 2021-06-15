@@ -1,24 +1,49 @@
 package egl.client.controller.topic;
 
+import java.net.URL;
+import java.util.List;
+import java.util.ResourceBundle;
+import java.util.function.Consumer;
+import java.util.function.Function;
+
 import egl.client.controller.Controller;
 import egl.client.controller.WindowController;
-import egl.client.controller.profile.LocalProfilesController;
-import egl.client.model.profile.LocalProfile;
-import egl.client.model.topic.LocalTopic;
-import egl.client.model.topic.category.Category;
+import egl.client.controller.profile.StatisticsController;
+import egl.client.controller.profile.global.GlobalStatisticsController;
+import egl.client.controller.profile.local.LocalStatisticsController;
+import egl.client.model.core.profile.Profile;
+import egl.client.model.core.statistic.Result;
+import egl.client.model.core.statistic.TaskStatistic;
+import egl.client.model.core.topic.Topic;
+import egl.client.model.core.topic.TopicType;
+import egl.client.model.local.topic.LocalTopicInfo;
+import egl.client.model.local.topic.category.Category;
+import egl.client.service.FileService;
 import egl.client.service.FxmlService;
-import egl.client.service.model.profile.LocalProfileService;
-import egl.client.service.model.topic.CategoryService;
-import egl.client.view.table.EntityServiceListView;
+import egl.client.service.model.EntityService;
+import egl.client.service.model.EntityServiceException;
+import egl.client.service.model.core.AbstractStatisticService;
+import egl.client.service.model.core.StatisticService;
+import egl.client.service.model.core.TopicStatisticByLocalService;
+import egl.client.service.model.global.GlobalStatisticByLocalService;
+import egl.client.service.model.global.GlobalStatisticService;
+import egl.client.service.model.local.CategoryService;
+import egl.client.service.model.local.LocalStatisticService;
+import egl.client.service.model.local.LocalTopicInfoService;
+import egl.client.service.model.local.LocalTopicService;
+import egl.client.service.model.local.LocalTopicTasksService;
+import egl.client.view.table.column.ButtonColumn;
+import egl.client.view.table.list.InfoSelectEditRemoveListView;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
-
-import java.net.URL;
-import java.util.ResourceBundle;
 
 @Component
 @FxmlView
@@ -26,11 +51,31 @@ import java.util.ResourceBundle;
 public class LocalTopicsController implements Controller {
 
     private final FxmlService fxmlService;
+    private final LocalTopicService localTopicService;
+    private final LocalTopicInfoService localTopicInfoService;
+    private final LocalTopicTasksService localTopicTasksService;
     private final CategoryService categoryService;
-    private final LocalProfileService localProfileService;
+    private final LocalStatisticService localStatisticService;
+    private final GlobalStatisticService globalStatisticService;
+    private final GlobalStatisticByLocalService localToGlobalStatisticService;
 
-    @FXML private EntityServiceListView<Category> categoriesListView;
-    @FXML private Button localProfilesListButton;
+    @FXML private InfoSelectEditRemoveListView<Topic> categoriesListView;
+    @FXML private TableColumn<Topic, String> topicLocalStatisticColumn;
+    @FXML private TableColumn<Topic, String> topicGlobalStatisticColumn;
+    @FXML private ButtonColumn<Topic> copyCategoryColumn;
+    @FXML private ButtonColumn<Topic> registerCategoryColumn;
+    @FXML private ButtonColumn<Topic> saveCategoryColumn;
+
+    @FXML private Button selectLocalProfileButton;
+    @FXML private Button selectGlobalProfileButton;
+    @FXML private Button createCategoryButton;
+    @FXML private Button loadCategoriesButton;
+
+    private Stage stage;
+
+    public void setContext(Stage stage) {
+        this.stage = stage;
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -38,45 +83,209 @@ public class LocalTopicsController implements Controller {
         initializeProfiles();
     }
 
+    @RequiredArgsConstructor
+    private class TypedTopicService implements EntityService<Topic> {
+
+        private final TopicType topicType;
+
+        @Override
+        public List<Topic> findAll() {
+            return localTopicService.findAllBy(topicType);
+        }
+
+        @Override
+        public Topic save(Topic entity) {
+            return localTopicService.save(entity);
+        }
+
+        @Override
+        public void remove(Topic entity) {
+            localTopicService.remove(entity);
+        }
+    }
+
+    private Consumer<Topic> processCategory(Consumer<Category> categoryConsumer) {
+        Consumer<LocalTopicInfo> localTopicInfoConsumer = (LocalTopicInfo localTopicInfo) -> {
+              Category category = categoryService.findBy(localTopicInfo);
+              categoryConsumer.accept(category);
+        };
+
+        return processLocalTopic(localTopicInfoConsumer);
+    }
+
+    private Consumer<Topic> processLocalTopic(Consumer<LocalTopicInfo> localTopicInfoConsumer) {
+        return (Topic topic) -> {
+            LocalTopicInfo localTopicInfo = localTopicInfoService.findBy(topic);
+            localTopicInfoConsumer.accept(localTopicInfo);
+        };
+    }
+
     private void initializeCategories() {
-        categoriesListView.setService(categoryService);
+        categoriesListView.setService(new TypedTopicService(TopicType.CATEGORY));
         categoriesListView.setOnSelect(this::onTopicSelect);
+        categoriesListView.setOnEdit(processCategory(this::onCategoryEdit));
+        categoriesListView.setOnRemove(processCategory(this::onCategoryRemove));
+
+        createCategoryButton.setOnAction(event -> onCategoryCreate());
+        copyCategoryColumn.setOnAction(processCategory(this::onCategoryCopy));
+        registerCategoryColumn.setOnAction(processLocalTopic(this::onLocalTopicRegister));
+
+        saveCategoryColumn.setOnAction(processCategory(this::onCategorySave));
+        loadCategoriesButton.setOnAction(event -> onCategoriesLoad());
+
+        initializeStatisticColumn(topicLocalStatisticColumn, localStatisticService, localStatisticService);
+        initializeStatisticColumn(topicGlobalStatisticColumn, globalStatisticService, localToGlobalStatisticService);
+    }
+
+    private void initializeStatisticColumn(
+            TableColumn<Topic, String> topicStatisticColumn,
+            StatisticService statisticService,
+            TopicStatisticByLocalService statisticFindService
+    ) {
+        topicStatisticColumn.setCellValueFactory(param -> {
+            var topic = param.getValue();
+            var statisticString = getTopicStatistic(statisticService, statisticFindService, topic);
+            return new SimpleStringProperty(statisticString);
+        });
+    }
+
+    private String getTopicStatistic(StatisticService statisticService,
+                                     TopicStatisticByLocalService statisticFindService,
+                                     Topic localTopic) {
+        try {
+            return statisticFindService.findStatisticByLocal(localTopic)
+                    .map(topicStatistic -> {
+                        var tasks = localTopicTasksService.findBy(localTopic.getTopicType()).getTasks();
+
+                        Function<TaskStatistic, Result> resultGenerator = TaskStatistic::getResult;
+
+                        var passedTasksCount = tasks.stream()
+                                .map(task -> statisticService.findBy(topicStatistic, task))
+                                .map(resultGenerator)
+                                .filter(result -> result.getCorrectAnswers() > 0)
+                                .count();
+
+                        return String.format("%d из %d", passedTasksCount, tasks.size());
+                    }).orElse(AbstractStatisticService.NO_DATA);
+        } catch (EntityServiceException e) {
+            return AbstractStatisticService.NO_DATA;
+        }
     }
 
     private void initializeProfiles() {
-        localProfilesListButton.setOnAction(event -> openProfilesList());
+        initSelectProfileButton(selectLocalProfileButton, localStatisticService, LocalStatisticsController.class, "Локальный");
+        initSelectProfileButton(selectGlobalProfileButton, globalStatisticService, GlobalStatisticsController.class, "Глобальный");
+    }
 
-        localProfilesListButton.textProperty().bindBidirectional(
-                localProfileService.selectedProfileProperty(),
+    private void initSelectProfileButton(
+            Button selectProfileButton,
+            StatisticService statisticService,
+            Class<? extends StatisticsController> statisticsControllerClass,
+            String profileTypeName) {
+        String profileText = String.format("%s профиль", profileTypeName);
+
+        selectProfileButton.setOnAction(event -> {
+            var selectProfileRoot = fxmlService.load(statisticsControllerClass);
+            fxmlService.showController(selectProfileRoot, profileText, WindowController.CLOSE);
+        });
+
+        selectProfileButton.textProperty().bindBidirectional(
+                statisticService.selectedProfileProperty(),
                 new StringConverter<>() {
                     @Override
-                    public String toString(LocalProfile localProfile) {
-                        if (null == localProfile) return "Выбрать локальный профиль";
-                        return String.format("Локальный профиль: %s", localProfile.getName());
+                    public String toString(Profile profile) {
+                        if (null == profile) return String.format("Выбрать %s", profileText.toLowerCase());
+                        return String.format("%s профиль: %s", profileText, profile.getName());
                     }
 
                     @Override
-                    public LocalProfile fromString(String s) {
+                    public Profile fromString(String s) {
                         return null;
                     }
                 }
         );
+
+        statisticService.selectedProfileProperty().addListener((observableValue, oldProfile, newProfile) -> categoriesListView.refresh());
     }
 
-    private void openProfilesList() {
-        var profilesRoot = fxmlService.load(LocalProfilesController.class);
-        fxmlService.showStage(profilesRoot, "Локальные профили", WindowController.CLOSE);
-    }
-
-    private void onTopicSelect(LocalTopic topic) {
+    private void onTopicSelect(Topic topic) {
         var localTopicRoot = fxmlService.load(TopicTasksController.class);
 
-        var topicController = (TopicTasksController) localTopicRoot.getController();
+        var topicController = localTopicRoot.getController();
         topicController.setContext(topic);
 
-        fxmlService.showStage(
+        fxmlService.showController(
                 localTopicRoot, topic.getName(), WindowController.CLOSE
         );
+    }
+
+    private void onCategoryEdit(Category category) {
+        onCategoryEdit(category, false, "Изменить данные");
+    }
+
+    private void onCategoryCreate() {
+        onCategoryCopy(new Category());
+    }
+
+    private void onCategoryCopy(Category category) {
+        onCategoryEdit(new Category(category), true, "Новая категория");
+    }
+
+    private void onCategoryEdit(Category category, boolean isCreated, String title) {
+        var changed = fxmlService.showInfoDialog(
+                CategoryInfoController.class,
+                category,
+                title, isCreated
+        );
+
+        if (changed) {
+            categoryService.save(category);
+            categoriesListView.showItems();
+        }
+    }
+
+    private void onCategoryRemove(Category category) {
+        var topic = category.getLocalTopicInfo().getTopic();
+
+        localStatisticService.removeAllBy(topic);
+        categoryService.remove(category);
+
+        categoriesListView.removeItem(topic);
+    }
+
+    private void onLocalTopicRegister(LocalTopicInfo localTopicInfo) {
+        if (LocalTopicInfo.NO_GLOBAL_ID != localTopicInfo.getGlobalId()) {
+            return;
+        }
+
+        localToGlobalStatisticService.registerTopic(localTopicInfo);
+        refresh();
+    }
+
+    private void onCategorySave(Category category) {
+        var fileChooser = new FileChooser();
+        fileChooser.setTitle("Сохранить категорию");
+        var file = fileChooser.showSaveDialog(stage);
+        if (null != file) {
+            FileService.save(category, file);
+        }
+    }
+
+    private void onCategoriesLoad() {
+        var fileChooser = new FileChooser();
+        fileChooser.setTitle("Загрузить категории");
+        var files = fileChooser.showOpenMultipleDialog(stage);
+        if (null == files) return;
+
+        files.forEach(file -> {
+            try {
+                var category = FileService.loadCategory(file);
+                categoryService.save(category);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        categoriesListView.showItems();
     }
 
     @Override
@@ -96,5 +305,10 @@ public class LocalTopicsController implements Controller {
     @Override
     public void prepareToClose() {
 
+    }
+
+    @Override
+    public void refresh() {
+        categoriesListView.refresh();
     }
 }
