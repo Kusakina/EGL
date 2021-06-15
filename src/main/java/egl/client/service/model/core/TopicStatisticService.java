@@ -60,11 +60,6 @@ public abstract class TopicStatisticService
         return findBy(topicStatisticId);
     }
 
-    public Optional<TopicStatistic> tryFindBy(ProfileStatistic profileStatistic, Topic topic) {
-        var topicStatisticId = new TopicStatisticId(profileStatistic, topic);
-        return tryFindBy(topicStatisticId);
-    }
-
     public List<TopicStatistic> findAllBy(Topic topic) {
         try {
             return repository.findAllByTopic(topic);
