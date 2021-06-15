@@ -155,6 +155,10 @@ public class RatingsView extends CustomBorderPane implements Initializable {
 
                 var ratingListView = (RatingListView) tab.getContent();
                 ratingListView.getItems().setAll(taskRatings);
+                ratingListView.setPrefSize(
+                        taskRatingsTabPane.getPrefWidth(),
+                        taskRatingsTabPane.getPrefHeight()
+                );
             });
         }
 
