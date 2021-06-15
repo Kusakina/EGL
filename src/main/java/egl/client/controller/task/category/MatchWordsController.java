@@ -46,9 +46,10 @@ public class MatchWordsController extends LocalTaskController<Category> {
 
         var translations = category.getTranslations();
 
+        int wordsCount = Math.min(MAX_WORDS_COUNT, translations.size());
         List<Translation> leftList = random.ints(0, translations.size())
                 .distinct()
-                .limit(MAX_WORDS_COUNT)
+                .limit(wordsCount)
                 .boxed()
                 .map(translations::get)
                 .collect(Collectors.toList());
