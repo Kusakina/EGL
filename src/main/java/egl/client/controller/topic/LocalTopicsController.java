@@ -244,9 +244,14 @@ public class LocalTopicsController implements Controller {
         );
 
         if (changed) {
-            categoryService.save(category);
+            saveCategory(category);
             categoriesListView.showItems();
         }
+    }
+
+    private void saveCategory(Category category) {
+        categoryService.save(category);
+        globalTopicService.initializeRegistration(category.getLocalTopicInfo());
     }
 
     private void onCategoryRemove(Category category) {
@@ -281,7 +286,7 @@ public class LocalTopicsController implements Controller {
         files.forEach(file -> {
             try {
                 var category = FileService.loadCategory(file);
-                categoryService.save(category);
+                saveCategory(category);
             } catch (Exception e) {
                 e.printStackTrace();
             }

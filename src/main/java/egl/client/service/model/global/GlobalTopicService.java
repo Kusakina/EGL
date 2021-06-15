@@ -41,8 +41,16 @@ public class GlobalTopicService
     }
 
     public void initializeRegistrations(List<Topic> localTopics) {
-        localTopics.stream().map(localTopicInfoService::findBy)
-                .forEach(localTopicInfo -> registerTopic(localTopicInfo, () -> null));
+        localTopics.forEach(this::initializeRegistration);
+    }
+
+    public void initializeRegistration(Topic localTopic) {
+        var localTopicInfo = localTopicInfoService.findBy(localTopic);
+        initializeRegistration(localTopicInfo);
+    }
+
+    public void initializeRegistration(TopicInfo localTopicInfo) {
+        registerTopic(localTopicInfo, () -> null);
     }
 
     public void registerTopic(LocalTopicInfo localTopicInfo) {
