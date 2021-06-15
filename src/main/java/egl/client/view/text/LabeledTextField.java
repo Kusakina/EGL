@@ -32,7 +32,7 @@ public class LabeledTextField extends HBox {
     @Override
     protected void setWidth(double width) {
         super.setWidth(width);
-        textField.setPrefWidth(width * 0.9);
+        textField.setPrefWidth(width * 0.5);
     }
 
     @Override
