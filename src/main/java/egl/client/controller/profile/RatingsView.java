@@ -54,10 +54,10 @@ public class RatingsView extends CustomBorderPane implements Initializable {
     private LocalDateTime lastUpdateDateTime;
 
     @Setter
-    private Supplier<List<Long>> freshTopicIdsSupplier;
+    private Supplier<List<Topic>> freshTopicsSupplier;
 
     @Setter
-    private Function<List<Long>, List<TaskStatistic>> allTaskStatisticsGetter;
+    private Function<List<Topic>, List<TaskStatistic>> allTaskStatisticsGetter;
 
     @Setter
     private Function<TopicType, TopicTasks> topicTasksGetter;
@@ -108,24 +108,26 @@ public class RatingsView extends CustomBorderPane implements Initializable {
     }
 
     private void refreshRatings() {
-        var topicIds = freshTopicIdsSupplier.get();
+        var topics = freshTopicsSupplier.get();
 
-        Map<TopicType, List<Task>> topicTypeTasks = new HashMap<>();
+        Map<TopicType, List<Task>> topicTypeTasks = topics.stream()
+                .map(Topic::getTopicType)
+                .distinct()
+                .collect(Collectors.toUnmodifiableMap(
+                        Function.identity(),
+                        this::getTopicTypeTasks
+                ));
+
         Map<Topic, Map<Task, List<TaskStatistic>>> groupedTaskStatistics = new HashMap<>();
 
-        allTaskStatisticsGetter.apply(topicIds).forEach(taskStatistic -> {
+        allTaskStatisticsGetter.apply(topics).forEach(taskStatistic -> {
             var topic = taskStatistic.getTopicStatistic().getTopic();
             var topicTaskStatistics = groupedTaskStatistics.computeIfAbsent(
                     topic, key -> new HashMap<>()
             );
 
             var taskName = taskStatistic.getTaskName();
-
-            var topicTasks = topicTypeTasks.computeIfAbsent(
-                    topic.getTopicType(), this::getTopicTypeTasks
-            );
-
-            topicTasks.stream()
+            topicTypeTasks.get(topic.getTopicType()).stream()
                 .filter(topicTask -> TaskStatisticService.getTaskName(topicTask).equals(taskName))
                 .findAny()
                 .ifPresent(task ->
@@ -134,8 +136,6 @@ public class RatingsView extends CustomBorderPane implements Initializable {
                     ).add(taskStatistic)
                 );
         });
-
-        var topics = new ArrayList<>(groupedTaskStatistics.keySet());
 
         for (Topic topic : topics) {
             var topicType = topic.getTopicType();

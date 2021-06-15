@@ -1,6 +1,7 @@
 package egl.client.controller.topic.info;
 
 import java.net.URL;
+import java.util.HashSet;
 import java.util.ResourceBundle;
 import java.util.stream.Stream;
 
@@ -50,8 +51,8 @@ public class TranslationsListView extends CustomListView<Translation> implements
     public void fillData(Category category) {
         var translations = getItems();
 
-        var categoryTranslations = category.getTranslations();
-        categoryTranslations.clear();
-        categoryTranslations.addAll(translations);
+        category.setTranslations(new HashSet<>(
+                translations
+        ));
     }
 }

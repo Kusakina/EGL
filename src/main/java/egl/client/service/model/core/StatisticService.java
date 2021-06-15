@@ -19,7 +19,7 @@ public interface StatisticService {
     Optional<TopicStatistic> findBy(Topic topic);
 
     TaskStatistic findBy(TopicStatistic topicStatistic, Task task);
-    List<TaskStatistic> findAllTaskStatisticsBy(List<Long> topicIds);
+    List<TaskStatistic> findAllTaskStatisticsBy(List<Topic> topics);
 
     void update(TopicStatistic topicStatistic, Task task, Result result);
 }

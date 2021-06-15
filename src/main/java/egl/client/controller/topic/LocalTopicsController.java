@@ -24,9 +24,9 @@ import egl.client.service.model.EntityService;
 import egl.client.service.model.EntityServiceException;
 import egl.client.service.model.core.AbstractStatisticService;
 import egl.client.service.model.core.StatisticService;
-import egl.client.service.model.core.TopicStatisticByLocalService;
-import egl.client.service.model.global.GlobalStatisticByLocalService;
+import egl.client.service.model.core.TopicByLocalService;
 import egl.client.service.model.global.GlobalStatisticService;
+import egl.client.service.model.global.GlobalTopicService;
 import egl.client.service.model.local.CategoryService;
 import egl.client.service.model.local.LocalStatisticService;
 import egl.client.service.model.local.LocalTopicInfoService;
@@ -56,8 +56,8 @@ public class LocalTopicsController implements Controller {
     private final LocalTopicTasksService localTopicTasksService;
     private final CategoryService categoryService;
     private final LocalStatisticService localStatisticService;
+    private final GlobalTopicService globalTopicService;
     private final GlobalStatisticService globalStatisticService;
-    private final GlobalStatisticByLocalService localToGlobalStatisticService;
 
     @FXML private InfoSelectEditRemoveListView<Topic> categoriesListView;
     @FXML private TableColumn<Topic, String> topicLocalStatisticColumn;
@@ -133,27 +133,32 @@ public class LocalTopicsController implements Controller {
         saveCategoryColumn.setOnAction(processCategory(this::onCategorySave));
         loadCategoriesButton.setOnAction(event -> onCategoriesLoad());
 
-        initializeStatisticColumn(topicLocalStatisticColumn, localStatisticService, localStatisticService);
-        initializeStatisticColumn(topicGlobalStatisticColumn, globalStatisticService, localToGlobalStatisticService);
+        initializeStatisticColumn(topicLocalStatisticColumn, localStatisticService, localTopicService);
+        initializeStatisticColumn(topicGlobalStatisticColumn, globalStatisticService, globalTopicService);
     }
 
     private void initializeStatisticColumn(
             TableColumn<Topic, String> topicStatisticColumn,
             StatisticService statisticService,
-            TopicStatisticByLocalService statisticFindService
+            TopicByLocalService topicByLocalService
     ) {
         topicStatisticColumn.setCellValueFactory(param -> {
             var topic = param.getValue();
-            var statisticString = getTopicStatistic(statisticService, statisticFindService, topic);
+            var statisticString = getTopicStatistic(statisticService, topicByLocalService, topic);
             return new SimpleStringProperty(statisticString);
         });
     }
 
     private String getTopicStatistic(StatisticService statisticService,
-                                     TopicStatisticByLocalService statisticFindService,
+                                     TopicByLocalService topicByLocalService,
                                      Topic localTopic) {
         try {
-            return statisticFindService.findStatisticByLocal(localTopic)
+            var topicOptional = topicByLocalService.findTopicByLocal(localTopic);
+            if (topicOptional.isEmpty()) {
+                return TopicByLocalService.TOPIC_NOT_REGISTERED;
+            }
+
+            return topicOptional.flatMap(statisticService::findBy)
                     .map(topicStatistic -> {
                         var tasks = localTopicTasksService.findBy(localTopic.getTopicType()).getTasks();
 
@@ -254,11 +259,7 @@ public class LocalTopicsController implements Controller {
     }
 
     private void onLocalTopicRegister(LocalTopicInfo localTopicInfo) {
-        if (LocalTopicInfo.NO_GLOBAL_ID != localTopicInfo.getGlobalId()) {
-            return;
-        }
-
-        localToGlobalStatisticService.registerTopic(localTopicInfo);
+        globalTopicService.registerTopic(localTopicInfo);
         refresh();
     }
 
@@ -296,6 +297,12 @@ public class LocalTopicsController implements Controller {
     @Override
     public void prepareToShow() {
         showCategories();
+
+        globalTopicService.initializeRegistrations(
+                categoriesListView.getItems()
+        );
+
+        refresh();
     }
 
     private void showCategories() {

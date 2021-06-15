@@ -1,14 +1,11 @@
 package egl.client.model.global.topic;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
-import egl.client.model.core.DatabaseEntity;
-import egl.client.model.core.profile.Profile;
 import egl.client.model.core.topic.Topic;
+import egl.client.model.core.topic.TopicInfo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -17,23 +14,15 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
-public class GlobalTopicInfo extends DatabaseEntity {
+public class GlobalTopicInfo extends TopicInfo {
 
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private Topic topic;
 
-    @Column
-    private int localHashCode;
-
-    @ManyToOne
-    private Profile author;
-
     public GlobalTopicInfo(
             Topic topic,
-            int localHashCode,
-            Profile author) {
+            long localHashCode) {
+        super(localHashCode);
         this.topic = new Topic(topic);
-        this.localHashCode = localHashCode;
-        this.author = author;
     }
 }

@@ -6,6 +6,8 @@ import egl.client.model.core.topic.Topic;
 
 public interface TopicByLocalService {
 
-    Optional<Long> findGlobalIdByLocal(Topic topic);
+    String TOPIC_NOT_REGISTERED = "Не зарегистрирован";
+
+    long findHashByLocal(Topic topic);
     Optional<Topic> findTopicByLocal(Topic topic);
 }

@@ -1,4 +1,4 @@
-package egl.client.repository.core.task;
+package egl.client.repository.core.topic;
 
 import egl.client.model.core.topic.Topic;
 import egl.client.repository.core.EntityRepository;

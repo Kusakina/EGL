@@ -13,10 +13,11 @@ import egl.client.service.FxmlService;
 import egl.client.service.model.EntityServiceException;
 import egl.client.service.model.core.AbstractStatisticService;
 import egl.client.service.model.core.StatisticService;
-import egl.client.service.model.core.TopicStatisticByLocalService;
-import egl.client.service.model.global.GlobalStatisticByLocalService;
+import egl.client.service.model.core.TopicByLocalService;
 import egl.client.service.model.global.GlobalStatisticService;
+import egl.client.service.model.global.GlobalTopicService;
 import egl.client.service.model.local.LocalStatisticService;
+import egl.client.service.model.local.LocalTopicService;
 import egl.client.service.model.local.LocalTopicTasksService;
 import egl.client.view.table.list.InfoSelectListView;
 import javafx.beans.property.SimpleStringProperty;
@@ -33,9 +34,10 @@ public class TopicTasksController implements Controller {
 
     private final FxmlService fxmlService;
     private final LocalTopicTasksService localTopicTasksService;
+    private final LocalTopicService localTopicService;
     private final LocalStatisticService localStatisticService;
+    private final GlobalTopicService globalTopicService;
     private final GlobalStatisticService globalStatisticService;
-    private final GlobalStatisticByLocalService localToGlobalStatisticService;
 
     @FXML private InfoSelectListView<Task> tasksListView;
     @FXML private TableColumn<Task, String> taskLocalStatisticColumn;
@@ -55,26 +57,31 @@ public class TopicTasksController implements Controller {
     public void initializeTasks() {
         tasksListView.setOnSelect(this::onSelect);
 
-        initializeStatisticColumn(taskLocalStatisticColumn, localStatisticService, localStatisticService);
-        initializeStatisticColumn(taskGlobalStatisticColumn, globalStatisticService, localToGlobalStatisticService);
+        initializeStatisticColumn(taskLocalStatisticColumn, localStatisticService, localTopicService);
+        initializeStatisticColumn(taskGlobalStatisticColumn, globalStatisticService, globalTopicService);
     }
 
     private void initializeStatisticColumn(
             TableColumn<Task, String> taskStatisticColumn,
             StatisticService statisticService,
-            TopicStatisticByLocalService statisticFindService) {
+            TopicByLocalService topicByLocalService) {
         taskStatisticColumn.setCellValueFactory(param -> {
             var task = param.getValue();
-            var statisticString = getTaskStatistic(statisticService, statisticFindService, task);
+            var statisticString = getTaskStatistic(statisticService, topicByLocalService, task);
             return new SimpleStringProperty(statisticString);
         });
     }
 
     private String getTaskStatistic(StatisticService statisticService, 
-                                    TopicStatisticByLocalService statisticFindService,
+                                    TopicByLocalService topicByLocalService,
                                     Task task) {
         try {
-            return statisticFindService.findStatisticByLocal(controllerTopic)
+            var topicOptional = topicByLocalService.findTopicByLocal(controllerTopic);
+            if (topicOptional.isEmpty()) {
+                return TopicByLocalService.TOPIC_NOT_REGISTERED;
+            }
+
+            return topicOptional.flatMap(statisticService::findBy)
                     .map(topicStatistic -> statisticService.findBy(topicStatistic, task))
                     .map(taskStatistic -> {
                                 Result result = taskStatistic.getResult();
@@ -108,15 +115,16 @@ public class TopicTasksController implements Controller {
     }
 
     private void tryUpdateStatistic(Task task, Result result) {
-        updateStatistic(localStatisticService, localStatisticService, task, result);
-        updateStatistic(globalStatisticService, localToGlobalStatisticService, task, result);
+        updateStatistic(localStatisticService, localTopicService, task, result);
+        updateStatistic(globalStatisticService, globalTopicService, task, result);
     }
 
     private void updateStatistic(StatisticService statisticService, 
-                                 TopicStatisticByLocalService statisticFindService,
+                                 TopicByLocalService topicByLocalService,
                                  Task task, Result result) {
         try {
-            statisticFindService.findStatisticByLocal(controllerTopic)
+            topicByLocalService.findTopicByLocal(controllerTopic)
+                    .flatMap(statisticService::findBy)
                     .ifPresent(topicStatistic -> {
                         statisticService.update(topicStatistic, task, result);
                         tasksListView.refresh();

@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 import egl.client.model.core.DatabaseEntity;
-import egl.client.model.local.topic.GlobalHashCodeEntity;
+import egl.client.model.core.topic.TopicHashCodeEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
-public class Translation extends DatabaseEntity implements GlobalHashCodeEntity {
+public class Translation extends DatabaseEntity implements TopicHashCodeEntity {
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private Word source;
@@ -34,7 +34,7 @@ public class Translation extends DatabaseEntity implements GlobalHashCodeEntity 
     }
 
     @Override
-    public int getGlobalHashCode() {
+    public long getTopicHashCode() {
         return Objects.hash(source, target);
     }
 }

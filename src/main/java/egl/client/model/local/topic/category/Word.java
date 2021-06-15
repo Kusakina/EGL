@@ -8,14 +8,14 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
 import egl.client.model.core.DatabaseEntity;
-import egl.client.model.local.topic.GlobalHashCodeEntity;
+import egl.client.model.core.topic.TopicHashCodeEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
-public class Word extends DatabaseEntity implements GlobalHashCodeEntity {
+public class Word extends DatabaseEntity implements TopicHashCodeEntity {
 
     @Column
     private String text;
@@ -43,7 +43,7 @@ public class Word extends DatabaseEntity implements GlobalHashCodeEntity {
     }
 
     @Override
-    public int getGlobalHashCode() {
+    public long getTopicHashCode() {
         return Objects.hash(text, language);
     }
 }
