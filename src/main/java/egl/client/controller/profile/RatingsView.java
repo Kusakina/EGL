@@ -54,10 +54,10 @@ public class RatingsView extends CustomBorderPane implements Initializable {
     private LocalDateTime lastUpdateDateTime;
 
     @Setter
-    private Supplier<List<Topic>> freshTopicsSupplier;
+    private Supplier<List<Long>> freshTopicIdsSupplier;
 
     @Setter
-    private Function<List<Topic>, List<TaskStatistic>> allTaskStatisticsGetter;
+    private Function<List<Long>, List<TaskStatistic>> allTaskStatisticsGetter;
 
     @Setter
     private Function<TopicType, TopicTasks> topicTasksGetter;
@@ -108,23 +108,12 @@ public class RatingsView extends CustomBorderPane implements Initializable {
     }
 
     private void refreshRatings() {
-        var topics = freshTopicsSupplier.get();
+        var topicIds = freshTopicIdsSupplier.get();
 
-        Map<TopicType, List<Task>> topicTypeTasks = topics.stream()
-                .map(Topic::getTopicType)
-                .distinct()
-                .collect(Collectors.toUnmodifiableMap(
-                        Function.identity(),
-                        topicType -> {
-                            var topicTasks = topicTasksGetter.apply(topicType);
-                            var tasks = topicTasks.getTasks();
-                            tasks.add(topicTasks.getTest().getTask());
-                            return tasks;
-                        }
-                ));
-
+        Map<TopicType, List<Task>> topicTypeTasks = new HashMap<>();
         Map<Topic, Map<Task, List<TaskStatistic>>> groupedTaskStatistics = new HashMap<>();
-        allTaskStatisticsGetter.apply(topics).forEach(taskStatistic -> {
+
+        allTaskStatisticsGetter.apply(topicIds).forEach(taskStatistic -> {
             var topic = taskStatistic.getTopicStatistic().getTopic();
             var topicTaskStatistics = groupedTaskStatistics.computeIfAbsent(
                     topic, key -> new HashMap<>()
@@ -132,7 +121,10 @@ public class RatingsView extends CustomBorderPane implements Initializable {
 
             var taskName = taskStatistic.getTaskName();
 
-            var topicTasks = topicTypeTasks.get(topic.getTopicType());
+            var topicTasks = topicTypeTasks.computeIfAbsent(
+                    topic.getTopicType(), this::getTopicTypeTasks
+            );
+
             topicTasks.stream()
                 .filter(topicTask -> TaskStatisticService.getTaskName(topicTask).equals(taskName))
                 .findAny()
@@ -142,6 +134,8 @@ public class RatingsView extends CustomBorderPane implements Initializable {
                     ).add(taskStatistic)
                 );
         });
+
+        var topics = new ArrayList<>(groupedTaskStatistics.keySet());
 
         for (Topic topic : topics) {
             var topicType = topic.getTopicType();
@@ -166,6 +160,13 @@ public class RatingsView extends CustomBorderPane implements Initializable {
 
         topicsListView.getItems().setAll(topics);
         topicsListView.getSelectionModel().selectFirst();
+    }
+
+    private List<Task> getTopicTypeTasks(TopicType topicType) {
+        var topicTasks = topicTasksGetter.apply(topicType);
+        var tasks = topicTasks.getTasks();
+        tasks.add(topicTasks.getTest().getTask());
+        return tasks;
     }
 
     private Map<Task, Tab> createTopicTabs(List<Task> tasks) {

@@ -7,7 +7,6 @@ import egl.client.model.core.statistic.Result;
 import egl.client.model.core.statistic.TaskStatistic;
 import egl.client.model.core.statistic.TopicStatistic;
 import egl.client.model.core.task.Task;
-import egl.client.model.core.topic.Topic;
 import egl.client.repository.core.statistic.TaskStatisticRepository;
 import egl.client.service.model.EntityServiceException;
 import lombok.Data;
@@ -82,9 +81,9 @@ public abstract class TaskStatisticService
         }
     }
 
-    public List<TaskStatistic> findAllBy(List<Topic> topics) {
+    public List<TaskStatistic> findAllBy(List<Long> topicIds) {
         try {
-            return repository.findAllBy(topics);
+            return repository.findAllBy(topicIds);
         } catch (Exception e) {
             throw new EntityServiceException();
         }
