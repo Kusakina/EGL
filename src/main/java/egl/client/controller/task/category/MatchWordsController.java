@@ -1,6 +1,7 @@
 package egl.client.controller.task.category;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
@@ -38,15 +39,6 @@ public class MatchWordsController extends LocalTaskController<Category> {
         this.random = new Random();
     }
 
-    private List<Translation> getRandomTranslations(List<Translation> translations) {
-        return random.ints(0, translations.size())
-                .distinct()
-                .limit(MAX_WORDS_COUNT)
-                .boxed()
-                .map(translations::get)
-                .collect(Collectors.toList());
-    }
-
     private Label[] answers;
 
     private void initializeWords(Category category) {
@@ -54,8 +46,15 @@ public class MatchWordsController extends LocalTaskController<Category> {
 
         var translations = category.getTranslations();
 
-        List<Translation> leftList = getRandomTranslations(translations);
-        List<Translation> rightList = getRandomTranslations(translations);
+        List<Translation> leftList = random.ints(0, translations.size())
+                .distinct()
+                .limit(MAX_WORDS_COUNT)
+                .boxed()
+                .map(translations::get)
+                .collect(Collectors.toList());
+
+        List<Translation> rightList = new ArrayList<>(leftList);
+        Collections.shuffle(rightList, random);
 
         ToggleGroup originGroup = new ToggleGroup();
         ToggleGroup transGroup = new ToggleGroup();
