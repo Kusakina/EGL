@@ -71,43 +71,5 @@ public class DatabaseInitializationService {
             );
             localTopicTasksService.save(categoryTopicTasks);
         }
-
-//        Theory rainbowColorsTheory = new Theory(
-//                "В радуге 7 цветов - красный, оранжевый, желтый, зеленый,\n" +
-//                        " голубой, синий, фиолетовый.\n" +
-//                        "Для запоминания цветов и порядка используется мнемоника\n" +
-//                        "'(К)аждый (о)хотник (ж)елает (з)нать, (г)де (с)идит (ф)азан'.\n"+
-//                        "'(R)ichard (o)f (Y)ork (g)ave (b)attle (i)n (v)ain'."
-//
-//        );
-//
-//        List<String> russianRainbowColors = Arrays.asList(
-//                "красный", "оранжевый", "желтый", "зеленый", "голубой", "синий", "фиолетовый"
-//        );
-//
-//        List<String> englishRainbowColors = Arrays.asList(
-//                "red", "orange", "yellow", "green", "blue", "indigo", "violet"
-//        );
-//
-//        List<Translation> rainbowColorsTranslations = new ArrayList<>();
-//        for (int i = 0; i < russianRainbowColors.size(); ++i) {
-//            Word russianWord = new Word(russianRainbowColors.get(i), Language.RUSSIAN);
-//            Word englishWord = new Word(englishRainbowColors.get(i), Language.ENGLISH);
-//            Translation translation = new Translation(russianWord, englishWord);
-//
-//            rainbowColorsTranslations.add(translation);
-//        }
-//
-//        Category rainbowColorsTopic = new Category(
-//                new LocalTopicInfo(
-//                        new Topic("Цвета радуги", "7 цветов радуги", TopicType.CATEGORY),
-//                        rainbowColorsTheory
-//                ), rainbowColorsTranslations
-//        );
-//
-//        categoryService.save(rainbowColorsTopic);
-//
-//        Profile vasyaPupkinLocalProfile = new Profile("Вася Пупкин", "Едет в Магадан");
-//        localProfileService.save(vasyaPupkinLocalProfile);
     }
 }
