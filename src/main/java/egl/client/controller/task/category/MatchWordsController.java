@@ -1,79 +1,80 @@
 package egl.client.controller.task.category;
 
-import egl.client.controller.task.AbstractTaskController;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import egl.client.controller.task.LocalTaskController;
+import egl.client.model.local.topic.category.Category;
+import egl.client.model.local.topic.category.Translation;
+import egl.client.service.model.local.CategoryService;
+import egl.client.service.model.local.LocalTopicInfoService;
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import net.rgielen.fxweaver.core.FxmlView;
+import org.springframework.stereotype.Component;
 
-import java.net.URL;
-import java.util.*;
-import java.util.stream.Collectors;
-
+@Component
 @FxmlView
-public class MatchWordsController extends AbstractTaskController {
+public class MatchWordsController extends LocalTaskController<Category> {
 
-    @FXML
-    public void initialize(URL location, ResourceBundle resourceBundle) {
-        super.initialize(location, resourceBundle);
+    private static final int MAX_WORDS_COUNT = 8;
 
-        WordCase[] Colors = new WordCase[10];
-        Colors[0] = new WordCase("Red", "Красный", 1);
-        Colors[1] = new WordCase("Blue", "Синий", 2);
-        Colors[2] = new WordCase("Green", "Зеленый", 3);
-        Colors[3] = new WordCase("Grey", "Серый", 4);
-        Colors[4] = new WordCase("Black", "Черный", 5);
-        Colors[5] = new WordCase("White", "Белый", 6);
-        Colors[6] = new WordCase("Yellow", "Желтый", 7);
-        Colors[7] = new WordCase("Pink", "Розовый", 8);
-        Colors[8] = new WordCase("Orange", "Оранжевый", 9);
-        Colors[9] = new WordCase("Cyan", "Циан", 10);
+    @FXML private GridPane mainGridPane;
 
-        ArrayList<WordCase> leftList = new ArrayList<>();
+    private final Random random;
 
-        Random random = new Random();
-        List<Integer> randomNumbers = random.ints(0, 10).distinct().limit(4).boxed().collect(Collectors.toList());
-        for (int i = 0; i < randomNumbers.size(); ++i) {
-            leftList.add(Colors[randomNumbers.get(i)]);
-        }
+    public MatchWordsController(LocalTopicInfoService localTopicInfoService,
+                                CategoryService categoryService) {
+        super(localTopicInfoService, categoryService);
+        this.random = new Random();
+    }
 
-        ColumnConstraints column1 = new ColumnConstraints();
-        column1.setPercentWidth(33.3);
-        //table.getColumnConstraints().add(column1);
+    private List<Translation> getRandomTranslations(List<Translation> translations) {
+        return random.ints(0, translations.size())
+                .distinct()
+                .limit(MAX_WORDS_COUNT)
+                .boxed()
+                .map(translations::get)
+                .collect(Collectors.toList());
+    }
 
-        ColumnConstraints column2 = new ColumnConstraints();
-        column2.setPercentWidth(33.3);
-        //table.getColumnConstraints().add(column2);
+    private Label[] answers;
 
-        ColumnConstraints column3 = new ColumnConstraints();
-        column3.setPercentWidth(33.3);
-        //table.getColumnConstraints().add(column3);
+    private void initializeWords(Category category) {
+        mainGridPane.getChildren().clear();
 
-        ArrayList<WordCase> rightList = new ArrayList<>();
-        for (WordCase wordCase : leftList) {
-            rightList.add(new WordCase(wordCase.getOriginal(), wordCase.getTranslation(), wordCase.getId()));
-        }
-        Collections.shuffle(rightList);
+        var translations = category.getTranslations();
+
+        List<Translation> leftList = getRandomTranslations(translations);
+        List<Translation> rightList = getRandomTranslations(translations);
 
         ToggleGroup originGroup = new ToggleGroup();
         ToggleGroup transGroup = new ToggleGroup();
 
-        Label[] answers = new Label[leftList.size()];
+        this.answers = new Label[leftList.size()];
+
+        List<ToggleButton> leftButtons = new ArrayList<>();
+        List<ToggleButton> rightButtons = new ArrayList<>();
 
         for (int i = 0; i < leftList.size(); ++i) {
-            leftList.get(i).button = new ToggleButton(leftList.get(i).getOriginal());
-            leftList.get(i).button.setMaxHeight(Double.MAX_VALUE);
-            leftList.get(i).button.setMaxWidth(Double.MAX_VALUE);
-            leftList.get(i).button.setToggleGroup(originGroup);
-            GridPane.setHgrow(leftList.get(i).button, Priority.ALWAYS);
-            GridPane.setVgrow(leftList.get(i).button, Priority.ALWAYS);
-            GridPane.setMargin(leftList.get(i).button, new Insets(10));
+            var leftButton = new ToggleButton(leftList.get(i).getSource().getText());
+            leftButton.setMaxHeight(Double.MAX_VALUE);
+            leftButton.setMaxWidth(Double.MAX_VALUE);
+            leftButton.setToggleGroup(originGroup);
+            GridPane.setHgrow(leftButton, Priority.ALWAYS);
+            GridPane.setVgrow(leftButton, Priority.ALWAYS);
+            GridPane.setMargin(leftButton, new Insets(10));
+            leftButtons.add(leftButton);
+            mainGridPane.add(leftButton, 0, i);
 
             Label ans = answers[i] = new Label("");
             ans.setMaxHeight(Double.MAX_VALUE);
@@ -81,40 +82,37 @@ public class MatchWordsController extends AbstractTaskController {
             GridPane.setHgrow(ans, Priority.ALWAYS);
             GridPane.setVgrow(ans, Priority.ALWAYS);
             GridPane.setMargin(ans, new Insets(10));
+            mainGridPane.add(ans, 1, i);
 
-            rightList.get(i).button = new ToggleButton(rightList.get(i).getTranslation()); //ToggleButton button =
-            rightList.get(i).button.setMaxHeight(Double.MAX_VALUE);
-            rightList.get(i).button.setMaxWidth(Double.MAX_VALUE);
-            rightList.get(i).button.setToggleGroup(transGroup);
-            GridPane.setHgrow(rightList.get(i).button, Priority.ALWAYS);
-            GridPane.setVgrow(rightList.get(i).button, Priority.ALWAYS);
-            GridPane.setMargin(rightList.get(i).button, new Insets(10));
-
-//            table.add(leftList.get(i).button, 0, i);
-//            table.add(ans, 1, i);
-//            table.add(rightList.get(i).button, 2, i);
+            var rightButton = new ToggleButton(rightList.get(i).getTarget().getText());
+            rightButton.setMaxHeight(Double.MAX_VALUE);
+            rightButton.setMaxWidth(Double.MAX_VALUE);
+            rightButton.setToggleGroup(transGroup);
+            GridPane.setHgrow(rightButton, Priority.ALWAYS);
+            GridPane.setVgrow(rightButton, Priority.ALWAYS);
+            GridPane.setMargin(rightButton, new Insets(10));
+            rightButtons.add(rightButton);
+            mainGridPane.add(rightButton, 2, i);
         }
 
         for (int i = 0; i < leftList.size(); ++i) {
             for (int j = 0; j < rightList.size(); ++j) {
-                if (leftList.get(i).getId() == rightList.get(j).getId()) {
+                if (leftList.get(i).equals(rightList.get(j))) {
                     int finalI = i;
                     int finalJ = j;
-                    ToggleButton origin = leftList.get(i).button, translation = rightList.get(j).button;
-                    translation.selectedProperty().addListener((observableValue, oldValue, newValue) -> { // read documentation
-                        if (newValue && origin.isSelected()) {
-                            answers[finalI].setText(leftList.get(finalI).getOriginal() + " - " + rightList.get(finalJ).getTranslation());
-                            rightList.get(finalJ).button.setText("");
-                            leftList.get(finalI).button.setText("");
+                    ToggleButton sourceButton = leftButtons.get(i), targetButton = rightButtons.get(j);
+
+                    Function<ToggleButton, ChangeListener<? super Boolean>> listenerGetter = (button) -> (observableValue, oldValue, newValue) -> {
+                        if (newValue && button.isSelected()) {
+                            answers[finalI].setText(leftList.get(finalI).getSource().getText() + " - " + rightList.get(finalJ).getTarget().getText());
+                            rightButtons.get(finalJ).setText("");
+                            leftButtons.get(finalI).setText("");
                         }
-                    });
-                    origin.selectedProperty().addListener((observableValue, oldValue, newValue) -> {
-                        if (newValue && translation.isSelected()) {
-                            answers[finalI].setText(leftList.get(finalI).getOriginal() + " - " + rightList.get(finalJ).getTranslation());
-                            rightList.get(finalJ).button.setText("");
-                            leftList.get(finalI).button.setText("");
-                        }
-                    });
+                    };
+
+
+                    sourceButton.selectedProperty().addListener(listenerGetter.apply(targetButton));
+                    targetButton.selectedProperty().addListener(listenerGetter.apply(sourceButton));
                 }
             }
         }
@@ -122,14 +120,18 @@ public class MatchWordsController extends AbstractTaskController {
 
     @Override
     protected void prepareToStart() {
-
+        initializeWords(specificLocalTopic);
     }
 
     @Override
     protected void prepareToFinish() {
+        for (Label answer : answers) {
+            result.registerAnswer(!answer.getText().isBlank());
+        }
     }
 
     @Override
     public void setPrefSize(double parentWidth, double parentHeight) {
+        mainGridPane.setPrefSize(parentWidth, parentHeight);
     }
 }
