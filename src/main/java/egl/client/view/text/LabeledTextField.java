@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 
 public class LabeledTextField extends HBox {
 
@@ -31,8 +30,14 @@ public class LabeledTextField extends HBox {
     }
 
     @Override
+    protected void setWidth(double width) {
+        super.setWidth(width);
+        textField.setPrefWidth(width * 0.5);
+    }
+
+    @Override
     public void setPrefSize(double parentWidth, double parentHeight) {
         super.setPrefSize(parentWidth, parentHeight);
-        textField.setPrefWidth(parentWidth * 0.9);
+        setWidth(parentWidth);
     }
 }

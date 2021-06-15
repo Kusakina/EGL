@@ -21,7 +21,7 @@ import javafx.scene.text.Text;
 import org.springframework.stereotype.Component;
 
 @Component
-class GlobalProfileSelectController extends ProfileSelectController {
+public class GlobalProfileSelectController extends ProfileSelectController {
 
     private static final String INCORRECT_CREDENTIALS_ERROR_MESSAGE =
             "Некорректный логин/пароль";
@@ -152,6 +152,7 @@ class GlobalProfileSelectController extends ProfileSelectController {
         loginInfoText.setText("Глобальный профиль: " + profileText);
 
         editProfileButton.setVisible(selectedProfileName.isPresent());
+        exitProfileButton.setVisible(selectedProfileName.isPresent());
     }
 
     @Override
