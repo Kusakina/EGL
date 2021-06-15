@@ -18,6 +18,7 @@ import egl.client.model.core.topic.Topic;
 import egl.client.model.core.topic.TopicType;
 import egl.client.model.local.topic.LocalTopicInfo;
 import egl.client.model.local.topic.category.Category;
+import egl.client.service.ErrorService;
 import egl.client.service.FileService;
 import egl.client.service.FxmlService;
 import egl.client.service.model.EntityService;
@@ -251,7 +252,11 @@ public class LocalTopicsController implements Controller {
 
     private void saveCategory(Category category) {
         categoryService.save(category);
-        globalTopicService.initializeRegistration(category.getLocalTopicInfo());
+        try {
+            globalTopicService.initializeRegistration(category.getLocalTopicInfo());
+        } catch (EntityServiceException ignored) {
+
+        }
     }
 
     private void onCategoryRemove(Category category) {
@@ -264,8 +269,12 @@ public class LocalTopicsController implements Controller {
     }
 
     private void onLocalTopicRegister(LocalTopicInfo localTopicInfo) {
-        globalTopicService.registerTopic(localTopicInfo);
-        refresh();
+        try {
+            globalTopicService.registerTopic(localTopicInfo);
+            refresh();
+        } catch (EntityServiceException e) {
+            ErrorService.showErrorAlert("Категория не зарегистрирована из-за проблем с подключением к глобальной базе данных");
+        }
     }
 
     private void onCategorySave(Category category) {
@@ -303,9 +312,13 @@ public class LocalTopicsController implements Controller {
     public void prepareToShow() {
         showCategories();
 
-        globalTopicService.initializeRegistrations(
-                categoriesListView.getItems()
-        );
+        try {
+            globalTopicService.initializeRegistrations(
+                    categoriesListView.getItems()
+            );
+        } catch (EntityServiceException ignored) {
+
+        }
 
         refresh();
     }
