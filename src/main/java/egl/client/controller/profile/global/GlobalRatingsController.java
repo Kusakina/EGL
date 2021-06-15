@@ -8,7 +8,7 @@ import egl.client.service.model.local.LocalTopicTasksService;
 import org.springframework.stereotype.Component;
 
 @Component
-class GlobalRatingsController extends RatingsController {
+public class GlobalRatingsController extends RatingsController {
 
     public GlobalRatingsController(LocalTopicService localTopicService,
                                    GlobalTopicService topicByLocalService,
