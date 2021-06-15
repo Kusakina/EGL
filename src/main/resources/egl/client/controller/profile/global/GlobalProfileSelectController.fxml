@@ -7,10 +7,10 @@
 <CustomBorderPane fx:controller="egl.client.controller.profile.global.GlobalProfileSelectController"
                   xmlns:fx="http://javafx.com/fxml" margin="5">
     <center>
-        <GridPane fx:id="loginGridPane">
+        <GridPane fx:id="loginGridPane" vgap="20" hgap="20">
             <columnConstraints>
-                <ColumnConstraints percentWidth="50"/>
-                <ColumnConstraints percentWidth="50"/>
+                <ColumnConstraints percentWidth="50" halignment="RIGHT"/>
+                <ColumnConstraints percentWidth="50" halignment="LEFT"/>
             </columnConstraints>
 
             <Text fx:id="errorText" GridPane.rowIndex="0" GridPane.columnSpan="2" textAlignment="CENTER" textOrigin="CENTER"/>
