@@ -1,7 +1,5 @@
 package egl.client.model.local.topic.category;
 
-import java.util.Objects;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -44,6 +42,14 @@ public class Word extends DatabaseEntity implements TopicHashCodeEntity {
 
     @Override
     public long getTopicHashCode() {
-        return Objects.hash(text, language);
+        long hashCode = 0;
+        for (char ch : text.toCharArray()) {
+            hashCode *= 2345671;
+            hashCode += ch;
+        }
+        hashCode <<= 8;
+        hashCode |= language.getStartLetter();
+
+        return hashCode;
     }
 }
