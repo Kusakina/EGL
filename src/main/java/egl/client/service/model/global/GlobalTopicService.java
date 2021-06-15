@@ -23,7 +23,7 @@ public class GlobalTopicService
     private final LocalTopicInfoService localTopicInfoService;
     private final GlobalTopicInfoService globalTopicInfoService;
 
-    private final Map<LocalTopicInfo, Optional<Topic>> localToGlobalCache;
+    private final Map<Long, Optional<Topic>> localToGlobalCache;
 
     public GlobalTopicService(
             GlobalTopicRepository repository,
@@ -35,9 +35,9 @@ public class GlobalTopicService
         this.localToGlobalCache = new HashMap<>();
     }
 
-    private Optional<Topic> remoteFindByLocal(LocalTopicInfo localTopicInfo) {
+    private Optional<Topic> remoteFindBy(long globalId) {
         try {
-            return repository.findById(localTopicInfo.getGlobalId());
+            return repository.findById(globalId);
         } catch (RuntimeException e) {
             throw new EntityServiceException();
         }
@@ -48,18 +48,17 @@ public class GlobalTopicService
     }
 
     @Override
+    public Optional<Long> findGlobalId(Topic localTopic) {
+        var globalId = localTopicInfoService.findBy(localTopic).getGlobalId();
+        return (LocalTopicInfo.NO_GLOBAL_ID == globalId) ? Optional.empty() : Optional.of(globalId);
+    }
+
+    @Override
     public Optional<Topic> findTopicByLocal(Topic localTopic) {
-        var localTopicInfo = localTopicInfoService.findBy(localTopic);
-        if (null == localTopicInfo) return Optional.empty();
-
-        var globalTopicId = localTopicInfo.getGlobalId();
-        if (LocalTopicInfo.NO_GLOBAL_ID == globalTopicId) {
-            return Optional.empty();
-        }
-
-        return localToGlobalCache.computeIfAbsent(
-                localTopicInfo, this::remoteFindByLocal
-        );
+        return findGlobalId(localTopic)
+                .flatMap(globalId -> localToGlobalCache
+                        .computeIfAbsent(globalId, this::remoteFindBy)
+                );
     }
 
     public void registerTopic(LocalTopicInfo localTopicInfo, Profile author) {
