@@ -152,6 +152,7 @@ public class GlobalProfileSelectController extends ProfileSelectController {
         loginInfoText.setText("Глобальный профиль: " + profileText);
 
         editProfileButton.setVisible(selectedProfileName.isPresent());
+        exitProfileButton.setVisible(selectedProfileName.isPresent());
     }
 
     @Override
