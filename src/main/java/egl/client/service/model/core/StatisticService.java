@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import egl.client.model.core.profile.Profile;
-import egl.client.model.core.statistic.ProfileStatistic;
 import egl.client.model.core.statistic.Result;
 import egl.client.model.core.statistic.TaskStatistic;
 import egl.client.model.core.statistic.TopicStatistic;
@@ -17,12 +16,9 @@ public interface StatisticService {
     Property<Profile> selectedProfileProperty();
     Optional<Profile> getSelectedProfile();
 
-    List<ProfileStatistic> findAllProfileStatistics();
-
     Optional<TopicStatistic> findBy(Topic topic);
 
     TaskStatistic findBy(TopicStatistic topicStatistic, Task task);
-    Optional<TaskStatistic> tryFindBy(ProfileStatistic profileStatistic, Topic globalTopic, Task task);
     List<TaskStatistic> findAllTaskStatisticsBy(List<Topic> topics);
 
     void update(TopicStatistic topicStatistic, Task task, Result result);
