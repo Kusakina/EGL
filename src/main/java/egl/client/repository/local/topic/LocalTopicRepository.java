@@ -4,7 +4,7 @@ import java.util.List;
 
 import egl.client.model.core.topic.Topic;
 import egl.client.model.core.topic.TopicType;
-import egl.client.repository.core.task.TopicRepository;
+import egl.client.repository.core.topic.TopicRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository

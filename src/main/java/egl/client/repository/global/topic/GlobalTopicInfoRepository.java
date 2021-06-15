@@ -1,12 +1,10 @@
 package egl.client.repository.global.topic;
 
-import egl.client.model.core.topic.Topic;
 import egl.client.model.global.topic.GlobalTopicInfo;
-import egl.client.repository.core.EntityRepository;
+import egl.client.repository.core.topic.TopicInfoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface GlobalTopicInfoRepository extends EntityRepository<GlobalTopicInfo> {
+public interface GlobalTopicInfoRepository extends TopicInfoRepository<GlobalTopicInfo> {
 
-    GlobalTopicInfo findByTopic(Topic topic);
 }

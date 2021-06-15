@@ -30,7 +30,6 @@ public class FileService {
             out.println(topic.getName());
             out.println(topic.getDescription().replaceAll("\n", "; "));
             out.println(localTopicInfo.getTheory().getText().replaceAll("\n", "; "));
-            out.println(localTopicInfo.getGlobalId());
             for (Translation translation : category.getTranslations()) {
                 var source = translation.getSource();
                 var target = translation.getTarget();
@@ -49,9 +48,7 @@ public class FileService {
             var topic = new Topic(name, description, TopicType.CATEGORY);
 
             String theoryText = in.readLine().replace("; ", "\n");
-            int globalId = Integer.parseInt(in.readLine());
             var localTopicInfo = new LocalTopicInfo(topic, new Theory(theoryText));
-            localTopicInfo.setGlobalId(globalId);
 
             List<Translation> translations = new ArrayList<>();
             while (true) {

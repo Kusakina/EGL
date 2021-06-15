@@ -68,7 +68,7 @@ public abstract class AbstractStatisticService implements StatisticService {
     }
 
     @Override
-    public List<TaskStatistic> findAllTaskStatisticsBy(List<Long> topicIds) {
-        return taskStatisticService.findAllBy(topicIds);
+    public List<TaskStatistic> findAllTaskStatisticsBy(List<Topic> topics) {
+        return taskStatisticService.findAllBy(topics);
     }
 }

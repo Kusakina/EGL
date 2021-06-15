@@ -59,8 +59,8 @@ public class CategoryInfoController extends AbstractEntityInfoController<Categor
         super.fillData();
 
         if (isCreated) {
-            entity.getLocalTopicInfo().setGlobalHashCode(
-                    entity.getGlobalHashCode()
+            entity.getLocalTopicInfo().setTopicHashCode(
+                    entity.getTopicHashCode()
             );
 
             entity.getLocalTopicInfo().getTopic().setTopicType(TopicType.CATEGORY);

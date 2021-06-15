@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import egl.client.controller.Controller;
+import egl.client.model.core.topic.Topic;
 import egl.client.service.model.core.StatisticService;
 import egl.client.service.model.core.TopicByLocalService;
 import egl.client.service.model.local.LocalTopicService;
@@ -33,14 +34,14 @@ public abstract class RatingsController implements Controller {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.triedToUpdate = false;
 
-        ratingsView.setFreshTopicIdsSupplier(this::getFreshTopicIds);
+        ratingsView.setFreshTopicsSupplier(this::getFreshTopics);
         ratingsView.setAllTaskStatisticsGetter(statisticService::findAllTaskStatisticsBy);
         ratingsView.setTopicTasksGetter(localTopicTasksService::findBy);
     }
 
-    private List<Long> getFreshTopicIds() {
+    private List<Topic> getFreshTopics() {
         return localTopicService.findAll().stream()
-                .map(topicByLocalService::findGlobalIdByLocal)
+                .map(topicByLocalService::findTopicByLocal)
                 .filter(Optional::isPresent)
                 .map(Optional::orElseThrow)
                 .collect(Collectors.toUnmodifiableList());
