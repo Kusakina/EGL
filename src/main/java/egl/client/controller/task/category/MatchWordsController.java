@@ -102,11 +102,16 @@ public class MatchWordsController extends LocalTaskController<Category> {
                     int finalJ = j;
                     ToggleButton sourceButton = leftButtons.get(i), targetButton = rightButtons.get(j);
 
-                    Function<ToggleButton, ChangeListener<? super Boolean>> listenerGetter = (button) -> (observableValue, oldValue, newValue) -> {
-                        if (newValue && button.isSelected()) {
+                    Function<ToggleButton, ChangeListener<? super Boolean>> listenerGetter = (otherButton) -> (observableValue, oldValue, newValue) -> {
+                        if (newValue && otherButton.isSelected()) {
                             answers[finalI].setText(leftList.get(finalI).getSource().getText() + " - " + rightList.get(finalJ).getTarget().getText());
                             rightButtons.get(finalJ).setText("");
                             leftButtons.get(finalI).setText("");
+                        } else {
+                            if (!leftButtons.get(finalI).getText().isBlank() &&
+                                    !rightButtons.get(finalJ).getText().isBlank()) {
+                                result.registerAnswer(false);
+                            }
                         }
                     };
 
