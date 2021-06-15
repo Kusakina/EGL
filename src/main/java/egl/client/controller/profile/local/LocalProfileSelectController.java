@@ -29,6 +29,7 @@ class LocalProfileSelectController extends ProfileSelectController {
         localProfilesListView.setService(profileService);
         localProfilesListView.setOnSelect(this::onSelect);
         localProfilesListView.setOnEdit(this::onEdit);
+        localProfilesListView.setOnRemove(this::onRemove);
 
         localProfilesListView.setRowFactory(tv -> new TableRow<>() {
             @Override
@@ -70,6 +71,11 @@ class LocalProfileSelectController extends ProfileSelectController {
             profileService.save(profile);
             localProfilesListView.showItems();
         }
+    }
+
+    private void onRemove(Profile profile) {
+        profileService.remove(profile);
+        localProfilesListView.removeItem(profile);
     }
 
     @Override

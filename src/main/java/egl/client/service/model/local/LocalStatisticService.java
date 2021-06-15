@@ -27,4 +27,14 @@ public class LocalStatisticService
     public Optional<TopicStatistic> findStatisticByLocal(Topic topic) {
         return findBy(topic);
     }
+
+    public void removeAllBy(Topic topic) {
+        topicStatisticService.findAllBy(topic)
+            .forEach(topicStatistic -> {
+                taskStatisticService.findAllBy(topicStatistic)
+                        .forEach(taskStatisticService::remove);
+
+                topicStatisticService.remove(topicStatistic);
+            });
+    }
 }
