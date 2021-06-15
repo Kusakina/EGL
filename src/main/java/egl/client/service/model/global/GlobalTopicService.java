@@ -48,14 +48,14 @@ public class GlobalTopicService
     }
 
     @Override
-    public Optional<Long> findGlobalId(Topic localTopic) {
+    public Optional<Long> findGlobalIdByLocal(Topic localTopic) {
         var globalId = localTopicInfoService.findBy(localTopic).getGlobalId();
         return (LocalTopicInfo.NO_GLOBAL_ID == globalId) ? Optional.empty() : Optional.of(globalId);
     }
 
     @Override
     public Optional<Topic> findTopicByLocal(Topic localTopic) {
-        return findGlobalId(localTopic)
+        return findGlobalIdByLocal(localTopic)
                 .flatMap(globalId -> localToGlobalCache
                         .computeIfAbsent(globalId, this::remoteFindBy)
                 );

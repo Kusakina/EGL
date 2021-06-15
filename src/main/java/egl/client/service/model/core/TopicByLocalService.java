@@ -6,6 +6,6 @@ import egl.client.model.core.topic.Topic;
 
 public interface TopicByLocalService {
 
-    Optional<Long> findGlobalId(Topic topic);
+    Optional<Long> findGlobalIdByLocal(Topic topic);
     Optional<Topic> findTopicByLocal(Topic topic);
 }

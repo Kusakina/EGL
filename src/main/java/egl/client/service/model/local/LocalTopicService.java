@@ -24,7 +24,7 @@ public class LocalTopicService
     }
 
     @Override
-    public Optional<Long> findGlobalId(Topic topic) {
+    public Optional<Long> findGlobalIdByLocal(Topic topic) {
         return Optional.of(topic.getId());
     }
 
