@@ -23,6 +23,7 @@ public interface StatisticService {
 
     TaskStatistic findBy(TopicStatistic topicStatistic, Task task);
     Optional<TaskStatistic> tryFindBy(ProfileStatistic profileStatistic, Topic globalTopic, Task task);
+    List<TaskStatistic> findAllTaskStatisticsBy(List<Topic> topics);
 
     void update(TopicStatistic topicStatistic, Task task, Result result);
 }

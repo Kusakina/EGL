@@ -77,4 +77,9 @@ public abstract class AbstractStatisticService implements StatisticService {
         return topicStatisticService.tryFindBy(profileStatistic, globalTopic)
                 .flatMap(topicStatistic -> taskStatisticService.tryFindBy(topicStatistic, task));
     }
+
+    @Override
+    public List<TaskStatistic> findAllTaskStatisticsBy(List<Topic> topics) {
+        return taskStatisticService.findAllBy(topics);
+    }
 }
