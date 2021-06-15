@@ -42,14 +42,6 @@ public abstract class CachedEntityService<
         );
     }
 
-    // FIXME BUG IT SHOULD TRY GET GLOBAL RESULTS, BUT NOT STORE ANY NEW
-    protected Optional<T> tryFindBy(IdType entityId) {
-        var entity = entitiesCache.get(entityId);
-        if (null != entity) return Optional.of(entity);
-
-        return findById(entityId);
-    }
-
     @Override
     public void remove(T entity) {
         super.remove(entity);

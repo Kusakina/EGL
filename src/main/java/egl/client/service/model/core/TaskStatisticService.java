@@ -74,11 +74,6 @@ public abstract class TaskStatisticService
         return findBy(taskStatisticId);
     }
 
-    public Optional<TaskStatistic> tryFindBy(TopicStatistic topicStatistic, Task task) {
-        var taskStatisticId = toId(topicStatistic, task);
-        return tryFindBy(taskStatisticId);
-    }
-
     public List<TaskStatistic> findAllBy(TopicStatistic topicStatistic) {
         try {
             return repository.findAllByTopicStatistic(topicStatistic);

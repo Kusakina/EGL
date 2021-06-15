@@ -50,7 +50,6 @@ public class GlobalTopicService
     @Override
     public Optional<Topic> findTopicByLocal(Topic localTopic) {
         var localTopicInfo = localTopicInfoService.findBy(localTopic);
-        //FIXME
         if (null == localTopicInfo) return Optional.empty();
 
         var globalTopicId = localTopicInfo.getGlobalId();
