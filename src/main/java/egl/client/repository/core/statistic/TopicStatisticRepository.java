@@ -1,5 +1,6 @@
 package egl.client.repository.core.statistic;
 
+import java.util.List;
 import java.util.Optional;
 
 import egl.client.model.core.statistic.ProfileStatistic;
@@ -12,4 +13,6 @@ public interface TopicStatisticRepository extends EntityRepository<TopicStatisti
     Optional<TopicStatistic> findByProfileStatisticAndTopic(
             ProfileStatistic profileStatistic, Topic topic
     );
+
+    List<TopicStatistic> findAllByTopic(Topic topic);
 }

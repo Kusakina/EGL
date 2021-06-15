@@ -124,6 +124,7 @@ public class LocalTopicsController implements Controller {
         categoriesListView.setService(new TypedTopicService(TopicType.CATEGORY));
         categoriesListView.setOnSelect(this::onTopicSelect);
         categoriesListView.setOnEdit(processCategory(this::onCategoryEdit));
+        categoriesListView.setOnRemove(processCategory(this::onCategoryRemove));
 
         createCategoryButton.setOnAction(event -> onCategoryCreate());
         copyCategoryColumn.setOnAction(processCategory(this::onCategoryCopy));
@@ -241,6 +242,15 @@ public class LocalTopicsController implements Controller {
             categoryService.save(category);
             categoriesListView.showItems();
         }
+    }
+
+    private void onCategoryRemove(Category category) {
+        var topic = category.getLocalTopicInfo().getTopic();
+
+        localStatisticService.removeAllBy(topic);
+        categoryService.remove(category);
+
+        categoriesListView.removeItem(topic);
     }
 
     private void onLocalTopicRegister(LocalTopicInfo localTopicInfo) {

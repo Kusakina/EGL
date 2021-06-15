@@ -16,10 +16,4 @@ public class InfoSelectEditRemoveListView<T extends DescribedEntity> extends Inf
     public void showItems() {
         setItems(service.findAll());
     }
-
-    @Override
-    public void removeItem(T entity) {
-        super.removeItem(entity);
-        service.remove(entity);
-    }
 }

@@ -1,5 +1,6 @@
 package egl.client.service.model.core;
 
+import java.util.List;
 import java.util.Optional;
 
 import egl.client.model.core.statistic.ProfileStatistic;
@@ -62,5 +63,13 @@ public abstract class TopicStatisticService
     public Optional<TopicStatistic> tryFindBy(ProfileStatistic profileStatistic, Topic topic) {
         var topicStatisticId = new TopicStatisticId(profileStatistic, topic);
         return tryFindBy(topicStatisticId);
+    }
+
+    public List<TopicStatistic> findAllBy(Topic topic) {
+        try {
+            return repository.findAllByTopic(topic);
+        } catch (Exception e) {
+            throw new EntityServiceException();
+        }
     }
 }
