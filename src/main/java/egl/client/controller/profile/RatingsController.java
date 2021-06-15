@@ -35,9 +35,8 @@ public abstract class RatingsController implements Controller {
         this.triedToUpdate = false;
 
         ratingsView.setFreshTopicsSupplier(this::getFreshTopics);
-        ratingsView.setProfileStatisticsSupplier(statisticService::findAllProfileStatistics);
+        ratingsView.setAllTaskStatisticsGetter(statisticService::findAllTaskStatisticsBy);
         ratingsView.setTopicTasksGetter(localTopicTasksService::findBy);
-        ratingsView.setTaskStatisticGetter(statisticService::tryFindBy);
     }
 
     private List<Topic> getFreshTopics() {

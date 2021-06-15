@@ -7,13 +7,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import egl.client.model.core.statistic.ProfileStatistic;
 import egl.client.model.core.statistic.RatingInfo;
 import egl.client.model.core.statistic.TaskStatistic;
 import egl.client.model.core.task.Task;
@@ -22,7 +20,7 @@ import egl.client.model.core.topic.TopicTasks;
 import egl.client.model.core.topic.TopicType;
 import egl.client.service.FxmlService;
 import egl.client.service.model.EntityServiceException;
-import egl.client.utils.TriFunction;
+import egl.client.service.model.core.TaskStatisticService;
 import egl.client.view.pane.CustomBorderPane;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -37,7 +35,7 @@ import lombok.Setter;
 public class RatingsView extends CustomBorderPane implements Initializable {
 
     private static final DateTimeFormatter LAST_UPDATE_DATE_TIME_FORMATTER =
-            DateTimeFormatter.ofPattern("HH:mm:ss dd:MM:yyyy");
+            DateTimeFormatter.ofPattern("HH:mm:ss dd.MM.yyyy");
 
     @FXML
     private ListView<Topic> topicsListView;
@@ -53,20 +51,16 @@ public class RatingsView extends CustomBorderPane implements Initializable {
 
     private final Map<Topic, Map<Task, Tab>> topicsTabs;
 
-    private List<ProfileStatistic> profileStatistics;
     private LocalDateTime lastUpdateDateTime;
 
     @Setter
     private Supplier<List<Topic>> freshTopicsSupplier;
 
     @Setter
-    private Supplier<List<ProfileStatistic>> profileStatisticsSupplier;
+    private Function<List<Topic>, List<TaskStatistic>> allTaskStatisticsGetter;
 
     @Setter
     private Function<TopicType, TopicTasks> topicTasksGetter;
-
-    @Setter
-    private TriFunction<ProfileStatistic, Topic, Task, Optional<TaskStatistic>> taskStatisticGetter;
 
     public RatingsView() {
         FxmlService.loadView(this, RatingsView.class);
@@ -114,17 +108,56 @@ public class RatingsView extends CustomBorderPane implements Initializable {
     }
 
     private void refreshRatings() {
-        this.profileStatistics = profileStatisticsSupplier.get();
-
         var topics = freshTopicsSupplier.get();
 
+        Map<TopicType, List<Task>> topicTypeTasks = topics.stream()
+                .map(Topic::getTopicType)
+                .distinct()
+                .collect(Collectors.toUnmodifiableMap(
+                        Function.identity(),
+                        topicType -> {
+                            var topicTasks = topicTasksGetter.apply(topicType);
+                            var tasks = topicTasks.getTasks();
+                            tasks.add(topicTasks.getTest().getTask());
+                            return tasks;
+                        }
+                ));
+
+        Map<Topic, Map<Task, List<TaskStatistic>>> groupedTaskStatistics = new HashMap<>();
+        allTaskStatisticsGetter.apply(topics).forEach(taskStatistic -> {
+            var topic = taskStatistic.getTopicStatistic().getTopic();
+            var topicTaskStatistics = groupedTaskStatistics.computeIfAbsent(
+                    topic, key -> new HashMap<>()
+            );
+
+            var taskName = taskStatistic.getTaskName();
+
+            var topicTasks = topicTypeTasks.get(topic.getTopicType());
+            topicTasks.stream()
+                .filter(topicTask -> TaskStatisticService.getTaskName(topicTask).equals(taskName))
+                .findAny()
+                .ifPresent(task ->
+                    topicTaskStatistics.computeIfAbsent(
+                            task, key -> new ArrayList<>()
+                    ).add(taskStatistic)
+                );
+        });
+
         for (Topic topic : topics) {
+            var topicType = topic.getTopicType();
+            var topicTasks = topicTypeTasks.getOrDefault(topicType, List.of());
+
             var topicTabs = topicsTabs.computeIfAbsent(
-                    topic, this::createTopicTabs
+                    topic, key -> createTopicTabs(topicTasks)
+            );
+
+            var topicTaskStatistics = groupedTaskStatistics.getOrDefault(
+                    topic, Map.of()
             );
 
             topicTabs.forEach((task, tab) -> {
-                var taskRatings = refreshTaskRatings(topic, task);
+                var taskStatistics = topicTaskStatistics.getOrDefault(task, List.of());
+                var taskRatings = refreshTaskRatings(taskStatistics);
 
                 var ratingListView = (RatingListView) tab.getContent();
                 ratingListView.getItems().setAll(taskRatings);
@@ -135,12 +168,7 @@ public class RatingsView extends CustomBorderPane implements Initializable {
         topicsListView.getSelectionModel().selectFirst();
     }
 
-    private Map<Task, Tab> createTopicTabs(Topic topic) {
-        var topicTasks = topicTasksGetter.apply(topic.getTopicType());
-
-        var tasks = new ArrayList<>(topicTasks.getTasks());
-        tasks.add(topicTasks.getTest().getTask());
-
+    private Map<Task, Tab> createTopicTabs(List<Task> tasks) {
         return tasks.stream()
                 .collect(Collectors.toUnmodifiableMap(
                         Function.identity(),
@@ -157,11 +185,8 @@ public class RatingsView extends CustomBorderPane implements Initializable {
         return tab;
     }
 
-    private List<RatingInfo> refreshTaskRatings(Topic topic, Task task) {
-        return profileStatistics.stream()
-                .map(profileStatistic -> taskStatisticGetter.apply(profileStatistic, topic, task))
-                .filter(Optional::isPresent)
-                .map(Optional::orElseThrow)
+    private List<RatingInfo> refreshTaskRatings(List<TaskStatistic> taskStatistics) {
+        return taskStatistics.stream()
                 .map(RatingInfo::new)
                 .filter(RatingInfo::hasScores)
                 .sorted()
