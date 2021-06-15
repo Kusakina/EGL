@@ -1,19 +1,15 @@
 package egl.client.view.tab;
 
-import java.net.URL;
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import egl.client.controller.Controller;
-import javafx.fxml.Initializable;
 import javafx.scene.control.TabPane;
 
-public class ControllerTabPane extends TabPane implements Initializable {
+public class ControllerTabPane extends TabPane {
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public ControllerTabPane() {
         setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
     }
 
