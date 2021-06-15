@@ -7,6 +7,7 @@ import egl.client.model.core.statistic.TaskStatistic;
 import egl.client.model.core.statistic.TopicStatistic;
 import egl.client.model.core.task.Task;
 import egl.client.repository.core.statistic.TaskStatisticRepository;
+import egl.client.service.model.EntityServiceException;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
@@ -31,10 +32,14 @@ public abstract class TaskStatisticService
 
     @Override
     protected Optional<TaskStatistic> findById(TaskStatisticId taskStatisticId) {
-        return repository.findByTopicStatisticAndTaskName(
-                        taskStatisticId.getTopicStatistic(),
-                        taskStatisticId.getTaskName()
-                );
+        try {
+            return repository.findByTopicStatisticAndTaskName(
+                    taskStatisticId.getTopicStatistic(),
+                    taskStatisticId.getTaskName()
+            );
+        } catch (Exception e) {
+            throw new EntityServiceException();
+        }
     }
 
     @Override

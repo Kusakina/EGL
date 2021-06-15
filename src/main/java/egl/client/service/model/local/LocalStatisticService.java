@@ -1,13 +1,19 @@
 package egl.client.service.model.local;
 
-import egl.client.service.model.core.StatisticService;
-import egl.client.service.model.core.StatisticServiceHolder;
+import java.util.Optional;
+
+import egl.client.model.core.statistic.TopicStatistic;
+import egl.client.model.core.topic.Topic;
+import egl.client.service.model.core.AbstractStatisticService;
+import egl.client.service.model.core.TopicStatisticByLocalService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @Service
-public class LocalStatisticService extends StatisticService implements StatisticServiceHolder {
+public class LocalStatisticService
+        extends AbstractStatisticService
+        implements TopicStatisticByLocalService {
 
     public LocalStatisticService(
             LocalProfileService profileService,
@@ -15,5 +21,10 @@ public class LocalStatisticService extends StatisticService implements Statistic
             LocalTopicStatisticService topicStatisticService,
             LocalTaskStatisticService taskStatisticService) {
         super(profileService, profileStatisticService, topicStatisticService, taskStatisticService);
+    }
+
+    @Override
+    public Optional<TopicStatistic> findStatisticByLocal(Topic topic) {
+        return findBy(topic);
     }
 }

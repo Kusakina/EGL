@@ -3,7 +3,8 @@ package egl.client.service.model.global;
 import egl.client.model.core.topic.Topic;
 import egl.client.model.global.topic.GlobalTopicInfo;
 import egl.client.repository.global.topic.GlobalTopicInfoRepository;
-import egl.client.service.model.AbstractEntityService;
+import egl.client.service.model.EntityServiceException;
+import egl.client.service.model.core.AbstractEntityService;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,6 +15,10 @@ public class GlobalTopicInfoService extends AbstractEntityService<GlobalTopicInf
     }
 
     public GlobalTopicInfo findBy(Topic topic) {
-        return repository.findByTopic(topic);
+        try {
+            return repository.findByTopic(topic);
+        } catch (Exception e) {
+            throw new EntityServiceException();
+        }
     }
 }

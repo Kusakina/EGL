@@ -3,7 +3,7 @@ package egl.client.service.model.local;
 import egl.client.model.core.task.Task;
 import egl.client.model.core.task.Test;
 import egl.client.repository.local.task.TestRepository;
-import egl.client.service.model.AbstractEntityService;
+import egl.client.service.model.core.AbstractEntityService;
 import org.springframework.stereotype.Service;
 
 @Service

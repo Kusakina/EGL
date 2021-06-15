@@ -1,4 +1,4 @@
-package egl.client.controller.profile.info;
+package egl.client.controller.profile;
 
 import java.net.URL;
 import java.util.ResourceBundle;

@@ -1,0 +1,25 @@
+<?import egl.client.view.pane.CustomBorderPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Text?>
+<fx:root type="egl.client.view.pane.CustomBorderPane"
+         xmlns:fx="http://javafx.com/fxml">
+    <left>
+        <ListView fx:id="topicsListView"/>
+    </left>
+    <top>
+        <HBox alignment="CENTER_RIGHT">
+            <Text fx:id="refreshRatingsInformationText"/>
+            <Button fx:id="tryRefreshRatingsButton" text="Обновить рейтинги"/>
+        </HBox>
+    </top>
+    <center>
+        <CustomBorderPane>
+            <center>
+                <TabPane fx:id="taskRatingsTabPane" tabClosingPolicy="UNAVAILABLE"/>
+            </center>
+        </CustomBorderPane>
+    </center>
+</fx:root>

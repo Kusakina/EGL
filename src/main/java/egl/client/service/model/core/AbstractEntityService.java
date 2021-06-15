@@ -1,9 +1,11 @@
-package egl.client.service.model;
+package egl.client.service.model.core;
 
 import java.util.List;
 
 import egl.client.model.core.DatabaseEntity;
 import egl.client.repository.core.EntityRepository;
+import egl.client.service.model.EntityService;
+import egl.client.service.model.EntityServiceException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,16 +19,28 @@ public abstract class AbstractEntityService<
 
     @Override
     public List<T> findAll() {
-        return repository.findAll();
+        try {
+            return repository.findAll();
+        } catch (Exception e) {
+            throw new EntityServiceException();
+        }
     }
 
     @Override
     public T save(T entity) {
-        return repository.save(entity);
+        try {
+            return repository.save(entity);
+        } catch (Exception e) {
+            throw new EntityServiceException();
+        }
     }
 
     @Override
     public void remove(T entity) {
-        repository.delete(entity);
+        try {
+            repository.delete(entity);
+        } catch (Exception e) {
+            throw new EntityServiceException();
+        }
     }
 }

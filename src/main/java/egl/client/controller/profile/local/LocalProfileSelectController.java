@@ -1,8 +1,10 @@
-package egl.client.controller.profile;
+package egl.client.controller.profile.local;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import egl.client.controller.profile.ProfileInfoController;
+import egl.client.controller.profile.ProfileSelectController;
 import egl.client.model.core.profile.Profile;
 import egl.client.service.FxmlService;
 import egl.client.service.model.local.LocalProfileService;
@@ -12,11 +14,11 @@ import javafx.scene.control.TableRow;
 import org.springframework.stereotype.Component;
 
 @Component
-public class LocalProfilesController extends ProfileSelectController {
+class LocalProfileSelectController extends ProfileSelectController {
 
     @FXML private InfoSelectEditRemoveListView<Profile> localProfilesListView;
 
-    public LocalProfilesController(
+    public LocalProfileSelectController(
             FxmlService fxmlService,
             LocalProfileService profileService) {
         super(fxmlService, profileService);

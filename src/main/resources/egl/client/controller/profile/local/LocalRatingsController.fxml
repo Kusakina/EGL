@@ -1,0 +1,8 @@
+<?import egl.client.controller.profile.RatingsView?>
+<?import egl.client.view.pane.CustomBorderPane?>
+<CustomBorderPane fx:controller="egl.client.controller.profile.local.LocalRatingsController"
+                  xmlns:fx="http://javafx.com/fxml" margin="5">
+    <center>
+        <RatingsView fx:id="ratingsView"/>
+    </center>
+</CustomBorderPane>

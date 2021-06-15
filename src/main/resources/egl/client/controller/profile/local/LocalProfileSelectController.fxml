@@ -1,7 +1,7 @@
-<?import egl.client.view.table.list.InfoSelectEditRemoveListView?>
 <?import egl.client.view.pane.CustomBorderPane?>
+<?import egl.client.view.table.list.InfoSelectEditRemoveListView?>
 <?import javafx.scene.control.Button?>
-<CustomBorderPane fx:controller="egl.client.controller.profile.LocalProfilesController"
+<CustomBorderPane fx:controller="egl.client.controller.profile.local.LocalProfileSelectController"
                   xmlns:fx="http://javafx.com/fxml" margin="5">
 
     <top>

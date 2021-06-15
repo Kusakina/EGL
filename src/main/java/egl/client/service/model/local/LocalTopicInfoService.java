@@ -3,7 +3,7 @@ package egl.client.service.model.local;
 import egl.client.model.core.topic.Topic;
 import egl.client.model.local.topic.LocalTopicInfo;
 import egl.client.repository.local.topic.LocalTopicInfoRepository;
-import egl.client.service.model.AbstractEntityService;
+import egl.client.service.model.core.AbstractEntityService;
 import org.springframework.stereotype.Service;
 
 @Service

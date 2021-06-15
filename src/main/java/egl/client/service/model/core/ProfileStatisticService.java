@@ -5,6 +5,7 @@ import java.util.Optional;
 import egl.client.model.core.profile.Profile;
 import egl.client.model.core.statistic.ProfileStatistic;
 import egl.client.repository.core.statistic.ProfileStatisticRepository;
+import egl.client.service.model.EntityServiceException;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
@@ -28,9 +29,13 @@ public abstract class ProfileStatisticService
 
     @Override
     protected Optional<ProfileStatistic> findById(ProfileStatisticId profileStatisticId) {
-        return repository.findByProfile(
-                        profileStatisticId.getProfile()
-                );
+        try {
+            return repository.findByProfile(
+                    profileStatisticId.getProfile()
+            );
+        } catch (Exception e) {
+            throw new EntityServiceException();
+        }
     }
 
     @Override

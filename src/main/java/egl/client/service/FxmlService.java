@@ -26,17 +26,14 @@ public class FxmlService {
 
     private WindowController mainWindow;
 
-    public static Class<? extends Controller> controllerClassWith(String controllerClassName) {
+    public static <T extends Controller> Class<? extends T> controllerClassWith(
+            String controllerClassName, Class<T> controllerParentClass) {
         try {
             String fullControllerClassName = "egl.client.controller." + controllerClassName;
-            return Class.forName(fullControllerClassName).asSubclass(Controller.class);
+            return Class.forName(fullControllerClassName).asSubclass(controllerParentClass);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public FxControllerAndView<? extends Controller, Parent> load(String controllerClassName) {
-        return load(controllerClassWith(controllerClassName));
     }
 
     public <T extends Controller> FxControllerAndView<T, Parent> load(Class<T> controllerClass) {

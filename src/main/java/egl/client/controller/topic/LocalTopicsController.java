@@ -8,8 +8,9 @@ import java.util.function.Function;
 
 import egl.client.controller.Controller;
 import egl.client.controller.WindowController;
-import egl.client.controller.profile.GlobalProfilesController;
-import egl.client.controller.profile.LocalProfilesController;
+import egl.client.controller.profile.StatisticsController;
+import egl.client.controller.profile.global.GlobalStatisticsController;
+import egl.client.controller.profile.local.LocalStatisticsController;
 import egl.client.model.core.profile.Profile;
 import egl.client.model.core.statistic.Result;
 import egl.client.model.core.statistic.TaskStatistic;
@@ -20,9 +21,12 @@ import egl.client.model.local.topic.category.Category;
 import egl.client.service.FileService;
 import egl.client.service.FxmlService;
 import egl.client.service.model.EntityService;
+import egl.client.service.model.EntityServiceException;
+import egl.client.service.model.core.AbstractStatisticService;
 import egl.client.service.model.core.StatisticService;
-import egl.client.service.model.core.StatisticServiceHolder;
-import egl.client.service.model.global.GlobalStatisticServiceHolder;
+import egl.client.service.model.core.TopicStatisticByLocalService;
+import egl.client.service.model.global.GlobalStatisticByLocalService;
+import egl.client.service.model.global.GlobalStatisticService;
 import egl.client.service.model.local.CategoryService;
 import egl.client.service.model.local.LocalStatisticService;
 import egl.client.service.model.local.LocalTopicInfoService;
@@ -52,7 +56,8 @@ public class LocalTopicsController implements Controller {
     private final LocalTopicTasksService localTopicTasksService;
     private final CategoryService categoryService;
     private final LocalStatisticService localStatisticService;
-    private final GlobalStatisticServiceHolder globalStatisticService;
+    private final GlobalStatisticService globalStatisticService;
+    private final GlobalStatisticByLocalService localToGlobalStatisticService;
 
     @FXML private InfoSelectEditRemoveListView<Topic> categoriesListView;
     @FXML private TableColumn<Topic, String> topicLocalStatisticColumn;
@@ -127,52 +132,59 @@ public class LocalTopicsController implements Controller {
         saveCategoryColumn.setOnAction(processCategory(this::onCategorySave));
         loadCategoriesButton.setOnAction(event -> onCategoriesLoad());
 
-        initializeStatisticColumn(topicLocalStatisticColumn, localStatisticService);
-        initializeStatisticColumn(topicGlobalStatisticColumn, globalStatisticService);
+        initializeStatisticColumn(topicLocalStatisticColumn, localStatisticService, localStatisticService);
+        initializeStatisticColumn(topicGlobalStatisticColumn, globalStatisticService, localToGlobalStatisticService);
     }
 
     private void initializeStatisticColumn(
             TableColumn<Topic, String> topicStatisticColumn,
-            StatisticServiceHolder statisticService
+            StatisticService statisticService,
+            TopicStatisticByLocalService statisticFindService
     ) {
         topicStatisticColumn.setCellValueFactory(param -> {
             var topic = param.getValue();
-            var statisticString = getTopicStatistic(statisticService, topic);
+            var statisticString = getTopicStatistic(statisticService, statisticFindService, topic);
             return new SimpleStringProperty(statisticString);
         });
     }
 
-    private String getTopicStatistic(StatisticServiceHolder statisticService, Topic localTopic) {
-        return statisticService.findBy(localTopic)
-                .map(topicStatistic -> {
-            var tasks = localTopicTasksService.findBy(localTopic.getTopicType()).getTasks();
+    private String getTopicStatistic(StatisticService statisticService,
+                                     TopicStatisticByLocalService statisticFindService,
+                                     Topic localTopic) {
+        try {
+            return statisticFindService.findStatisticByLocal(localTopic)
+                    .map(topicStatistic -> {
+                        var tasks = localTopicTasksService.findBy(localTopic.getTopicType()).getTasks();
 
-            Function<TaskStatistic, Result> resultGenerator = TaskStatistic::getResult;
+                        Function<TaskStatistic, Result> resultGenerator = TaskStatistic::getResult;
 
-            var passedTasksCount = tasks.stream()
-                    .map(task -> statisticService.findBy(topicStatistic, task))
-                    .map(resultGenerator)
-                    .filter(result -> result.getCorrectAnswers() > 0)
-                    .count();
+                        var passedTasksCount = tasks.stream()
+                                .map(task -> statisticService.findBy(topicStatistic, task))
+                                .map(resultGenerator)
+                                .filter(result -> result.getCorrectAnswers() > 0)
+                                .count();
 
-            return String.format("%d из %d", passedTasksCount, tasks.size());
-        }).orElse(StatisticService.NO_DATA);
+                        return String.format("%d из %d", passedTasksCount, tasks.size());
+                    }).orElse(AbstractStatisticService.NO_DATA);
+        } catch (EntityServiceException e) {
+            return AbstractStatisticService.NO_DATA;
+        }
     }
 
     private void initializeProfiles() {
-        initSelectProfileButton(selectLocalProfileButton, localStatisticService, LocalProfilesController.class, "Локальный");
-        initSelectProfileButton(selectGlobalProfileButton, globalStatisticService, GlobalProfilesController.class, "Глобальный");
+        initSelectProfileButton(selectLocalProfileButton, localStatisticService, LocalStatisticsController.class, "Локальный");
+        initSelectProfileButton(selectGlobalProfileButton, globalStatisticService, GlobalStatisticsController.class, "Глобальный");
     }
 
     private void initSelectProfileButton(
             Button selectProfileButton,
-            StatisticServiceHolder statisticService,
-            Class<? extends Controller> selectProfileControllerClass,
+            StatisticService statisticService,
+            Class<? extends StatisticsController> statisticsControllerClass,
             String profileTypeName) {
         String profileText = String.format("%s профиль", profileTypeName);
 
         selectProfileButton.setOnAction(event -> {
-            var selectProfileRoot = fxmlService.load(selectProfileControllerClass);
+            var selectProfileRoot = fxmlService.load(statisticsControllerClass);
             fxmlService.showController(selectProfileRoot, profileText, WindowController.CLOSE);
         });
 
@@ -236,7 +248,7 @@ public class LocalTopicsController implements Controller {
             return;
         }
 
-        globalStatisticService.registerTopic(localTopicInfo);
+        localToGlobalStatisticService.registerTopic(localTopicInfo);
         refresh();
     }
 

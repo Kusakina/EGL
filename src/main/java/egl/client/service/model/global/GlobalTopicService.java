@@ -9,12 +9,16 @@ import egl.client.model.core.topic.Topic;
 import egl.client.model.global.topic.GlobalTopicInfo;
 import egl.client.model.local.topic.LocalTopicInfo;
 import egl.client.repository.global.topic.GlobalTopicRepository;
-import egl.client.service.model.AbstractEntityService;
+import egl.client.service.model.EntityServiceException;
+import egl.client.service.model.core.AbstractEntityService;
+import egl.client.service.model.core.TopicByLocalService;
 import egl.client.service.model.local.LocalTopicInfoService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class GlobalTopicService extends AbstractEntityService<Topic, GlobalTopicRepository> {
+public class GlobalTopicService
+        extends AbstractEntityService<Topic, GlobalTopicRepository>
+        implements TopicByLocalService  {
 
     private final LocalTopicInfoService localTopicInfoService;
     private final GlobalTopicInfoService globalTopicInfoService;
@@ -32,14 +36,19 @@ public class GlobalTopicService extends AbstractEntityService<Topic, GlobalTopic
     }
 
     private Optional<Topic> remoteFindByLocal(LocalTopicInfo localTopicInfo) {
-        return repository.findById(localTopicInfo.getGlobalId());
+        try {
+            return repository.findById(localTopicInfo.getGlobalId());
+        } catch (RuntimeException e) {
+            throw new EntityServiceException();
+        }
 //            .filter(globalTopic -> {
 //                var globalTopicInfo = globalTopicInfoService.findBy(globalTopic);
 //                return globalTopicInfo.getLocalHashCode() == localTopicInfo.getGlobalHashCode();
 //            });
     }
 
-    public Optional<Topic> findByLocal(Topic localTopic) {
+    @Override
+    public Optional<Topic> findTopicByLocal(Topic localTopic) {
         var localTopicInfo = localTopicInfoService.findBy(localTopic);
         //FIXME
         if (null == localTopicInfo) return Optional.empty();
