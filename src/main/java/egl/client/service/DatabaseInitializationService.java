@@ -56,6 +56,12 @@ public class DatabaseInitializationService {
                     "Один из двух",
                     "Необходимо заполнить пропуски нужным переводом",
                     "task.category.TranslateWordController");
+
+            Task matchWordsTask = new Task(
+                    "Сопоставь слова",
+                    "Найди соответствия",
+                    "task.category.MatchWordsController");
+
             String testSceneName = "task.TestController";
             String testDescription = "На каждой вкладке одно задание.\n" +
                     "Чтобы задание зачли - необходимо нажать кнопку \"Завершить\" внутри вкладки с заданием.\n";
@@ -64,7 +70,7 @@ public class DatabaseInitializationService {
             List<Task> categoryTestInnerTasks = Arrays.asList(oneOfFourTask, matchIndexTask, trueFalseTask, sourceOrTargetTask);
             Test categoryTest = new Test(categoryTestTask, categoryTestInnerTasks);
 
-            List<Task> categoryTasks = Arrays.asList(missingLettersTask, oneOfFourTask, sourceOrTargetTask);
+            List<Task> categoryTasks = Arrays.asList(missingLettersTask, oneOfFourTask, sourceOrTargetTask, matchWordsTask);
             TopicTasks categoryTopicTasks = new TopicTasks(
                     "Категория", "Набор переводов, объединенных общей темой",
                     TopicType.CATEGORY, categoryTheoryTask, categoryTasks, categoryTest

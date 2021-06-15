@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<GridPane xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml"
+          fx:controller="egl.client.controller.task.category.MatchWordsController"
+          fx:id="mainGridPane">
+
+    <columnConstraints>
+        <ColumnConstraints percentWidth="33.3"/>
+        <ColumnConstraints percentWidth="33.3"/>
+        <ColumnConstraints percentWidth="33.3"/>
+    </columnConstraints>
+</GridPane>
