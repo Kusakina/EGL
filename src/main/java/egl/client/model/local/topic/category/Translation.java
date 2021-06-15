@@ -1,7 +1,5 @@
 package egl.client.model.local.topic.category;
 
-import java.util.Objects;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -35,6 +33,6 @@ public class Translation extends DatabaseEntity implements TopicHashCodeEntity {
 
     @Override
     public long getTopicHashCode() {
-        return Objects.hash(source, target);
+        return source.getTopicHashCode() * 1234567 + target.getTopicHashCode();
     }
 }
