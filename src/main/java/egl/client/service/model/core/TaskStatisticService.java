@@ -59,7 +59,7 @@ public abstract class TaskStatisticService
         );
     }
 
-    private static String getTaskName(Task task) {
+    public static String getTaskName(Task task) {
         return task.getSceneName();
     }
 
