@@ -1,9 +1,5 @@
 package egl.client.controller.task.category;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import egl.client.controller.task.LocalTaskController;
 import egl.client.model.local.topic.category.Category;
 import egl.client.service.model.local.CategoryService;
@@ -13,6 +9,10 @@ import javafx.scene.layout.GridPane;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Component
 @FxmlView
@@ -37,6 +37,7 @@ public class MatchIndexTaskController extends LocalTaskController<Category> {
         var translations = category.getTranslations();
 
         final int tasksCount = Math.min(maxTasksCount, translations.size());
+        translations = translations.subList(0, tasksCount);
 
         this.questionViews = new ArrayList<>();
         Collections.shuffle(translations);
