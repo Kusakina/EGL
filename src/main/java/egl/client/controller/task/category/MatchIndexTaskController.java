@@ -37,6 +37,8 @@ public class MatchIndexTaskController extends LocalTaskController<Category> {
         var translations = category.getTranslations();
 
         final int tasksCount = Math.min(maxTasksCount, translations.size());
+
+        Collections.shuffle(translations);
         translations = translations.subList(0, tasksCount);
 
         this.questionViews = new ArrayList<>();
