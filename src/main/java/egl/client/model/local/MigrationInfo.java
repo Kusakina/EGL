@@ -1,10 +1,10 @@
-package egl.client.model.local.topic;
-
-import javax.persistence.Entity;
+package egl.client.model.local;
 
 import egl.client.model.core.DatabaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import javax.persistence.Entity;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
