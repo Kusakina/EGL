@@ -1,14 +1,14 @@
 package egl.client.model.local.topic.category;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-
 import egl.client.model.core.DatabaseEntity;
 import egl.client.model.core.topic.TopicHashCodeEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -51,5 +51,9 @@ public class Word extends DatabaseEntity implements TopicHashCodeEntity {
         hashCode |= language.getStartLetter();
 
         return hashCode;
+    }
+
+    public void updateLanguage() {
+        this.language = Language.of(text);
     }
 }

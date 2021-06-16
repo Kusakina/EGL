@@ -51,6 +51,11 @@ public class TranslationsListView extends CustomListView<Translation> implements
     public void fillData(Category category) {
         var translations = getItems();
 
+        translations.forEach(translation -> {
+            translation.getSource().updateLanguage();
+            translation.getTarget().updateLanguage();
+        });
+
         category.setTranslations(new HashSet<>(
                 translations
         ));
