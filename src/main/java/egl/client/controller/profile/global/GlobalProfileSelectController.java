@@ -1,9 +1,5 @@
 package egl.client.controller.profile.global;
 
-import java.net.URL;
-import java.util.Optional;
-import java.util.ResourceBundle;
-
 import egl.client.controller.profile.CredentialsInfoController;
 import egl.client.controller.profile.ProfileSelectController;
 import egl.client.model.core.profile.Credentials;
@@ -19,6 +15,10 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import org.springframework.stereotype.Component;
+
+import java.net.URL;
+import java.util.Optional;
+import java.util.ResourceBundle;
 
 @Component
 public class GlobalProfileSelectController extends ProfileSelectController {
@@ -74,11 +74,12 @@ public class GlobalProfileSelectController extends ProfileSelectController {
 
     private void onLogin() {
         String login = loginTextField.getText();
+        String password = passwordTextField.getText();
 
         try {
-            globalCredentialsService.findBy(login)
+            globalCredentialsService.findBy(login, password)
                     .ifPresentOrElse(
-                            this::tryAuthorizeWith,
+                            this::authorizeWith,
                             () -> showErrorMessage(INCORRECT_CREDENTIALS_ERROR_MESSAGE)
                     );
         } catch (EntityServiceException e) {
@@ -86,14 +87,7 @@ public class GlobalProfileSelectController extends ProfileSelectController {
         }
     }
 
-    private void tryAuthorizeWith(Credentials credentials) {
-        String password = passwordTextField.getText();
-
-        long loginPasswordHash = Credentials.calculatePasswordHash(password);
-        if (credentials.getPasswordHash() != loginPasswordHash) {
-            showErrorMessage(INCORRECT_CREDENTIALS_ERROR_MESSAGE);
-        }
-
+    private void authorizeWith(Credentials credentials) {
         loginTextField.setText("");
         passwordTextField.setText("");
         errorText.setText("");

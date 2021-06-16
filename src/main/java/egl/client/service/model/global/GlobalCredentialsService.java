@@ -1,13 +1,13 @@
 package egl.client.service.model.global;
 
-import java.util.Optional;
-
 import egl.client.model.core.profile.Credentials;
 import egl.client.model.core.profile.Profile;
 import egl.client.repository.global.profile.GlobalCredentialsRepository;
 import egl.client.service.model.EntityServiceException;
 import egl.client.service.model.core.AbstractEntityService;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class GlobalCredentialsService extends AbstractEntityService<Credentials, GlobalCredentialsRepository> {
@@ -24,9 +24,11 @@ public class GlobalCredentialsService extends AbstractEntityService<Credentials,
         }
     }
 
-    public Optional<Credentials> findBy(String login) {
+    public Optional<Credentials> findBy(String login, String password) {
         try {
-            return repository.findByLogin(login);
+            long passwordHash = Credentials.calculatePasswordHash(password);
+            return repository.findAllByLoginAndPasswordHash(login, passwordHash)
+                    .stream().findFirst();
         } catch (Exception e) {
             throw new EntityServiceException();
         }
