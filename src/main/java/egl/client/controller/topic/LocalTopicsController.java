@@ -1,11 +1,5 @@
 package egl.client.controller.topic;
 
-import java.net.URL;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.function.Consumer;
-import java.util.function.Function;
-
 import egl.client.controller.Controller;
 import egl.client.controller.WindowController;
 import egl.client.controller.profile.StatisticsController;
@@ -28,11 +22,7 @@ import egl.client.service.model.core.StatisticService;
 import egl.client.service.model.core.TopicByLocalService;
 import egl.client.service.model.global.GlobalStatisticService;
 import egl.client.service.model.global.GlobalTopicService;
-import egl.client.service.model.local.CategoryService;
-import egl.client.service.model.local.LocalStatisticService;
-import egl.client.service.model.local.LocalTopicInfoService;
-import egl.client.service.model.local.LocalTopicService;
-import egl.client.service.model.local.LocalTopicTasksService;
+import egl.client.service.model.local.*;
 import egl.client.view.table.column.ButtonColumn;
 import egl.client.view.table.list.InfoSelectEditRemoveListView;
 import javafx.beans.property.SimpleStringProperty;
@@ -45,6 +35,12 @@ import javafx.util.StringConverter;
 import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
+
+import java.net.URL;
+import java.util.List;
+import java.util.ResourceBundle;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 @Component
 @FxmlView
@@ -201,7 +197,7 @@ public class LocalTopicsController implements Controller {
                     @Override
                     public String toString(Profile profile) {
                         if (null == profile) return String.format("Выбрать %s", profileText.toLowerCase());
-                        return String.format("%s профиль: %s", profileText, profile.getName());
+                        return String.format("%s: %s", profileText, profile.getName());
                     }
 
                     @Override
