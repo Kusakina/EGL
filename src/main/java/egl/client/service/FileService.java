@@ -1,14 +1,5 @@
 package egl.client.service;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
-
 import egl.client.model.core.topic.Topic;
 import egl.client.model.core.topic.TopicType;
 import egl.client.model.local.topic.LocalTopicInfo;
@@ -19,6 +10,11 @@ import egl.client.model.local.topic.category.Translation;
 import egl.client.model.local.topic.category.Word;
 import org.springframework.stereotype.Service;
 
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class FileService {
 
@@ -26,7 +22,7 @@ public class FileService {
         var localTopicInfo = category.getLocalTopicInfo();
         var topic = localTopicInfo.getTopic();
 
-        try (PrintWriter out = new PrintWriter(file)) {
+        try (PrintWriter out = new PrintWriter(file, StandardCharsets.UTF_8)) {
             out.println(topic.getName());
             out.println(topic.getDescription().replaceAll("\n", "; "));
             out.println(localTopicInfo.getTheory().getText().replaceAll("\n", "; "));
@@ -36,13 +32,13 @@ public class FileService {
 
                 out.println(source.getText() + "\t" + target.getText());
             }
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public static Category loadCategory(File file) throws IOException {
-        try (BufferedReader in = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader in = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
             String name = in.readLine();
             String description = in.readLine().replace("; ", "\n");
             var topic = new Topic(name, description, TopicType.CATEGORY);
