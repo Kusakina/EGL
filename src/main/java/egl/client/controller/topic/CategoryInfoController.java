@@ -1,8 +1,5 @@
 package egl.client.controller.topic;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import egl.client.controller.info.AbstractEntityInfoController;
 import egl.client.controller.topic.info.TheoryTextArea;
 import egl.client.controller.topic.info.TranslationsEditableListView;
@@ -12,17 +9,17 @@ import egl.client.model.local.topic.category.Category;
 import egl.client.model.local.topic.category.Translation;
 import egl.client.view.info.FieldInfoView;
 import egl.client.view.info.NameDescriptionInfoView;
-import egl.client.view.pane.CustomBorderPane;
 import javafx.fxml.FXML;
 import lombok.RequiredArgsConstructor;
+
+import java.net.URL;
+import java.util.ResourceBundle;
 
 @RequiredArgsConstructor
 public class CategoryInfoController extends AbstractEntityInfoController<Category> {
 
     @FXML private NameDescriptionInfoView<Topic> nameDescriptionInfoView;
     @FXML private TheoryTextArea theoryTextArea;
-
-    @FXML private CustomBorderPane editableTranslationsPane;
     @FXML private TranslationsEditableListView translationsListView;
 
     @Override
@@ -38,14 +35,6 @@ public class CategoryInfoController extends AbstractEntityInfoController<Categor
     public void setPrefSize(double parentWidth, double parentHeight) {
         nameDescriptionInfoView.setPrefSize(parentWidth, parentHeight);
 
-        if (!isCreated) {
-            translationsListView.getColumns().remove(
-                    translationsListView.getRemoveColumn()
-            );
-
-            editableTranslationsPane.setBottom(null);
-        }
-
         translationsListView.setPrefSize(parentWidth, parentHeight);
         theoryTextArea.setPrefSize(parentWidth, parentHeight);
     }
@@ -58,11 +47,11 @@ public class CategoryInfoController extends AbstractEntityInfoController<Categor
     public void fillData() {
         super.fillData();
 
-        if (isCreated) {
-            entity.getLocalTopicInfo().setTopicHashCode(
-                    entity.getTopicHashCode()
-            );
+        entity.getLocalTopicInfo().setTopicHashCode(
+                entity.getTopicHashCode()
+        );
 
+        if (isCreated) {
             entity.getLocalTopicInfo().getTopic().setTopicType(TopicType.CATEGORY);
         }
     }
